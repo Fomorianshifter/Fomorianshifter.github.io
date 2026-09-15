@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Panel load estimator</title><link rel="stylesheet" href="../styles.css" /></head>
+<body><div class="wrap">
+<header class="site"><div class="brand"><a href="../index.html">Lane / Controls + Code</a></div><nav><a href="../index.html">Home</a></nav></header>
+<h1>Panel load estimator</h1>
+<p class="lead">Adds a few loads, reports total VA and amps at 120 or 240 V. Training tool only — not an NEC load calculation.</p>
+<div class="demo-box">
+<label>Voltage <select id="v"><option value="120">120 V</option><option value="240">240 V</option></select></label>
+<label>Load name <input id="name" placeholder="e.g. motor starter" /></label>
+<label>Watts (approx VA) <input id="w" type="number" value="1500" /></label>
+<p><button class="primary" id="add">Add load</button></p>
+<ul id="list"></ul>
+<div class="result" id="out">Total: 0 VA · 0 A</div>
+</div></div>
+<script>
+const loads=[];const list=document.getElementById("list");const out=document.getElementById("out");
+function render(){list.innerHTML="";let va=0;loads.forEach((l,i)=>{va+=l.w;const li=document.createElement("li");li.textContent=l.name+" — "+l.w+" VA ";const b=document.createElement("button");b.textContent="remove";b.onclick=()=>{loads.splice(i,1);render();};li.appendChild(b);list.appendChild(li);});const v=Number(document.getElementById("v").value);out.textContent="Total: "+va+" VA · "+(va/v).toFixed(2)+" A @ "+v+" V";}
+document.getElementById("add").onclick=()=>{loads.push({name:document.getElementById("name").value||"load",w:Number(document.getElementById("w").value)||0});render();};
+document.getElementById("v").onchange=render;
+</script></body></html>
