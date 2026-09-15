@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladder Logic Trainer — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .rung { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin:1rem 0; font-family:var(--font-mono); }
+    .contact, .coil { border:1px solid var(--border); background:var(--elevated); color:var(--fg); padding:.45rem .7rem; border-radius:8px; }
+    .contact.on, .coil.on { outline:1px solid var(--accent); color:var(--accent); }
+    .wire { flex:1; min-width:24px; height:2px; background:var(--border); }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a></div></header>
+  <main class="wrap section" style="padding-top:2rem">
+    <p class="mono-kicker">Live demo</p>
+    <h1>Ladder Logic Trainer</h1>
+    <p class="lede">STOP is normally closed. Hold START. Seal-in keeps M1 running until STOP opens.</p>
+    <div class="card" style="margin-top:1.5rem">
+      <div class="rung">
+        <button class="contact" id="stop">STOP (NC)</button>
+        <span class="wire"></span>
+        <button class="contact" id="start">START</button>
+        <span class="wire"></span>
+        <span class="coil" id="m1">M1 MOTOR</span>
+      </div>
+      <p class="muted" id="status">Motor: OFF</p>
+    </div>
+  </main>
+  <script>
+    const stop=document.getElementById('stop'), start=document.getElementById('start'), m1=document.getElementById('m1'), status=document.getElementById('status');
+    let motor=false, startHeld=false, stopOk=true;
+    function paint(){ stop.classList.toggle('on', stopOk); start.classList.toggle('on', startHeld); m1.classList.toggle('on', motor); status.textContent='Motor: '+(motor?'RUN':'OFF'); }
+    function evalL(){ if(!stopOk) motor=false; else if(startHeld || motor) motor=true; paint(); }
+    stop.onclick=()=>{ stopOk=!stopOk; evalL(); };
+    start.onmousedown=()=>{ startHeld=true; evalL(); };
+    start.onmouseup=start.onmouseleave=()=>{ startHeld=false; evalL(); };
+    paint();
+  </script>
+</body>
+</html>

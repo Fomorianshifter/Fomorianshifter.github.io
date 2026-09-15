@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motor Control Panel — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a></div></header>
+  <main class="wrap section" style="padding-top:2rem">
+    <p class="mono-kicker">Live demo</p>
+    <h1>Motor Control Panel</h1>
+    <p class="lede">HOA selector, overload trip, and reset — shop-floor language in the browser.</p>
+    <div class="card" style="margin-top:1.5rem">
+      <div class="actions">
+        <button class="btn btn-secondary" id="hand">HAND</button>
+        <button class="btn btn-secondary" id="off">OFF</button>
+        <button class="btn btn-secondary" id="auto">AUTO</button>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" id="ol">Simulate overload</button>
+        <button class="btn btn-primary" id="reset">Reset</button>
+      </div>
+      <p class="muted" id="st"></p>
+    </div>
+  </main>
+  <script>
+    let mode='off', ol=false;
+    const st=document.getElementById('st');
+    function tick(){ const run=!ol && (mode==='hand' || mode==='auto'); st.textContent='Mode '+mode.toUpperCase()+' · Motor '+(run?'RUN':'OFF')+' · OL '+(ol?'TRIP':'OK'); }
+    document.getElementById('hand').onclick=()=>{ mode='hand'; tick(); };
+    document.getElementById('off').onclick=()=>{ mode='off'; tick(); };
+    document.getElementById('auto').onclick=()=>{ mode='auto'; tick(); };
+    document.getElementById('ol').onclick=()=>{ ol=true; tick(); };
+    document.getElementById('reset').onclick=()=>{ ol=false; tick(); };
+    tick();
+  </script>
+</body>
+</html>
