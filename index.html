@@ -4,33 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Nicholas Lane</title>
-    <meta
-      name="description"
-      content="Portfolio of Nicholas Lane — web developer and industrial technician in training. Locus, Loki, and selected public work."
-    />
+    <meta name="description" content="Portfolio of Nicholas Lane — industrial electrician moving into controls, plus public web and embedded work." />
     <meta name="theme-color" content="#0c0d10" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href="#top">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <rect width="32" height="32" rx="6" fill="#0c0d10" />
-            <rect x="3.5" y="3.5" width="25" height="25" rx="1.5" fill="none" stroke="#8eb4c4" stroke-width="1.75" />
-            <path fill="#eceef2" d="M9 6.75h2.5l5.1 7.15V6.75H19V17.5h-2.5L11.4 10.35V17.5H9z" />
-            <path fill="#e0a882" d="M9 19.25h2.6V24.1H19v2.15H9z" />
-          </svg>
-          Nicholas Lane
-        </a>
+        <a class="brand" href="#top">Nicholas Lane</a>
         <nav aria-label="Primary">
+          <a href="#plant">Plant</a>
           <a href="#work">Work</a>
           <a href="#path">Path</a>
           <a href="#about">About</a>
@@ -38,20 +25,18 @@
         </nav>
       </div>
     </header>
-
     <main id="top">
       <section class="hero wrap">
         <div class="plate">
           <div class="kicker-row">
-            <p class="mono-kicker">Dwg. portfolio · 2026</p>
-            <p class="mono-kicker">Wisconsin · He/Him</p>
+            <p class="mono-kicker">Green Bay, WI · Relocate anywhere</p>
+            <p class="mono-kicker">US work authorized</p>
           </div>
           <p class="handle">Fomorianshifter</p>
           <h1>Nicholas Lane</h1>
           <p class="lede">
-            Web developer and industrial technician in training. Certified in HTML, CSS, and JavaScript.
-            Building toward embedded systems, electrical work, and PLC automation — one system at a time,
-            from the graphing plane to the panel.
+            Industrial electrician moving into controls technology. Five-plus years installing, maintaining,
+            and troubleshooting plant electrical systems — with PLC support, plus web and embedded projects you can open.
           </p>
           <div class="actions">
             <a class="btn btn-primary" href="#work">Selected work</a>
@@ -59,19 +44,46 @@
             <a class="btn btn-outline" href="./locus.html">Open Locus</a>
           </div>
           <dl class="titleblock">
-            <div>
-              <dt>Drawn by</dt>
-              <dd>Nicholas Lane</dd>
-            </div>
-            <div>
-              <dt>GitHub</dt>
-              <dd>@Fomorianshifter</dd>
-            </div>
-            <div>
-              <dt>Scale</dt>
-              <dd>Web + industrial</dd>
-            </div>
+            <div><dt>Drawn by</dt><dd>Nicholas Lane</dd></div>
+            <div><dt>GitHub</dt><dd>@Fomorianshifter</dd></div>
+            <div><dt>Scale</dt><dd>Plant + web + embedded</dd></div>
           </dl>
+        </div>
+      </section>
+
+      <section id="plant" class="section wrap">
+        <div class="section-head">
+          <div>
+            <p class="mono-kicker">Sheet 01</p>
+            <h2>Plant experience</h2>
+          </div>
+          <p class="aside">From the working resume. This is what most hiring managers should see first.</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <p class="mono-kicker">Oct 2021 – Mar 2024</p>
+            <h3>Industrial Electrician</h3>
+            <p>Grede Foundries · Reedsburg, WI</p>
+            <p>PLC install and programming support on automated foundry processes. 50+ electrical issues closed monthly with engineering. Monthly inspections at 100% safety compliance.</p>
+          </article>
+          <article class="card">
+            <p class="mono-kicker">Sep 2018 – Oct 2021</p>
+            <h3>Electrician</h3>
+            <p>AC Electric · Hayward, WI</p>
+            <p>New construction, remodels, and service calls. Observed PLC installs and maintenance.</p>
+          </article>
+          <article class="card">
+            <p class="mono-kicker">Jul 2016 – Sep 2018</p>
+            <h3>Electrician (Apprentice)</h3>
+            <p>Greenfield Electric · Greenfield, WI</p>
+            <p>Supported journeyman and master electricians on installs and basic programming tasks.</p>
+          </article>
+          <article class="card">
+            <p class="mono-kicker">Apr 2013 – Dec 2015</p>
+            <h3>Quality Control Inspector</h3>
+            <p>Comp X · Grayslake, IL</p>
+            <p>CNC inspection. Helped maintenance techs with programming and electronics integration.</p>
+          </article>
         </div>
       </section>
 
@@ -81,76 +93,49 @@
             <p class="mono-kicker">Sheet 02</p>
             <h2>Selected work</h2>
           </div>
-          <p class="aside">Public projects only. Curriculum work is labeled as such.</p>
+          <p class="aside">Public projects and live demos. Curriculum work is labeled as such.</p>
         </div>
         <div class="grid-2">
           <a class="card" href="./locus.html">
-            <div class="card-top">
-              <p class="mono-kicker">Fig. 01</p>
-              <p class="mono-kicker clay">Featured</p>
-            </div>
+            <div class="card-top"><p class="mono-kicker">Fig. 01</p><p class="mono-kicker clay">Featured</p></div>
             <h3>Locus</h3>
-            <p>
-              Interactive function grapher: plot one or more equations with zoom, pan, a drafting grid,
-              axis labels, and a live cursor readout. Custom expression parser with implicit multiplication
-              and absolute value.
-            </p>
-            <ul class="tags">
-              <li>TypeScript</li>
-              <li>JavaScript</li>
-              <li>Canvas</li>
-            </ul>
+            <p>Interactive function grapher: zoom, pan, drafting grid, live cursor, custom expression parser.</p>
+            <ul class="tags"><li>TypeScript</li><li>Canvas</li></ul>
             <p class="go">Open grapher →</p>
           </a>
           <a class="card" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">
-            <div class="card-top">
-              <p class="mono-kicker">Fig. 02</p>
-              <p class="mono-kicker clay">Featured</p>
-            </div>
+            <div class="card-top"><p class="mono-kicker">Fig. 02</p><p class="mono-kicker clay">Featured</p></div>
             <h3>Loki</h3>
-            <p>
-              Embedded dragon companion for Linux single-board computers. HAL for GPIO, SPI, I2C, UART, and PWM;
-              TFT, SD, flash, and EEPROM drivers; Flipper Zero UART; a local configuration UI; and a life-cycle
-              system from egg to adult.
-            </p>
-            <ul class="tags">
-              <li>C</li>
-              <li>Python</li>
-              <li>Embedded</li>
-              <li>Orange Pi</li>
-            </ul>
+            <p>Embedded companion for Linux SBCs. HAL, TFT drivers, Flipper Zero UART, local config UI.</p>
+            <ul class="tags"><li>C</li><li>Python</li><li>Embedded</li></ul>
             <p class="go">View on GitHub →</p>
           </a>
+          <a class="card" href="./projects/ladder.html">
+            <div class="card-top"><p class="mono-kicker">Fig. 03</p><p class="mono-kicker clay">Live demo</p></div>
+            <h3>Ladder Logic Trainer</h3>
+            <p>Start/stop seal-in circuit in the browser. Built to talk about PLC thinking without vendor software.</p>
+            <ul class="tags"><li>PLC</li><li>JavaScript</li></ul>
+            <p class="go">Open trainer →</p>
+          </a>
+          <a class="card" href="./projects/panel.html">
+            <div class="card-top"><p class="mono-kicker">Fig. 04</p><p class="mono-kicker clay">Live demo</p></div>
+            <h3>Motor Control Panel</h3>
+            <p>HOA selector, overload trip, and reset — shop-floor language you can click through.</p>
+            <ul class="tags"><li>Controls</li><li>JavaScript</li></ul>
+            <p class="go">Open panel →</p>
+          </a>
           <a class="card" href="https://github.com/Fomorianshifter/SolarSystem" target="_blank" rel="noreferrer">
-            <div class="card-top">
-              <p class="mono-kicker">Fig. 03</p>
-            </div>
+            <div class="card-top"><p class="mono-kicker">Fig. 05</p></div>
             <h3>Solar System</h3>
-            <p>
-              Early visualization study of planets in orbit and alignment. A first pass at motion, layout,
-              and spatial relationships in the browser.
-            </p>
-            <ul class="tags">
-              <li>JavaScript</li>
-              <li>HTML</li>
-              <li>Visualization</li>
-            </ul>
+            <p>Early visualization of planets in orbit. First-pass motion and layout in the browser.</p>
+            <ul class="tags"><li>JavaScript</li><li>HTML</li></ul>
             <p class="go">View on GitHub →</p>
           </a>
           <a class="card" href="https://github.com/Fomorianshifter/One" target="_blank" rel="noreferrer">
-            <div class="card-top">
-              <p class="mono-kicker">Fig. 04</p>
-            </div>
+            <div class="card-top"><p class="mono-kicker">Fig. 06</p></div>
             <h3>One</h3>
-            <p>
-              Microsoft Web Development for Beginners coursework: terrarium (HTML, CSS, DOM), typing game,
-              canvas space game, and a routed banking app. Honest foundation work in JavaScript, CSS, and HTML.
-            </p>
-            <ul class="tags">
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>JavaScript</li>
-            </ul>
+            <p>Web Development for Beginners coursework: terrarium, typing game, canvas space game, banking app.</p>
+            <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
             <p class="go">View on GitHub →</p>
           </a>
         </div>
@@ -159,94 +144,37 @@
       <section id="path" class="section wrap">
         <p class="mono-kicker">Sheet 03</p>
         <h2>Path</h2>
-        <p class="muted" style="max-width: 40rem; margin-top: 0.75rem">
-          Dual track: software you can open in a browser, and industrial credentials that belong on a job site.
-        </p>
         <div class="skills three">
           <div class="card">
-            <h3>Web</h3>
+            <h3>Electrical &amp; controls</h3>
             <ul>
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>JavaScript</li>
-              <li>React</li>
-              <li>Canvas</li>
-              <li>Git & GitHub</li>
+              <li>Industrial electrician</li>
+              <li>PLC install &amp; troubleshooting</li>
+              <li>Motors &amp; diagnostics</li>
+              <li>Schematics / blueprints</li>
+              <li>NEC (pursuing)</li>
+              <li>PM / LOTO culture</li>
             </ul>
           </div>
           <div class="card">
-            <h3>Embedded</h3>
+            <h3>Software</h3>
             <ul>
-              <li>C</li>
-              <li>Python</li>
-              <li>Linux SBC</li>
-              <li>GPIO / SPI / I2C / UART / PWM</li>
-              <li>TFT displays</li>
-              <li>Flipper Zero UART</li>
+              <li>HTML, CSS, JavaScript</li>
+              <li>C (Loki)</li>
+              <li>Python / Linux SBC</li>
+              <li>Git</li>
+              <li>freeCodeCamp CS</li>
             </ul>
           </div>
           <div class="card">
-            <h3>Industrial path</h3>
+            <h3>Tickets</h3>
             <ul>
-              <li>Electrical fundamentals</li>
-              <li>OSHA safety</li>
-              <li>PLC automation</li>
-              <li>Panel discipline</li>
+              <li>Driver license</li>
+              <li>First Aid / CPR / AED</li>
+              <li>Aerial / scissor lift</li>
+              <li>HAZWOPER</li>
+              <li>Relocate anywhere</li>
             </ul>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <header>
-            <h3>Certifications and study</h3>
-            <p class="note">Status is current as of 2026. In-progress items are not claimed as held.</p>
-          </header>
-          <div class="scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Detail</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>HTML, CSS, and JavaScript</td>
-                  <td>Certified web designer</td>
-                  <td class="clay">Certified</td>
-                </tr>
-                <tr>
-                  <td>Algorithms & data structures</td>
-                  <td>FreeCodeCamp</td>
-                  <td class="accent">In progress</td>
-                </tr>
-                <tr>
-                  <td>Python</td>
-                  <td>FreeCodeCamp</td>
-                  <td class="accent">In progress</td>
-                </tr>
-                <tr>
-                  <td>OSHA 30</td>
-                  <td>Occupational safety</td>
-                  <td class="accent">In progress</td>
-                </tr>
-                <tr>
-                  <td>NCCER Industrial Electrician</td>
-                  <td>Electrical certification track</td>
-                  <td class="accent">In progress</td>
-                </tr>
-                <tr>
-                  <td>ETA Industrial Electronics</td>
-                  <td>Electronics certification track</td>
-                  <td class="accent">In progress</td>
-                </tr>
-                <tr>
-                  <td>PLC / industrial automation</td>
-                  <td>PLC Simulator</td>
-                  <td class="accent">In progress</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </section>
@@ -256,52 +184,27 @@
           <div class="card">
             <p class="mono-kicker">Sheet 04</p>
             <h2>About</h2>
-            <p class="muted">
-              I’m Nicholas Lane — Beau on GitHub as @Fomorianshifter. I ship web interfaces and study the
-              hardware underneath them: C on single-board computers, Python for device UIs, and the electrical
-              path that keeps industrial work safe.
-            </p>
-            <p class="muted">
-              The through-line is systems. How a function sits on a plane. How a HAL talks to a display. How a
-              circuit is labeled so the next person can trust it. I learn in public, keep the repos honest, and
-              treat curriculum work as foundation rather than a finished product.
-            </p>
+            <p class="muted">Nicholas Lane on paper. Beau / @Fomorianshifter on GitHub. Plant electrician learning controls in public.</p>
+            <p class="muted">Education: freeCodeCamp CS (2023–present); Associate’s, Cardinal Stritch University (2010–2012); Round Lake Senior High School (2006).</p>
           </div>
           <div class="card contact" id="contact">
             <h3>Contact</h3>
             <h2>Reach me</h2>
             <ul class="contact-list">
-              <li>
-                <a href="mailto:nlane713@gmail.com"><span>Email</span><span>nlane713@gmail.com</span></a>
-              </li>
-              <li>
-                <a href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer"
-                  ><span>GitHub</span><span>@Fomorianshifter</span></a
-                >
-              </li>
-              <li>
-                <a href="https://x.com/FastLaneTarot" target="_blank" rel="noreferrer"
-                  ><span>X</span><span>@FastLaneTarot</span></a
-                >
-              </li>
-              <li>
-                <a href="https://fomorianshifter.github.io"
-                  ><span>Pages</span><span>fomorianshifter.github.io</span></a
-                >
-              </li>
+              <li><a href="mailto:nlane713@gmail.com"><span>Email</span><span>nlane713@gmail.com</span></a></li>
+              <li><a href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer"><span>GitHub</span><span>@Fomorianshifter</span></a></li>
+              <li><a href="https://fomorianshifter.github.io"><span>Portfolio</span><span>fomorianshifter.github.io</span></a></li>
+              <li><a href="https://www.linkedin.com/" target="_blank" rel="noreferrer"><span>LinkedIn</span><span>add your profile URL</span></a></li>
             </ul>
-            <p class="muted" style="margin-top: 1.5rem; font-size: 0.875rem">
-              GitHub display name is Beau. Professional name is Nicholas Lane.
-            </p>
+            <p class="muted" style="margin-top:1.5rem;font-size:0.875rem">Paste your LinkedIn URL in this last row. Feature this site on LinkedIn.</p>
           </div>
         </div>
       </section>
     </main>
-
     <footer class="site-footer">
       <div class="wrap">
-        <p class="mono-kicker">Nicholas Lane · Wisconsin · He/Him</p>
-        <p class="mono-kicker">Rev. 2026 · Sheet 1</p>
+        <p class="mono-kicker">Nicholas Lane · Green Bay, WI · +1 608 717 7602</p>
+        <p class="mono-kicker">Rev. 2026</p>
       </div>
     </footer>
   </body>
