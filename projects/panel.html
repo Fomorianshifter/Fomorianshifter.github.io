@@ -4,31 +4,40 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Motor Control Panel — Nicholas Lane</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a></div></header>
+  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#work">Work</a><a href="../resume.html">Resume</a></nav></div></header>
   <main class="wrap section" style="padding-top:2rem">
-    <p class="mono-kicker">Live demo</p>
+    <p class="mono-kicker">Live demo · controls</p>
     <h1>Motor Control Panel</h1>
-    <p class="lede">HOA selector, overload trip, and reset — shop-floor language in the browser.</p>
+    <p class="lede">HOA selector, overload trip, and reset — the language of a foundry starter, clickable in a browser.</p>
     <div class="card" style="margin-top:1.5rem">
+      <p class="mono-kicker">Selector</p>
       <div class="actions">
-        <button class="btn btn-secondary" id="hand">HAND</button>
-        <button class="btn btn-secondary" id="off">OFF</button>
-        <button class="btn btn-secondary" id="auto">AUTO</button>
+        <button class="btn btn-secondary" id="hand" type="button">HAND</button>
+        <button class="btn btn-secondary" id="off" type="button">OFF</button>
+        <button class="btn btn-secondary" id="auto" type="button">AUTO</button>
       </div>
+      <p class="mono-kicker" style="margin-top:1.5rem">Protection</p>
       <div class="actions">
-        <button class="btn btn-outline" id="ol">Simulate overload</button>
-        <button class="btn btn-primary" id="reset">Reset</button>
+        <button class="btn btn-outline" id="ol" type="button">Simulate overload</button>
+        <button class="btn btn-primary" id="reset" type="button">Reset OL</button>
       </div>
-      <p class="muted" id="st"></p>
+      <p class="muted" id="st" style="margin-top:1.25rem"></p>
+      <p class="muted">HAND runs now. AUTO pretends a process permit is present. Overload drops the motor until reset, same idea as a thermal OL on a starter.</p>
     </div>
   </main>
   <script>
     let mode='off', ol=false;
     const st=document.getElementById('st');
-    function tick(){ const run=!ol && (mode==='hand' || mode==='auto'); st.textContent='Mode '+mode.toUpperCase()+' · Motor '+(run?'RUN':'OFF')+' · OL '+(ol?'TRIP':'OK'); }
+    const buttons={hand:document.getElementById('hand'),off:document.getElementById('off'),auto:document.getElementById('auto')};
+    function tick(){
+      const run=!ol && (mode==='hand' || mode==='auto');
+      st.textContent='Mode '+mode.toUpperCase()+' · Motor '+(run?'RUN':'OFF')+' · Overload '+(ol?'TRIP — reset required':'OK');
+      Object.entries(buttons).forEach(([k,el])=> el.style.outline = mode===k ? '1px solid var(--accent)' : '');
+    }
     document.getElementById('hand').onclick=()=>{ mode='hand'; tick(); };
     document.getElementById('off').onclick=()=>{ mode='off'; tick(); };
     document.getElementById('auto').onclick=()=>{ mode='auto'; tick(); };

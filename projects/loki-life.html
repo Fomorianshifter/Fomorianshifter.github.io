@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Loki life-cycle demo</title><link rel="stylesheet" href="../styles.css" /></head>
-<body><div class="wrap">
-<header class="site"><div class="brand"><a href="../index.html">Lane / Controls + Code</a></div><nav><a href="../index.html">Home</a> · <a href="https://github.com/Fomorianshifter/Loki">Loki repo</a></nav></header>
-<h1>Loki life-cycle</h1>
-<p class="lead">Browser sketch of the C state machine: egg → hatchling → young → adult.</p>
-<div class="demo-box"><pre id="status" style="white-space:pre-wrap;font-size:1.05rem"></pre>
-<p><button class="primary" data-food="basic">Feed basic</button> <button class="primary" data-food="tasty">Feed tasty</button> <button class="primary" data-food="special">Feed special</button> <button class="primary" id="pet">Interact</button></p>
-</div></div>
-<script>
-const food={basic:{hunger:20,gp:5,happy:5},tasty:{hunger:40,gp:10,happy:15},special:{hunger:60,gp:20,happy:25}};
-const s={gp:0,hunger:40,happy:50,energy:80,stage:"Egg"};
-function stage(){if(s.gp>=500)return"Adult";if(s.gp>=200)return"Young";if(s.gp>=50)return"Hatchling";return"Egg";}
-function mood(){if(s.hunger>=70)return"HUNGRY";if(s.energy<=20)return"SLEEPY";if(s.happy<=30||s.hunger>=50)return"GRUMPY";if(s.happy>=70)return"HAPPY";if(s.happy>=50&&s.energy>=60)return"PLAYFUL";return"NEUTRAL";}
-function clamp(n){return Math.max(0,Math.min(100,n));}
-function render(){s.stage=stage();document.getElementById("status").textContent="Stage: "+s.stage+"\nMood: "+mood()+"\nGrowth: "+s.gp+"\nHunger: "+s.hunger+"  Happiness: "+s.happy+"  Energy: "+s.energy;}
-function feed(kind){const f=food[kind];const m=s.hunger<20?0.5:1;s.hunger=clamp(s.hunger-f.hunger*m);s.gp+=Math.round(f.gp*m);s.happy=clamp(s.happy+f.happy*m);render();}
-document.querySelectorAll("[data-food]").forEach(b=>{b.onclick=()=>feed(b.dataset.food);});
-document.getElementById("pet").onclick=()=>{s.happy=clamp(s.happy+8);s.gp+=3;render();};
-setInterval(()=>{if(mood()==="SLEEPY")s.energy=clamp(s.energy+8);else s.energy=clamp(s.energy-2);s.hunger=clamp(s.hunger+3);render();},2000);
-render();
-</script></body></html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loki companion — Nicholas Lane</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">GitHub</a></nav></div></header>
+  <main class="wrap section" style="padding-top:2rem">
+    <p class="mono-kicker">Embedded project</p>
+    <h1>Loki</h1>
+    <p class="lede">Embedded companion for Linux single-board computers: TFT drivers, hardware abstraction, Flipper Zero UART, local config UI.</p>
+    <div class="card" style="margin-top:1.5rem">
+      <p>The real firmware lives on GitHub. This page is the public face for LinkedIn and hiring managers who want one link.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">Open Loki on GitHub</a>
+        <a class="btn btn-outline" href="../index.html#work">Back to work</a>
+      </div>
+      <ul class="tags"><li>C</li><li>Python</li><li>Raspberry Pi / Orange Pi</li><li>UART</li></ul>
+    </div>
+  </main>
+</body>
+</html>
