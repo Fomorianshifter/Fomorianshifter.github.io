@@ -1,26 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loki companion — Nicholas Lane</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <title>Loki life-cycle demo</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">GitHub</a></nav></div></header>
-  <main class="wrap section" style="padding-top:2rem">
-    <p class="mono-kicker">Embedded project</p>
-    <h1>Loki</h1>
-    <p class="lede">Embedded companion for Linux single-board computers: TFT drivers, hardware abstraction, Flipper Zero UART, local config UI.</p>
-    <div class="card" style="margin-top:1.5rem">
-      <p>The real firmware lives on GitHub. This page is the public face for LinkedIn and hiring managers who want one link.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">Open Loki on GitHub</a>
-        <a class="btn btn-outline" href="../index.html#work">Back to work</a>
-      </div>
-      <ul class="tags"><li>C</li><li>Python</li><li>Raspberry Pi / Orange Pi</li><li>UART</li></ul>
+  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <main>
+    <p class="eyebrow">Loki</p>
+    <h1>Life-cycle playground</h1>
+    <pre id="status" class="rung"></pre>
+    <div class="cta-row">
+      <button class="btn primary" id="feed">Feed (tasty)</button>
+      <button class="btn" id="play">Interact</button>
+      <button class="btn" id="tick">Tick 10s</button>
     </div>
   </main>
+  <script>
+    const s = { stage: 'Egg', gp: 0, hunger: 40, happy: 50, energy: 70, mood: 'NEUTRAL' };
+    function mood() {
+      if (s.hunger >= 70) s.mood = 'HUNGRY';
+      else if (s.energy <= 20) s.mood = 'SLEEPY';
+      else if (s.happy <= 30) s.mood = 'GRUMPY';
+      else if (s.happy >= 70) s.mood = 'HAPPY';
+      else if (s.happy >= 50 && s.energy >= 60) s.mood = 'PLAYFUL';
+      else s.mood = 'NEUTRAL';
+    }
+    function stage() {
+      if (s.gp >= 500) s.stage = 'Adult';
+      else if (s.gp >= 200) s.stage = 'Young';
+      else if (s.gp >= 50) s.stage = 'Hatchling';
+      else s.stage = 'Egg';
+    }
+    function draw() {
+      mood(); stage();
+      document.getElementById('status').textContent =
+        'stage     ' + s.stage + '\nmood      ' + s.mood + '\ngrowth    ' + s.gp +
+        '\nhunger    ' + s.hunger + '\nhappy     ' + s.happy + '\nenergy    ' + s.energy;
+    }
+    document.getElementById('feed').onclick = function() {
+      s.hunger = Math.max(0, s.hunger - 40);
+      s.gp += s.hunger > 10 ? 10 : 5;
+      s.happy = Math.min(100, s.happy + 15);
+      draw();
+    };
+    document.getElementById('play').onclick = function() {
+      s.happy = Math.min(100, s.happy + 10);
+      s.energy = Math.max(0, s.energy - 8);
+      s.gp += 3;
+      draw();
+    };
+    document.getElementById('tick').onclick = function() {
+      s.hunger = Math.min(100, s.hunger + 6);
+      if (s.mood === 'SLEEPY') s.energy = Math.min(100, s.energy + 12);
+      else s.energy = Math.max(0, s.energy - 4);
+      draw();
+    };
+    draw();
+  </script>
 </body>
 </html>

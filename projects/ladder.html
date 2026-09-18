@@ -1,60 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ladder Logic Trainer — Nicholas Lane</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <title>Ladder rung trainer</title>
   <link rel="stylesheet" href="../styles.css" />
-  <style>
-    .rung { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin:1rem 0; font-family:var(--font-mono); }
-    .contact, .coil { border:1px solid var(--border); background:var(--elevated); color:var(--fg); padding:.55rem .8rem; border-radius:8px; }
-    .contact.on, .coil.on { outline:1px solid var(--accent); color:var(--accent); }
-    .wire { flex:1; min-width:24px; height:2px; background:var(--border); }
-    .rail { width:4px; align-self:stretch; background:var(--clay); border-radius:2px; min-height:48px; }
-    input, select { background:var(--elevated); color:var(--fg); border:1px solid var(--border); border-radius:8px; padding:.5rem .7rem; font:inherit; }
-    label { display:block; margin:.75rem 0 .35rem; color:var(--muted); font-size:.875rem; }
-  </style>
 </head>
 <body>
-  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#work">Work</a><a href="../resume.html">Resume</a></nav></div></header>
-  <main class="wrap section" style="padding-top:2rem">
-    <p class="mono-kicker">Live demo · PLC thinking</p>
-    <h1>Ladder Logic Trainer</h1>
-    <p class="lede">STOP is normally closed. Hold START. Seal-in keeps M1 running until STOP opens. Same three-wire control you see on a starter.</p>
-    <div class="card" style="margin-top:1.5rem">
-      <div class="rung">
-        <span class="rail" aria-hidden="true"></span>
-        <button class="contact" id="stop" type="button">STOP (NC)</button>
-        <span class="wire"></span>
-        <button class="contact" id="start" type="button">START</button>
-        <span class="wire"></span>
-        <span class="contact" id="seal">M1 SEAL</span>
-        <span class="wire"></span>
-        <span class="coil" id="m1">(M1) MOTOR</span>
-        <span class="rail" aria-hidden="true"></span>
-      </div>
-      <p class="muted" id="status">Motor: OFF</p>
-      <p class="muted">Hold START on desktop; tap START then STOP on a phone. Click STOP to open the NC contact (estop / stop pressed).</p>
-    </div>
+  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <main>
+    <p class="eyebrow">Controls demo</p>
+    <h1>Start / stop latch</h1>
+    <p>Click Start to seal in the motor bit. Stop breaks the seal. E-stop drops everything.</p>
+    <div class="rung" id="rung"></div>
+    <p class="meta" id="status">Motor OFF</p>
   </main>
   <script>
-    const stop=document.getElementById('stop'), start=document.getElementById('start'), m1=document.getElementById('m1'), seal=document.getElementById('seal'), status=document.getElementById('status');
-    let motor=false, startHeld=false, stopOk=true;
-    function paint(){
-      stop.classList.toggle('on', stopOk);
-      start.classList.toggle('on', startHeld);
-      m1.classList.toggle('on', motor);
-      seal.classList.toggle('on', motor);
-      status.textContent = stopOk ? (motor ? 'Motor: RUN — seal-in holding' : 'Motor: OFF — ready') : 'STOP open — circuit dropped';
+    const state = { start: false, stop: true, estop: false, motor: false };
+    function tick() {
+      if (state.estop) state.motor = false;
+      else if (!state.stop) state.motor = false;
+      else if (state.start || state.motor) state.motor = true;
+      render();
     }
-    function evalL(){ if(!stopOk) motor=false; else if(startHeld || motor) motor=true; paint(); }
-    stop.onclick=()=>{ stopOk=!stopOk; evalL(); };
-    start.onmousedown=()=>{ startHeld=true; evalL(); };
-    start.onmouseup=start.onmouseleave=()=>{ startHeld=false; evalL(); };
-    start.ontouchstart=(e)=>{ e.preventDefault(); startHeld=true; evalL(); };
-    start.ontouchend=()=>{ startHeld=false; evalL(); };
-    paint();
+    function bit(key, label, invert) {
+      const on = invert ? !state[key] : state[key];
+      return '<span class="bit ' + (on ? 'on' : '') + '" data-k="' + key + '">' + label + '</span>';
+    }
+    function render() {
+      document.getElementById('rung').innerHTML =
+        '| ' + bit('start','START') + ' )--( ' + bit('stop','STOP',true) + ' )--( ' + bit('estop','E-STOP',true) + ' )--( ' + bit('motor','M') + ' |' +
+        '<br>| ' + bit('motor','M seal') + ' )--------------------------------( ' + bit('motor','M') + ' |';
+      document.getElementById('status').textContent = state.motor ? 'Motor ON — sealed in' : 'Motor OFF';
+      document.querySelectorAll('.bit').forEach((el) => {
+        el.onclick = () => {
+          const k = el.dataset.k;
+          if (k === 'start') { state.start = true; tick(); state.start = false; }
+          else state[k] = !state[k];
+          tick();
+        };
+      });
+    }
+    tick();
   </script>
 </body>
 </html>

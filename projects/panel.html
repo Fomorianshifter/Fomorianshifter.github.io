@@ -1,49 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Motor Control Panel — Nicholas Lane</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <title>Motor load estimator</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#work">Work</a><a href="../resume.html">Resume</a></nav></div></header>
-  <main class="wrap section" style="padding-top:2rem">
-    <p class="mono-kicker">Live demo · controls</p>
-    <h1>Motor Control Panel</h1>
-    <p class="lede">HOA selector, overload trip, and reset — the language of a foundry starter, clickable in a browser.</p>
-    <div class="card" style="margin-top:1.5rem">
-      <p class="mono-kicker">Selector</p>
-      <div class="actions">
-        <button class="btn btn-secondary" id="hand" type="button">HAND</button>
-        <button class="btn btn-secondary" id="off" type="button">OFF</button>
-        <button class="btn btn-secondary" id="auto" type="button">AUTO</button>
-      </div>
-      <p class="mono-kicker" style="margin-top:1.5rem">Protection</p>
-      <div class="actions">
-        <button class="btn btn-outline" id="ol" type="button">Simulate overload</button>
-        <button class="btn btn-primary" id="reset" type="button">Reset OL</button>
-      </div>
-      <p class="muted" id="st" style="margin-top:1.25rem"></p>
-      <p class="muted">HAND runs now. AUTO pretends a process permit is present. Overload drops the motor until reset, same idea as a thermal OL on a starter.</p>
-    </div>
+  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <main>
+    <p class="eyebrow">Field tool</p>
+    <h1>Three-phase motor FLA helper</h1>
+    <p>Estimate only. Check the nameplate and the NEC before you pull wire.</p>
+    <label>Horsepower</label>
+    <input id="hp" type="number" value="10" min="0.25" step="0.25" />
+    <label>Voltage</label>
+    <select id="v"><option>208</option><option selected>480</option><option>240</option><option>600</option></select>
+    <label>Efficiency</label>
+    <input id="eff" type="number" value="0.9" min="0.5" max="1" step="0.01" />
+    <label>Power factor</label>
+    <input id="pf" type="number" value="0.85" min="0.5" max="1" step="0.01" />
+    <p class="result" id="out"></p>
   </main>
   <script>
-    let mode='off', ol=false;
-    const st=document.getElementById('st');
-    const buttons={hand:document.getElementById('hand'),off:document.getElementById('off'),auto:document.getElementById('auto')};
-    function tick(){
-      const run=!ol && (mode==='hand' || mode==='auto');
-      st.textContent='Mode '+mode.toUpperCase()+' · Motor '+(run?'RUN':'OFF')+' · Overload '+(ol?'TRIP — reset required':'OK');
-      Object.entries(buttons).forEach(([k,el])=> el.style.outline = mode===k ? '1px solid var(--accent)' : '');
+    const hpEl = document.getElementById('hp');
+    const vEl = document.getElementById('v');
+    const effEl = document.getElementById('eff');
+    const pfEl = document.getElementById('pf');
+    const out = document.getElementById('out');
+    function calc() {
+      const fla = ( +hpEl.value * 746) / (Math.sqrt(3) * +vEl.value * +effEl.value * +pfEl.value);
+      const cond = fla < 20 ? '12 AWG copper is often in the conversation' : fla < 30 ? '10 AWG copper is often in the conversation' : fla < 50 ? '8 AWG copper is often in the conversation' : 'Size from the NEC tables';
+      out.textContent = 'About ' + fla.toFixed(1) + ' A FLA. ' + cond + '.';
     }
-    document.getElementById('hand').onclick=()=>{ mode='hand'; tick(); };
-    document.getElementById('off').onclick=()=>{ mode='off'; tick(); };
-    document.getElementById('auto').onclick=()=>{ mode='auto'; tick(); };
-    document.getElementById('ol').onclick=()=>{ ol=true; tick(); };
-    document.getElementById('reset').onclick=()=>{ ol=false; tick(); };
-    tick();
+    [hpEl, vEl, effEl, pfEl].forEach((el) => el.addEventListener('input', calc));
+    calc();
   </script>
 </body>
 </html>
