@@ -1,245 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Nicholas Lane</title>
-    <meta name="description" content="Portfolio of Nicholas Lane — industrial electrician moving into controls, plus public web and embedded work." />
-    <meta name="theme-color" content="#0c0d10" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="wrap">
-        <a class="brand" href="#top">Nicholas Lane</a>
-        <nav aria-label="Primary">
-          <a href="#plant">Plant</a>
-          <a href="#work">Work</a>
-          <a href="#path">Path</a>
-          <a href="./resume.html">Resume</a>
-          <a href="#linkedin">LinkedIn</a>
-          <a href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer">GitHub</a>
-        </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nicholas Lane — Industrial Electrician & Controls</title>
+  <meta name="description" content="Portfolio of Nicholas Lane: industrial electrician, PLC support, embedded systems, and web projects." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="./">NL</a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#resume">Resume</a>
+      <a href="linkedin.html">LinkedIn kit</a>
+      <a class="btn" href="https://github.com/Fomorianshifter" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Green Bay, WI · Open to relocate</p>
+      <h1>Nicholas Lane</h1>
+      <p class="lede">Industrial electrician moving into controls and embedded systems. Five years on plant floors installing, inspecting, and troubleshooting electrical systems — now building PLC-adjacent tools and hardware software you can click through.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="mailto:nlane713@gmail.com">Email</a>
+        <a class="btn" href="resume.html">Resume</a>
+        <a class="btn" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noopener">Loki on GitHub</a>
       </div>
-    </header>
-    <main id="top">
-      <section class="hero wrap">
-        <div class="plate">
-          <div class="kicker-row">
-            <p class="mono-kicker">Green Bay, WI · Relocate anywhere</p>
-            <p class="mono-kicker">US work authorized</p>
-          </div>
-          <p class="handle">Fomorianshifter</p>
-          <h1>Nicholas Lane</h1>
-          <p class="lede">
-            Industrial electrician moving into controls technology. Five-plus years installing, maintaining,
-            and troubleshooting plant electrical systems — with PLC support, plus web and embedded projects you can open.
-          </p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#work">Selected work</a>
-            <a class="btn btn-secondary" href="mailto:nlane713@gmail.com">Email</a>
-            <a class="btn btn-outline" href="./locus.html">Open Locus</a>
-          </div>
-          <dl class="titleblock">
-            <div><dt>Drawn by</dt><dd>Nicholas Lane</dd></div>
-            <div><dt>GitHub</dt><dd>@Fomorianshifter</dd></div>
-            <div><dt>Scale</dt><dd>Plant + web + embedded</dd></div>
-          </dl>
-        </div>
-      </section>
-
-      <section id="plant" class="section wrap">
-        <div class="section-head">
-          <div>
-            <p class="mono-kicker">Sheet 01</p>
-            <h2>Plant experience</h2>
-          </div>
-          <p class="aside">From the working resume. This is what most hiring managers should see first.</p>
-        </div>
-        <div class="grid-2">
-          <article class="card">
-            <p class="mono-kicker">Oct 2021 – Mar 2024</p>
-            <h3>Industrial Electrician</h3>
-            <p>Grede Foundries · Reedsburg, WI</p>
-            <p>PLC install and programming support on automated foundry processes. 50+ electrical issues closed monthly with engineering. Monthly inspections at 100% safety compliance.</p>
-          </article>
-          <article class="card">
-            <p class="mono-kicker">Sep 2018 – Oct 2021</p>
-            <h3>Electrician</h3>
-            <p>AC Electric · Hayward, WI</p>
-            <p>New construction, remodels, and service calls. Observed PLC installs and maintenance.</p>
-          </article>
-          <article class="card">
-            <p class="mono-kicker">Jul 2016 – Sep 2018</p>
-            <h3>Electrician (Apprentice)</h3>
-            <p>Greenfield Electric · Greenfield, WI</p>
-            <p>Supported journeyman and master electricians on installs and basic programming tasks.</p>
-          </article>
-          <article class="card">
-            <p class="mono-kicker">Apr 2013 – Dec 2015</p>
-            <h3>Quality Control Inspector</h3>
-            <p>Comp X · Grayslake, IL</p>
-            <p>CNC inspection. Helped maintenance techs with programming and electronics integration.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="work" class="section wrap">
-        <div class="section-head">
-          <div>
-            <p class="mono-kicker">Sheet 02</p>
-            <h2>Selected work</h2>
-          </div>
-          <p class="aside">Best public GitHub work plus small live demos you can click through on a phone.</p>
-        </div>
-        <div class="grid-2">
-          <a class="card" href="./locus.html">
-            <div class="card-top"><p class="mono-kicker">Fig. 01</p><p class="mono-kicker clay">Featured</p></div>
-            <h3>Locus</h3>
-            <p>Interactive function grapher: zoom, pan, drafting grid, live cursor, custom expression parser.</p>
-            <ul class="tags"><li>TypeScript</li><li>Canvas</li></ul>
-            <p class="go">Open grapher →</p>
-          </a>
-          <a class="card" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noreferrer">
-            <div class="card-top"><p class="mono-kicker">Fig. 02</p><p class="mono-kicker clay">Featured</p></div>
-            <h3>Loki</h3>
-            <p>Embedded companion for Linux SBCs. HAL, TFT drivers, Flipper Zero UART, local config UI.</p>
-            <ul class="tags"><li>C</li><li>Python</li><li>Embedded</li></ul>
-            <p class="go">View on GitHub →</p>
-          </a>
-          <a class="card" href="./projects/ladder.html">
-            <div class="card-top"><p class="mono-kicker">Fig. 03</p><p class="mono-kicker clay">Live demo</p></div>
-            <h3>Ladder Logic Trainer</h3>
-            <p>Start/stop seal-in circuit in the browser. Built to talk about PLC thinking without vendor software.</p>
-            <ul class="tags"><li>PLC</li><li>JavaScript</li></ul>
-            <p class="go">Open trainer →</p>
-          </a>
-          <a class="card" href="./projects/panel.html">
-            <div class="card-top"><p class="mono-kicker">Fig. 04</p><p class="mono-kicker clay">Live demo</p></div>
-            <h3>Motor Control Panel</h3>
-            <p>HOA selector, overload trip, and reset — shop-floor language you can click through.</p>
-            <ul class="tags"><li>Controls</li><li>JavaScript</li></ul>
-            <p class="go">Open panel →</p>
-          </a>
-          <a class="card" href="./projects/panel-calc.html">
-            <div class="card-top"><p class="mono-kicker">Fig. 05</p><p class="mono-kicker clay">Live demo</p></div>
-            <h3>Panel Load Check</h3>
-            <p>Quick amp check from voltage and wattage. The kind of number you run before you pull a circuit.</p>
-            <ul class="tags"><li>JavaScript</li><li>Electrical</li></ul>
-            <p class="go">Open calculator →</p>
-          </a>
-          <a class="card" href="./projects/solar.html">
-            <div class="card-top"><p class="mono-kicker">Fig. 06</p><p class="mono-kicker clay">Live demo</p></div>
-            <h3>Solar System</h3>
-            <p>Early visualization of planets in orbit. First-pass motion and layout in the browser.</p>
-            <ul class="tags"><li>JavaScript</li><li>HTML</li></ul>
-            <p class="go">Open demo →</p>
-          </a>
-          <a class="card" href="https://github.com/Fomorianshifter/GhostGPS" target="_blank" rel="noreferrer">
-            <div class="card-top"><p class="mono-kicker">Fig. 07</p></div>
-            <h3>GhostGPS</h3>
-            <p>Mobile project exploring route simulation, speed-limit following, and map-app side-by-side UX.</p>
-            <ul class="tags"><li>Mobile</li><li>Maps</li></ul>
-            <p class="go">View on GitHub →</p>
-          </a>
-          <a class="card" href="https://github.com/Fomorianshifter/One" target="_blank" rel="noreferrer">
-            <div class="card-top"><p class="mono-kicker">Fig. 08</p></div>
-            <h3>One</h3>
-            <p>Web Development for Beginners coursework: terrarium, typing game, canvas space game, banking app.</p>
-            <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
-            <p class="go">View on GitHub →</p>
-          </a>
-        </div>
-      </section>
-
-      <section id="path" class="section wrap">
-        <p class="mono-kicker">Sheet 03</p>
-        <h2>Path</h2>
-        <div class="skills three">
-          <div class="card">
-            <h3>Electrical &amp; controls</h3>
-            <ul>
-              <li>Industrial electrician</li>
-              <li>PLC install &amp; troubleshooting</li>
-              <li>Motors &amp; diagnostics</li>
-              <li>Schematics / blueprints</li>
-              <li>NEC (pursuing)</li>
-              <li>PM / LOTO culture</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Software</h3>
-            <ul>
-              <li>HTML, CSS, JavaScript</li>
-              <li>C (Loki)</li>
-              <li>Python / Linux SBC</li>
-              <li>Git</li>
-              <li>freeCodeCamp CS</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Tickets</h3>
-            <ul>
-              <li>Driver license</li>
-              <li>First Aid / CPR / AED</li>
-              <li>Aerial / scissor lift</li>
-              <li>HAZWOPER</li>
-              <li>Relocate anywhere</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="linkedin" class="section wrap">
-        <div class="section-head">
-          <div>
-            <p class="mono-kicker">Sheet 04</p>
-            <h2>Connect this site to LinkedIn</h2>
-          </div>
-          <p class="aside">Use this URL as the Featured link on your profile: https://fomorianshifter.github.io</p>
-        </div>
-        <div class="card">
-          <ol class="muted" style="padding-left:1.25rem;line-height:1.7">
-            <li>Open LinkedIn → Me → View profile.</li>
-            <li>Click the pencil on Intro and paste the site URL in the Website field. Label it Portfolio.</li>
-            <li>Scroll to Featured → Add → Link → paste https://fomorianshifter.github.io</li>
-            <li>Title: Nicholas Lane — plant electrician / controls portfolio</li>
-            <li>Also add Featured links for Locus (https://fomorianshifter.github.io/locus.html) and Loki (https://github.com/Fomorianshifter/Loki).</li>
-            <li>Send me your public LinkedIn URL and I will hard-wire it into the contact row.</li>
-          </ol>
-        </div>
-      </section>
-
-      <section id="about" class="section wrap">
-        <div class="split">
-          <div class="card">
-            <p class="mono-kicker">Sheet 05</p>
-            <h2>About</h2>
-            <p class="muted">Nicholas Lane on paper. Beau / @Fomorianshifter on GitHub. Plant electrician learning controls in public.</p>
-            <p class="muted">Education: freeCodeCamp CS (2023–present); Associate’s, Cardinal Stritch University (2010–2012); Round Lake Senior High School (2006).</p>
-          </div>
-          <div class="card contact" id="contact">
-            <h3>Contact</h3>
-            <h2>Reach me</h2>
-            <ul class="contact-list">
-              <li><a href="mailto:nlane713@gmail.com"><span>Email</span><span>nlane713@gmail.com</span></a></li>
-              <li><a href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer"><span>GitHub</span><span>@Fomorianshifter</span></a></li>
-              <li><a href="https://fomorianshifter.github.io"><span>Portfolio</span><span>fomorianshifter.github.io</span></a></li>
-              <li><a href="./resume.html"><span>Resume</span><span>one-page site version</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <p class="mono-kicker">Nicholas Lane · Green Bay, WI · +1 608 717 7602</p>
-        <p class="mono-kicker">Rev. 2026-09-16</p>
+      <ul class="chips">
+        <li>PLC install &amp; troubleshooting</li>
+        <li>Electrical diagnostics</li>
+        <li>Embedded C / SBC</li>
+        <li>HTML · CSS · JS</li>
+        <li>Safety compliance</li>
+      </ul>
+    </section>
+    <section id="work">
+      <h2>Plant experience</h2>
+      <div class="grid jobs">
+        <article>
+          <h3>Industrial Electrician</h3>
+          <p class="meta">Grede Foundries · Reedsburg, WI · Oct 2021 – Mar 2024</p>
+          <ul>
+            <li>Assisted installation and programming of PLC systems on automated foundry processes.</li>
+            <li>Worked with engineering to clear 50+ electrical issues a month.</li>
+            <li>Monthly inspections with 100% safety-standard compliance.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Electrician</h3>
+          <p class="meta">AC Electric · Hayward, WI · Sep 2018 – Oct 2021</p>
+          <ul>
+            <li>New construction, remodel, and service work.</li>
+            <li>Observed PLC installs and maintenance on automated systems.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Electrician (Apprentice)</h3>
+          <p class="meta">Greenfield Electric · 2016 – 2018</p>
+          <ul><li>Install support and first exposure to programming tasks on jobsites.</li></ul>
+        </article>
+        <article>
+          <h3>Quality Control Inspector</h3>
+          <p class="meta">Comp X · Grayslake, IL · 2013 – 2015</p>
+          <ul><li>CNC process inspection and support for programming / electronics integration.</li></ul>
+        </article>
       </div>
-    </footer>
-  </body>
+    </section>
+    <section id="projects">
+      <h2>Featured projects</h2>
+      <p class="section-note">Live demos first. Source on GitHub where a repo exists.</p>
+      <div class="grid cards">
+        <article>
+          <h3>Loki</h3>
+          <p>Embedded companion for Linux SBCs: HAL, TFT / UART drivers, Flipper Zero link, and a life-cycle state machine.</p>
+          <p class="meta">C · Orange Pi / Raspberry Pi · MIT</p>
+          <div class="cta-row">
+            <a class="btn primary" href="projects/loki-life.html">Life-cycle demo</a>
+            <a class="btn" href="https://github.com/Fomorianshifter/Loki" target="_blank" rel="noopener">Repo</a>
+          </div>
+        </article>
+        <article>
+          <h3>Motor load estimator</h3>
+          <p>Quick FLA / feeder-size helper for shop talk. Not a substitute for the NEC.</p>
+          <div class="cta-row"><a class="btn primary" href="projects/panel.html">Open tool</a></div>
+        </article>
+        <article>
+          <h3>Ladder rung trainer</h3>
+          <p>One start/stop rung you can click through.</p>
+          <div class="cta-row"><a class="btn primary" href="projects/ladder.html">Run demo</a></div>
+        </article>
+        <article>
+          <h3>Solar system</h3>
+          <p>Canvas orbit sketch from the early GitHub practice set.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="projects/solar.html">Watch orbits</a>
+            <a class="btn" href="https://github.com/Fomorianshifter/SolarSystem" target="_blank" rel="noopener">Repo</a>
+          </div>
+        </article>
+        <article>
+          <h3>GhostGPS</h3>
+          <p>Early mobile concept repo, listed for completeness.</p>
+          <div class="cta-row"><a class="btn" href="https://github.com/Fomorianshifter/GhostGPS" target="_blank" rel="noopener">Repo</a></div>
+        </article>
+        <article>
+          <h3>Locus</h3>
+          <p>Short notes on plant work plus software structure.</p>
+          <div class="cta-row"><a class="btn" href="locus.html">Read</a></div>
+        </article>
+      </div>
+    </section>
+    <section id="resume">
+      <h2>Education &amp; certs</h2>
+      <ul class="plain">
+        <li>Computer Science studies — freeCodeCamp (2023–present)</li>
+        <li>Liberal Arts &amp; Sciences, Associate’s — Cardinal Stritch University</li>
+        <li>Pursuing NEC-focused certification</li>
+        <li>Responsive Web Design · First Aid / CPR / AED · Aerial &amp; scissor lift</li>
+      </ul>
+      <p><a class="btn" href="resume.html">Full resume page</a> <a class="btn" href="linkedin.html">Copy for LinkedIn</a></p>
+    </section>
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>nlane713@gmail.com · +1 608 717 7602 · Authorized to work in the US · Willing to relocate anywhere.</p>
+    </section>
+  </main>
+  <footer>
+    <p>Nicholas Lane · <a href="https://fomorianshifter.github.io">fomorianshifter.github.io</a> · Add this URL to LinkedIn Featured.</p>
+  </footer>
+</body>
 </html>
