@@ -1,59 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ladder Logic Lab — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg" />
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header class="nav">
-    <a class="brand" href="../index.html">NL<span>.</span></a>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../projects.html" class="active">Projects</a>
-      <a href="../resume.html">Resume</a>
-    </nav>
-  </header>
-  <main>
-    <p class="eyebrow">Controls lab</p>
-    <h1>Ladder Logic Lab</h1>
-    <p class="lede">Classic 3-wire start/stop seal-in plus an on-delay timer (TON). Hold START, tap STOP. Motor seals in until stop or power drop.</p>
-    <p>
-      <label><input type="checkbox" id="start"> START (NO)</label>
-      <label><input type="checkbox" id="stop" checked> STOP (NC)</label>
-      <label><input type="checkbox" id="pwr" checked> Power</label>
-    </p>
-    <div class="rung"><span>|—[ START ]——[ STOP NC ]——[ M ]——( M )—|</span><span id="mcoil" class="coil off">M OFF</span></div>
-    <div class="rung"><span>|—[ M ]——[ TON 2.0s ]——( TDN )—|</span><span id="tcoil" class="coil off">TDN OFF</span></div>
-    <p class="meta" id="note">Timer: 0.0s</p>
-  </main>
-  <script>
-    const start = document.getElementById('start');
-    const stop = document.getElementById('stop');
-    const pwr = document.getElementById('pwr');
-    let M = false, acc = 0, last = performance.now();
-    function tick(now) {
-      const dt = (now - last) / 1000; last = now;
-      if (!pwr.checked) { M = false; acc = 0; }
-      else {
-        const stopOK = stop.checked;
-        if (start.checked && stopOK) M = true;
-        if (!stopOK) M = false;
-        if (M) acc = Math.min(2, acc + dt); else acc = 0;
-      }
-      const TDN = acc >= 2;
-      const mc = document.getElementById('mcoil');
-      const tc = document.getElementById('tcoil');
-      mc.textContent = M ? 'M ON' : 'M OFF';
-      mc.className = 'coil ' + (M ? 'on' : 'off');
-      tc.textContent = TDN ? 'TDN ON' : 'TDN OFF';
-      tc.className = 'coil ' + (TDN ? 'on' : 'off');
-      document.getElementById('note').textContent = 'Timer: ' + acc.toFixed(1) + 's / 2.0s';
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Ladder scan</title><link rel="stylesheet" href="../styles.css" /></head>
+<body><div class="wrap"><header class="nav"><div class="brand"><a href="../index.html">NICHOLAS LANE</a></div><nav><a href="../projects.html">Projects</a></nav></header>
+<div class="kicker">Live demo</div><h1>Start / stop ladder</h1>
+<div class="demo-stage"><p><button id="start">Start (NO)</button> <button id="stop">Stop (NC held)</button> Coil M1 <span id="coil" class="lamp"></span></p>
+<pre id="rung" class="copy"></pre><p class="meta" id="scan">scan 0</p></div>
+<script>
+let start=false,stop=true,m1=false,n=0,stopHeld=true;
+const coil=document.getElementById("coil"),rung=document.getElementById("rung"),scan=document.getElementById("scan");
+function tick(){n++;m1=stop&&(start||m1);coil.className="lamp"+(m1?" on":"");rung.textContent="START="+start+"  STOP_OK="+stop+"  M1="+m1+"\nSeal-in keeps M1 after Start is released.";scan.textContent="scan "+n;}
+document.getElementById("start").onmousedown=()=>{start=true;};
+document.getElementById("start").onmouseup=()=>{start=false;};
+document.getElementById("stop").onclick=()=>{stopHeld=!stopHeld;stop=stopHeld;document.getElementById("stop").textContent=stopHeld?"Stop (NC held)":"Stop PRESSED";};
+setInterval(tick,50);
+</script></div></body></html>
