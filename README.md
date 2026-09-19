@@ -1,6 +1,5 @@
-# Nicholas Lane portfolio
+# Nicholas Lane — portfolio
 
 Live site: https://fomorianshifter.github.io
 
-Industrial electrician moving into controls, PLC, and embedded/web projects.
-Add this URL to LinkedIn as Website + Featured.
+Industrial electrician / controls-path portfolio with live browser labs and links to GitHub projects (Loki, GhostGPS, SolarSystem).
