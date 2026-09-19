@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Locus — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="../index.html">NL<span>.</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html" class="active">Projects</a>
+      <a href="../resume.html">Resume</a>
+      <a href="../linkedin.html">LinkedIn</a>
+    </nav>
+  </header>
+  <main>
+    <p class="tag">Inspired by GhostGPS</p>
+    <h1>Locus</h1>
+    <p>Click the pad to drop waypoints.</p>
+    <p><button class="btn" id="reset" type="button">Reset track</button></p>
+    <canvas class="stage" id="m" width="900" height="420"></canvas>
+  </main>
+  <footer><a href="../projects.html">All projects</a></footer>
+  <script>
+const m=document.getElementById("m"), ctx=m.getContext("2d");
+let pts=[];
+function paint(){
+  ctx.fillStyle="#070b10"; ctx.fillRect(0,0,m.width,m.height);
+  ctx.strokeStyle="#1b2a22";
+  for(let x=0;x<m.width;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,m.height);ctx.stroke();}
+  for(let y=0;y<m.height;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(m.width,y);ctx.stroke();}
+  if(!pts.length) return;
+  ctx.strokeStyle="#3dd6c6"; ctx.lineWidth=2; ctx.beginPath();
+  pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y); });
+  ctx.stroke();
+  pts.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fillStyle=i===0?"#ffd166":"#7aa2ff"; ctx.fill(); });
+}
+m.addEventListener("click", e=>{
+  const r=m.getBoundingClientRect();
+  pts.push({x:(e.clientX-r.left)*m.width/r.width, y:(e.clientY-r.top)*m.height/r.height});
+  paint();
+});
+document.getElementById("reset").onclick=()=>{pts=[];paint();};
+paint();
+  </script>
+</body>
+</html>

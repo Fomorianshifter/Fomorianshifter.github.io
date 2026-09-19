@@ -3,45 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solar system demo</title>
+  <title>Solar System — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <header class="nav">
+    <a class="brand" href="../index.html">NL<span>.</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html" class="active">Projects</a>
+      <a href="../resume.html">Resume</a>
+      <a href="../linkedin.html">LinkedIn</a>
+    </nav>
+  </header>
   <main>
-    <p class="eyebrow">Demo</p>
-    <h1>Solar system</h1>
-    <canvas id="c" width="800" height="500"></canvas>
+    <p class="tag">From SolarSystem repo</p>
+    <h1>Solar System</h1>
+    <label>Speed <input id="spd" type="range" min="1" max="20" value="6" /></label>
+    <canvas class="stage" id="c" width="900" height="420"></canvas>
   </main>
+  <footer><a href="../projects.html">All projects</a></footer>
   <script>
-    const c = document.getElementById("c");
-    const ctx = c.getContext("2d");
-    const planets = [
-      { r: 50, size: 4, speed: 0.028, color: "#b0b0b0" },
-      { r: 80, size: 7, speed: 0.018, color: "#c9a66b" },
-      { r: 115, size: 8, speed: 0.014, color: "#4ea3d9" },
-      { r: 150, size: 6, speed: 0.011, color: "#d45a3c" },
-      { r: 200, size: 14, speed: 0.006, color: "#d4b48a" }
-    ];
-    let t = 0;
-    function draw() {
-      ctx.fillStyle = "#07090b";
-      ctx.fillRect(0, 0, c.width, c.height);
-      const x = c.width / 2, y = c.height / 2;
-      ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2);
-      ctx.fillStyle = "#f2c14e"; ctx.fill();
-      planets.forEach((p) => {
-        ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI * 2);
-        ctx.strokeStyle = "#223"; ctx.stroke();
-        const a = t * p.speed;
-        ctx.beginPath();
-        ctx.arc(x + Math.cos(a) * p.r, y + Math.sin(a) * p.r, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color; ctx.fill();
-      });
-      t += 1;
-      requestAnimationFrame(draw);
-    }
-    draw();
+const c=document.getElementById("c"), ctx=c.getContext("2d");
+const planets=[{r:40,s:0.02,size:6,col:"#c9a227"},{r:70,s:0.015,size:8,col:"#3dd6c6"},{r:105,s:0.01,size:7,col:"#7aa2ff"},{r:145,s:0.007,size:10,col:"#e07a5f"},{r:190,s:0.004,size:12,col:"#d4a373"}];
+let t=0;
+function draw(){
+  const w=c.width,h=c.height,cx=w/2,cy=h/2, spd=+document.getElementById("spd").value/8;
+  ctx.fillStyle="#070b10"; ctx.fillRect(0,0,w,h);
+  ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.fillStyle="#ffd166"; ctx.fill();
+  planets.forEach((p,i)=>{
+    ctx.beginPath(); ctx.arc(cx,cy,p.r,0,Math.PI*2); ctx.strokeStyle="#1d2733"; ctx.stroke();
+    const a=t*p.s*spd + i; const x=cx+Math.cos(a)*p.r, y=cy+Math.sin(a)*p.r;
+    ctx.beginPath(); ctx.arc(x,y,p.size,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill();
+  });
+  t+=1; requestAnimationFrame(draw);
+}
+draw();
   </script>
 </body>
 </html>

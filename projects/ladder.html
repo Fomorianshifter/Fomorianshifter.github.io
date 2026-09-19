@@ -3,45 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ladder rung trainer</title>
+  <title>Ladder Logic Lab — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <header class="nav">
+    <a class="brand" href="../index.html">NL<span>.</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html" class="active">Projects</a>
+      <a href="../resume.html">Resume</a>
+      <a href="../linkedin.html">LinkedIn</a>
+    </nav>
+  </header>
   <main>
-    <p class="eyebrow">Controls demo</p>
-    <h1>Start / stop latch</h1>
-    <p>Click Start to seal in the motor bit. Stop breaks the seal. E-stop drops everything.</p>
-    <div class="rung" id="rung"></div>
-    <p class="meta" id="status">Motor OFF</p>
+    <p class="tag">Portfolio demo</p>
+    <h1>Ladder Logic Lab</h1>
+    <p>Start / Stop seal-in plus a 3-second TON.</p>
+    <p>
+      <label><input type="checkbox" id="start" /> Start (NO)</label>
+      <label><input type="checkbox" id="stop" checked /> Stop (NC held)</label>
+    </p>
+    <div class="rung"><span>|--[Start]--+--[/Stop]--(Run)--|</span><span id="run" class="coil off">RUN</span></div>
+    <div class="rung"><span>|--[Run]----[TON 3.0s]--(DN)--|</span><span id="dn" class="coil off">DN</span></div>
+    <p class="meta" id="acc">Accumulator: 0.00 s</p>
   </main>
+  <footer><a href="../projects.html">All projects</a></footer>
   <script>
-    const state = { start: false, stop: true, estop: false, motor: false };
-    function tick() {
-      if (state.estop) state.motor = false;
-      else if (!state.stop) state.motor = false;
-      else if (state.start || state.motor) state.motor = true;
-      render();
-    }
-    function bit(key, label, invert) {
-      const on = invert ? !state[key] : state[key];
-      return '<span class="bit ' + (on ? 'on' : '') + '" data-k="' + key + '">' + label + '</span>';
-    }
-    function render() {
-      document.getElementById('rung').innerHTML =
-        '| ' + bit('start','START') + ' )--( ' + bit('stop','STOP',true) + ' )--( ' + bit('estop','E-STOP',true) + ' )--( ' + bit('motor','M') + ' |' +
-        '<br>| ' + bit('motor','M seal') + ' )--------------------------------( ' + bit('motor','M') + ' |';
-      document.getElementById('status').textContent = state.motor ? 'Motor ON — sealed in' : 'Motor OFF';
-      document.querySelectorAll('.bit').forEach((el) => {
-        el.onclick = () => {
-          const k = el.dataset.k;
-          if (k === 'start') { state.start = true; tick(); state.start = false; }
-          else state[k] = !state[k];
-          tick();
-        };
-      });
-    }
-    tick();
+const start=document.getElementById("start"), stop=document.getElementById("stop");
+const runEl=document.getElementById("run"), dnEl=document.getElementById("dn"), accEl=document.getElementById("acc");
+let run=false, acc=0, last=performance.now();
+function tick(now){
+  const dt=(now-last)/1000; last=now;
+  const startC=start.checked, stopC=stop.checked;
+  run = stopC && (startC || run);
+  if(run) acc=Math.min(3, acc+dt); else acc=0;
+  const dn=run && acc>=3;
+  runEl.textContent=run?"RUN ON":"RUN";
+  runEl.className="coil "+(run?"on":"off");
+  dnEl.textContent=dn?"DN ON":"DN";
+  dnEl.className="coil "+(dn?"on":"off");
+  accEl.textContent="Accumulator: "+acc.toFixed(2)+" s";
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
   </script>
 </body>
 </html>
