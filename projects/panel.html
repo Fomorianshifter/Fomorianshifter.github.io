@@ -3,37 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Motor load estimator</title>
+  <title>Panel calculator — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <header class="nav">
+    <a class="brand" href="../index.html">NL<span>.</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html" class="active">Projects</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </header>
   <main>
-    <p class="eyebrow">Field tool</p>
-    <h1>Three-phase motor FLA helper</h1>
-    <p>Estimate only. Check the nameplate and the NEC before you pull wire.</p>
-    <label>Horsepower</label>
-    <input id="hp" type="number" value="10" min="0.25" step="0.25" />
-    <label>Voltage</label>
-    <select id="v"><option>208</option><option selected>480</option><option>240</option><option>600</option></select>
-    <label>Efficiency</label>
-    <input id="eff" type="number" value="0.9" min="0.5" max="1" step="0.01" />
-    <label>Power factor</label>
-    <input id="pf" type="number" value="0.85" min="0.5" max="1" step="0.01" />
-    <p class="result" id="out"></p>
+    <p class="eyebrow">Electrical math</p>
+    <h1>Panel / circuit calculator</h1>
+    <p class="lede">Single-phase snapshot: watts, amps, and the 80% continuous-load check against a breaker rating.</p>
+    <p>
+      <label>Volts <input id="v" type="number" value="120" /></label>
+      <label>Watts <input id="w" type="number" value="1440" /></label>
+      <label>Breaker A <input id="b" type="number" value="20" /></label>
+    </p>
+    <article class="card" id="out"></article>
   </main>
   <script>
-    const hpEl = document.getElementById('hp');
-    const vEl = document.getElementById('v');
-    const effEl = document.getElementById('eff');
-    const pfEl = document.getElementById('pf');
-    const out = document.getElementById('out');
+    const v=document.getElementById('v'), w=document.getElementById('w'), b=document.getElementById('b'), out=document.getElementById('out');
     function calc() {
-      const fla = ( +hpEl.value * 746) / (Math.sqrt(3) * +vEl.value * +effEl.value * +pfEl.value);
-      const cond = fla < 20 ? '12 AWG copper is often in the conversation' : fla < 30 ? '10 AWG copper is often in the conversation' : fla < 50 ? '8 AWG copper is often in the conversation' : 'Size from the NEC tables';
-      out.textContent = 'About ' + fla.toFixed(1) + ' A FLA. ' + cond + '.';
+      const volts=+v.value||0, watts=+w.value||0, br=+b.value||0;
+      const amps = volts ? watts/volts : 0;
+      const allow = br * 0.8;
+      const ok = amps <= allow;
+      out.innerHTML = '<p><strong>'+amps.toFixed(2)+' A</strong> at '+volts+' V</p>' +
+        '<p>80% of '+br+' A breaker = '+allow.toFixed(1)+' A continuous</p>' +
+        '<p class="'+(ok?'coil on':'coil off')+'">'+(ok?'Within continuous rating':'Over 80% — resize or split load')+'</p>';
     }
-    [hpEl, vEl, effEl, pfEl].forEach((el) => el.addEventListener('input', calc));
+    [v,w,b].forEach(el => el.oninput = calc);
     calc();
   </script>
 </body>

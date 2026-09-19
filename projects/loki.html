@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Loki — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -13,19 +14,25 @@
       <a href="../index.html">Home</a>
       <a href="../projects.html" class="active">Projects</a>
       <a href="../resume.html">Resume</a>
-      <a href="../linkedin.html">LinkedIn</a>
     </nav>
   </header>
   <main>
-    <p class="tag">GitHub · Fomorianshifter/Loki</p>
+    <p class="eyebrow">Featured repo</p>
     <h1>Loki</h1>
-    <p class="lede">Embedded dragon companion for Linux SBCs: HAL, drivers, Flipper UART, life-cycle state machine.</p>
-    <div class="grid two">
-      <article class="card"><h3>Hardware</h3><p>GPIO, SPI, I2C, UART, PWM plus TFT, SD, flash, EEPROM, Flipper drivers.</p></article>
-      <article class="card"><h3>Life cycle</h3><p>Egg to adult. Hunger, energy, and happiness drive mood and animation.</p></article>
+    <p class="lede">Embedded dragon companion for Linux single-board computers. C core, hardware drivers, TFT UI, and Flipper Zero over UART.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/Fomorianshifter/Loki">GitHub source</a>
+      <a class="btn" href="loki-life.html">Life-cycle demo</a>
     </div>
-    <p class="actions"><a class="btn primary" href="https://github.com/Fomorianshifter/Loki">Open repository</a></p>
+    <h2>What it shows</h2>
+    <ul class="tight">
+      <li>Hardware abstraction for display, storage, and serial</li>
+      <li>Local configuration UI on a small TFT</li>
+      <li>UART integration with Flipper Zero</li>
+      <li>State-machine behavior (idle / hunt / rest) — see the browser sketch</li>
+    </ul>
+    <p class="meta">Topics: embedded-systems, raspberry-pi, orange-pi, tft-display, flipper-zero</p>
   </main>
-  <footer><a href="../projects.html">All projects</a></footer>
+  <footer>© 2026 Nicholas Lane</footer>
 </body>
 </html>

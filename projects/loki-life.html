@@ -3,62 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loki life-cycle demo</title>
+  <title>Loki life-cycle — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="nav"><a class="brand" href="../">NL</a><nav><a href="../">Home</a></nav></header>
+  <header class="nav">
+    <a class="brand" href="../index.html">NL<span>.</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html" class="active">Projects</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </header>
   <main>
-    <p class="eyebrow">Loki</p>
-    <h1>Life-cycle playground</h1>
-    <pre id="status" class="rung"></pre>
-    <div class="cta-row">
-      <button class="btn primary" id="feed">Feed (tasty)</button>
-      <button class="btn" id="play">Interact</button>
-      <button class="btn" id="tick">Tick 10s</button>
-    </div>
+    <p class="eyebrow">State machine</p>
+    <h1>Loki life-cycle</h1>
+    <p class="lede">Tiny browser sketch of the companion’s mood loop. Energy drains while hunting, recovers at rest.</p>
+    <p>
+      <button class="btn primary" id="hunt">Hunt</button>
+      <button class="btn" id="rest">Rest</button>
+      <button class="btn" id="idle">Idle</button>
+    </p>
+    <article class="card">
+      <p>State: <strong id="st">idle</strong></p>
+      <p>Energy: <strong id="en">80</strong></p>
+      <p class="meta" id="log">Waiting.</p>
+    </article>
   </main>
   <script>
-    const s = { stage: 'Egg', gp: 0, hunger: 40, happy: 50, energy: 70, mood: 'NEUTRAL' };
-    function mood() {
-      if (s.hunger >= 70) s.mood = 'HUNGRY';
-      else if (s.energy <= 20) s.mood = 'SLEEPY';
-      else if (s.happy <= 30) s.mood = 'GRUMPY';
-      else if (s.happy >= 70) s.mood = 'HAPPY';
-      else if (s.happy >= 50 && s.energy >= 60) s.mood = 'PLAYFUL';
-      else s.mood = 'NEUTRAL';
-    }
-    function stage() {
-      if (s.gp >= 500) s.stage = 'Adult';
-      else if (s.gp >= 200) s.stage = 'Young';
-      else if (s.gp >= 50) s.stage = 'Hatchling';
-      else s.stage = 'Egg';
-    }
-    function draw() {
-      mood(); stage();
-      document.getElementById('status').textContent =
-        'stage     ' + s.stage + '\nmood      ' + s.mood + '\ngrowth    ' + s.gp +
-        '\nhunger    ' + s.hunger + '\nhappy     ' + s.happy + '\nenergy    ' + s.energy;
-    }
-    document.getElementById('feed').onclick = function() {
-      s.hunger = Math.max(0, s.hunger - 40);
-      s.gp += s.hunger > 10 ? 10 : 5;
-      s.happy = Math.min(100, s.happy + 15);
-      draw();
-    };
-    document.getElementById('play').onclick = function() {
-      s.happy = Math.min(100, s.happy + 10);
-      s.energy = Math.max(0, s.energy - 8);
-      s.gp += 3;
-      draw();
-    };
-    document.getElementById('tick').onclick = function() {
-      s.hunger = Math.min(100, s.hunger + 6);
-      if (s.mood === 'SLEEPY') s.energy = Math.min(100, s.energy + 12);
-      else s.energy = Math.max(0, s.energy - 4);
-      draw();
-    };
-    draw();
+    let state = 'idle', energy = 80;
+    const st = document.getElementById('st');
+    const en = document.getElementById('en');
+    const log = document.getElementById('log');
+    function set(s){ state=s; st.textContent=s; }
+    document.getElementById('hunt').onclick = () => set('hunt');
+    document.getElementById('rest').onclick = () => set('rest');
+    document.getElementById('idle').onclick = () => set('idle');
+    setInterval(() => {
+      if (state==='hunt') energy = Math.max(0, energy-3);
+      if (state==='rest') energy = Math.min(100, energy+2);
+      if (energy===0 && state==='hunt') { set('rest'); log.textContent='Energy empty — forced rest.'; }
+      else if (energy===100 && state==='rest') { set('idle'); log.textContent='Full — back to idle.'; }
+      else log.textContent = state==='hunt' ? 'Tracking…' : state==='rest' ? 'Recovering…' : 'Perched.';
+      en.textContent = energy;
+    }, 400);
   </script>
 </body>
 </html>
