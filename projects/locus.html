@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Locus — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -13,38 +14,56 @@
       <a href="../index.html">Home</a>
       <a href="../projects.html" class="active">Projects</a>
       <a href="../resume.html">Resume</a>
-      <a href="../linkedin.html">LinkedIn</a>
     </nav>
   </header>
   <main>
-    <p class="tag">Inspired by GhostGPS</p>
+    <p class="eyebrow">GhostGPS-inspired</p>
     <h1>Locus</h1>
-    <p>Click the pad to drop waypoints.</p>
-    <p><button class="btn" id="reset" type="button">Reset track</button></p>
-    <canvas class="stage" id="m" width="900" height="420"></canvas>
+    <p class="lede">Click the map to drop waypoints. Distance is a simple pixel-to-meter scale so you can see a track form. Companion idea to <a href="https://github.com/Fomorianshifter/GhostGPS">GhostGPS</a>.</p>
+    <div class="actions">
+      <button class="btn" id="undo">Undo</button>
+      <button class="btn" id="clear">Clear</button>
+      <span class="meta" id="stat">0 pts · 0 m</span>
+    </div>
+    <canvas class="stage" id="c" width="1100" height="420"></canvas>
   </main>
-  <footer><a href="../projects.html">All projects</a></footer>
   <script>
-const m=document.getElementById("m"), ctx=m.getContext("2d");
-let pts=[];
-function paint(){
-  ctx.fillStyle="#070b10"; ctx.fillRect(0,0,m.width,m.height);
-  ctx.strokeStyle="#1b2a22";
-  for(let x=0;x<m.width;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,m.height);ctx.stroke();}
-  for(let y=0;y<m.height;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(m.width,y);ctx.stroke();}
-  if(!pts.length) return;
-  ctx.strokeStyle="#3dd6c6"; ctx.lineWidth=2; ctx.beginPath();
-  pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y); });
-  ctx.stroke();
-  pts.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fillStyle=i===0?"#ffd166":"#7aa2ff"; ctx.fill(); });
-}
-m.addEventListener("click", e=>{
-  const r=m.getBoundingClientRect();
-  pts.push({x:(e.clientX-r.left)*m.width/r.width, y:(e.clientY-r.top)*m.height/r.height});
-  paint();
-});
-document.getElementById("reset").onclick=()=>{pts=[];paint();};
-paint();
+    const c = document.getElementById('c'), ctx = c.getContext('2d');
+    const pts = [];
+    const SCALE = 2.5;
+    function dist() {
+      let d = 0;
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i-1], b = pts[i];
+        d += Math.hypot(b.x-a.x, b.y-a.y);
+      }
+      return d * SCALE;
+    }
+    function draw() {
+      ctx.fillStyle = '#070b10'; ctx.fillRect(0,0,c.width,c.height);
+      ctx.strokeStyle = '#1c2734';
+      for (let x=0;x<c.width;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,c.height);ctx.stroke();}
+      for (let y=0;y<c.height;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke();}
+      if (pts.length) {
+        ctx.strokeStyle = '#3dd6c6'; ctx.lineWidth = 2; ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        pts.slice(1).forEach(p => ctx.lineTo(p.x,p.y));
+        ctx.stroke(); ctx.lineWidth = 1;
+        pts.forEach((p,i) => {
+          ctx.fillStyle = i===0 ? '#7aa2ff' : '#3dd6c6';
+          ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fill();
+        });
+      }
+      document.getElementById('stat').textContent = pts.length + ' pts · ' + dist().toFixed(0) + ' m';
+    }
+    c.onclick = e => {
+      const r = c.getBoundingClientRect();
+      pts.push({ x: (e.clientX-r.left)*c.width/r.width, y: (e.clientY-r.top)*c.height/r.height });
+      draw();
+    };
+    document.getElementById('undo').onclick = () => { pts.pop(); draw(); };
+    document.getElementById('clear').onclick = () => { pts.length = 0; draw(); };
+    draw();
   </script>
 </body>
 </html>

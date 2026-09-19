@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solar System — Nicholas Lane</title>
+  <title>Solar System demo — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -13,32 +14,45 @@
       <a href="../index.html">Home</a>
       <a href="../projects.html" class="active">Projects</a>
       <a href="../resume.html">Resume</a>
-      <a href="../linkedin.html">LinkedIn</a>
     </nav>
   </header>
   <main>
-    <p class="tag">From SolarSystem repo</p>
+    <p class="eyebrow">Canvas lab</p>
     <h1>Solar System</h1>
-    <label>Speed <input id="spd" type="range" min="1" max="20" value="6" /></label>
-    <canvas class="stage" id="c" width="900" height="420"></canvas>
+    <p class="lede">Rebuilt from <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a>. Drag speed. Click to pause.</p>
+    <label>Speed <input id="spd" type="range" min="0.2" max="4" step="0.1" value="1" /></label>
+    <canvas class="stage" id="c" width="1100" height="420"></canvas>
   </main>
-  <footer><a href="../projects.html">All projects</a></footer>
   <script>
-const c=document.getElementById("c"), ctx=c.getContext("2d");
-const planets=[{r:40,s:0.02,size:6,col:"#c9a227"},{r:70,s:0.015,size:8,col:"#3dd6c6"},{r:105,s:0.01,size:7,col:"#7aa2ff"},{r:145,s:0.007,size:10,col:"#e07a5f"},{r:190,s:0.004,size:12,col:"#d4a373"}];
-let t=0;
-function draw(){
-  const w=c.width,h=c.height,cx=w/2,cy=h/2, spd=+document.getElementById("spd").value/8;
-  ctx.fillStyle="#070b10"; ctx.fillRect(0,0,w,h);
-  ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.fillStyle="#ffd166"; ctx.fill();
-  planets.forEach((p,i)=>{
-    ctx.beginPath(); ctx.arc(cx,cy,p.r,0,Math.PI*2); ctx.strokeStyle="#1d2733"; ctx.stroke();
-    const a=t*p.s*spd + i; const x=cx+Math.cos(a)*p.r, y=cy+Math.sin(a)*p.r;
-    ctx.beginPath(); ctx.arc(x,y,p.size,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill();
-  });
-  t+=1; requestAnimationFrame(draw);
-}
-draw();
+    const c = document.getElementById('c'), ctx = c.getContext('2d');
+    const planets = [
+      { r: 40, s: 1.6, size: 4, color: '#c9a27a' },
+      { r: 70, s: 1.2, size: 6, color: '#e8c36a' },
+      { r: 105, s: 0.9, size: 7, color: '#5aa7ff' },
+      { r: 140, s: 0.7, size: 5, color: '#d85b4a' },
+      { r: 185, s: 0.4, size: 12, color: '#d4b48a' },
+      { r: 230, s: 0.28, size: 10, color: '#e6d3a3' },
+    ];
+    let t = 0, run = true, mul = 1;
+    document.getElementById('spd').oninput = e => mul = +e.target.value;
+    c.onclick = () => run = !run;
+    function frame() {
+      const w = c.width, h = c.height, cx = w/2, cy = h/2;
+      ctx.fillStyle = '#070b10'; ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle = '#1c2734';
+      planets.forEach(p => { ctx.beginPath(); ctx.arc(cx,cy,p.r,0,Math.PI*2); ctx.stroke(); });
+      ctx.fillStyle = '#ffcc55'; ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.fill();
+      planets.forEach(p => {
+        const a = t * p.s;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(a)*p.r, cy + Math.sin(a)*p.r, p.size, 0, Math.PI*2);
+        ctx.fill();
+      });
+      if (run) t += 0.012 * mul;
+      requestAnimationFrame(frame);
+    }
+    frame();
   </script>
 </body>
 </html>
