@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Solar system</title><link rel="stylesheet" href="../styles.css" /></head>
-<body><div class="wrap"><header class="nav"><div class="brand"><a href="../index.html">NICHOLAS LANE</a></div><nav><a href="../projects.html">Projects</a></nav></header>
-<div class="kicker">Live demo</div><h1>Solar system</h1>
-<p class="lede">From <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> and <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a>.</p>
-<div class="demo-stage"><canvas id="c" width="900" height="520"></canvas></div>
-<script>
-const c=document.getElementById("c"),x=c.getContext("2d");
-const planets=[{r:40,s:0.028,d:5,color:"#b0b0b0"},{r:62,s:0.022,d:8,color:"#d4a574"},{r:88,s:0.018,d:9,color:"#3ee0b2"},{r:118,s:0.014,d:7,color:"#ef6b6b"},{r:160,s:0.010,d:14,color:"#e0c07a"},{r:200,s:0.008,d:12,color:"#d9c38a"},{r:236,s:0.006,d:10,color:"#7ec8e3"},{r:270,s:0.005,d:10,color:"#4d7cff"}];
-let t=0;function frame(){t++;x.fillStyle="#05070a";x.fillRect(0,0,c.width,c.height);const cx=c.width/2,cy=c.height/2;x.fillStyle="#f0b429";x.beginPath();x.arc(cx,cy,16,0,Math.PI*2);x.fill();planets.forEach(p=>{x.strokeStyle="#1c2734";x.beginPath();x.arc(cx,cy,p.r,0,Math.PI*2);x.stroke();const a=t*p.s;x.fillStyle=p.color;x.beginPath();x.arc(cx+Math.cos(a)*p.r,cy+Math.sin(a)*p.r,p.d,0,Math.PI*2);x.fill();});requestAnimationFrame(frame);}frame();
-</script></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solar system — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">From early SolarSystem GitHub work</p>
+      <h1>Orbits</h1>
+    </section>
+    <canvas id="c" width="900" height="520"></canvas>
+  </div>
+  <script>
+    const c = document.getElementById("c"), x = c.getContext("2d");
+    const planets = [
+      { r: 40, s: 0.028, size: 4, color: "#c4c4c4" },
+      { r: 62, s: 0.022, size: 6, color: "#e8c27a" },
+      { r: 88, s: 0.018, size: 7, color: "#4ea3ff" },
+      { r: 114, s: 0.014, size: 5, color: "#ff6b4a" },
+      { r: 150, s: 0.008, size: 12, color: "#d9b48a" }
+    ];
+    let t = 0;
+    function draw() {
+      x.fillStyle = "#070b10"; x.fillRect(0,0,c.width,c.height);
+      const cx = c.width/2, cy = c.height/2;
+      x.fillStyle = "#f0b429"; x.beginPath(); x.arc(cx,cy,14,0,Math.PI*2); x.fill();
+      planets.forEach(p => {
+        x.strokeStyle = "#243041"; x.beginPath(); x.arc(cx,cy,p.r,0,Math.PI*2); x.stroke();
+        const a = t * p.s;
+        x.fillStyle = p.color; x.beginPath();
+        x.arc(cx + Math.cos(a)*p.r, cy + Math.sin(a)*p.r, p.size, 0, Math.PI*2); x.fill();
+      });
+      t++; requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>

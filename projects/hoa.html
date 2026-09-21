@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HOA motor panel — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">Controls lab</p>
+      <h1>Motor control panel</h1>
+      <p class="lede">HAND / OFF / AUTO. Overload trips the starter. Reset clears the trip. AUTO runs after a short delay.</p>
+    </section>
+    <div class="card panel-demo">
+      <div class="row">
+        <button class="ctl" id="hand">HAND</button>
+        <button class="ctl on" id="off">OFF</button>
+        <button class="ctl" id="auto">AUTO</button>
+        <button class="ctl" id="ol">Simulate overload</button>
+        <button class="ctl" id="reset">Reset</button>
+      </div>
+      <p class="status" id="status">MODE=OFF  MOTOR=STOPPED  OL=OK</p>
+    </div>
+  </div>
+  <script>
+    let mode = "OFF", tripped = false, motor = false, timer;
+    const status = document.getElementById("status");
+    function paint() {
+      status.textContent = `MODE=${mode}  MOTOR=${motor ? "RUN" : "STOPPED"}  OL=${tripped ? "TRIP" : "OK"}`;
+      ["hand","off","auto"].forEach(id => document.getElementById(id).classList.toggle("on", id.toUpperCase() === mode || (id==="off" && mode==="OFF")));
+    }
+    function setMode(m) {
+      mode = m; clearTimeout(timer);
+      if (tripped || m === "OFF") motor = false;
+      else if (m === "HAND") motor = true;
+      else timer = setTimeout(() => { if (mode==="AUTO" && !tripped) { motor = true; paint(); } }, 800);
+      paint();
+    }
+    document.getElementById("hand").onclick = () => setMode("HAND");
+    document.getElementById("off").onclick = () => setMode("OFF");
+    document.getElementById("auto").onclick = () => setMode("AUTO");
+    document.getElementById("ol").onclick = () => { tripped = true; motor = false; paint(); };
+    document.getElementById("reset").onclick = () => { tripped = false; if (mode==="HAND") motor = true; paint(); };
+    paint();
+  </script>
+</body>
+</html>

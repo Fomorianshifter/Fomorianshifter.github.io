@@ -1,68 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Locus — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="nav">
-    <a class="brand" href="../index.html">NL<span>.</span></a>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../projects.html" class="active">Projects</a>
-      <a href="../resume.html">Resume</a>
-    </nav>
-  </header>
-  <main>
-    <p class="eyebrow">GhostGPS-inspired</p>
-    <h1>Locus</h1>
-    <p class="lede">Click the map to drop waypoints. Distance is a simple pixel-to-meter scale so you can see a track form. Companion idea to <a href="https://github.com/Fomorianshifter/GhostGPS">GhostGPS</a>.</p>
-    <div class="actions">
-      <button class="btn" id="undo">Undo</button>
-      <button class="btn" id="clear">Clear</button>
-      <span class="meta" id="stat">0 pts · 0 m</span>
-    </div>
-    <canvas class="stage" id="c" width="1100" height="420"></canvas>
-  </main>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">Function grapher</p>
+      <h1>Locus</h1>
+      <p class="lede">Scroll to zoom. Drag to pan. Cursor shows x, y.</p>
+    </section>
+    <p class="status" id="readout">x=0.00  y=0.00</p>
+    <canvas id="c" width="900" height="520"></canvas>
+  </div>
   <script>
-    const c = document.getElementById('c'), ctx = c.getContext('2d');
-    const pts = [];
-    const SCALE = 2.5;
-    function dist() {
-      let d = 0;
-      for (let i = 1; i < pts.length; i++) {
-        const a = pts[i-1], b = pts[i];
-        d += Math.hypot(b.x-a.x, b.y-a.y);
-      }
-      return d * SCALE;
-    }
+    const c = document.getElementById("c"), g = c.getContext("2d");
+    let scale = 40, ox = c.width/2, oy = c.height/2, drag=false, lx=0, ly=0;
+    const fn = x => Math.sin(x) + 0.35*Math.sin(3*x);
+    function world(px,py){ return { x:(px-ox)/scale, y:(oy-py)/scale }; }
     function draw() {
-      ctx.fillStyle = '#070b10'; ctx.fillRect(0,0,c.width,c.height);
-      ctx.strokeStyle = '#1c2734';
-      for (let x=0;x<c.width;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,c.height);ctx.stroke();}
-      for (let y=0;y<c.height;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke();}
-      if (pts.length) {
-        ctx.strokeStyle = '#3dd6c6'; ctx.lineWidth = 2; ctx.beginPath();
-        ctx.moveTo(pts[0].x, pts[0].y);
-        pts.slice(1).forEach(p => ctx.lineTo(p.x,p.y));
-        ctx.stroke(); ctx.lineWidth = 1;
-        pts.forEach((p,i) => {
-          ctx.fillStyle = i===0 ? '#7aa2ff' : '#3dd6c6';
-          ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fill();
-        });
+      g.fillStyle="#070b10"; g.fillRect(0,0,c.width,c.height);
+      g.strokeStyle="#1a2430"; g.beginPath();
+      for(let x=ox%scale; x<c.width; x+=scale){ g.moveTo(x,0); g.lineTo(x,c.height); }
+      for(let y=oy%scale; y<c.height; y+=scale){ g.moveTo(0,y); g.lineTo(c.width,y); }
+      g.stroke();
+      g.strokeStyle="#3ee0a8"; g.lineWidth=2; g.beginPath();
+      for(let px=0; px<c.width; px++){
+        const x = (px-ox)/scale, y = fn(x), py = oy - y*scale;
+        if(px===0) g.moveTo(px,py); else g.lineTo(px,py);
       }
-      document.getElementById('stat').textContent = pts.length + ' pts · ' + dist().toFixed(0) + ' m';
+      g.stroke(); g.lineWidth=1;
     }
-    c.onclick = e => {
-      const r = c.getBoundingClientRect();
-      pts.push({ x: (e.clientX-r.left)*c.width/r.width, y: (e.clientY-r.top)*c.height/r.height });
-      draw();
-    };
-    document.getElementById('undo').onclick = () => { pts.pop(); draw(); };
-    document.getElementById('clear').onclick = () => { pts.length = 0; draw(); };
+    c.addEventListener("wheel", e => { e.preventDefault(); scale *= e.deltaY<0?1.1:0.9; scale=Math.max(12,Math.min(140,scale)); draw(); }, {passive:false});
+    c.addEventListener("mousedown", e => { drag=true; lx=e.offsetX; ly=e.offsetY; });
+    window.addEventListener("mouseup", () => drag=false);
+    c.addEventListener("mousemove", e => {
+      const w = world(e.offsetX, e.offsetY);
+      document.getElementById("readout").textContent = `x=${w.x.toFixed(2)}  y=${w.y.toFixed(2)}`;
+      if(drag){ ox += e.offsetX-lx; oy += e.offsetY-ly; lx=e.offsetX; ly=e.offsetY; draw(); }
+    });
     draw();
   </script>
 </body>

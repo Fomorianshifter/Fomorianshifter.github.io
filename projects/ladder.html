@@ -1,15 +1,44 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Ladder scan</title><link rel="stylesheet" href="../styles.css" /></head>
-<body><div class="wrap"><header class="nav"><div class="brand"><a href="../index.html">NICHOLAS LANE</a></div><nav><a href="../projects.html">Projects</a></nav></header>
-<div class="kicker">Live demo</div><h1>Start / stop ladder</h1>
-<div class="demo-stage"><p><button id="start">Start (NO)</button> <button id="stop">Stop (NC held)</button> Coil M1 <span id="coil" class="lamp"></span></p>
-<pre id="rung" class="copy"></pre><p class="meta" id="scan">scan 0</p></div>
-<script>
-let start=false,stop=true,m1=false,n=0,stopHeld=true;
-const coil=document.getElementById("coil"),rung=document.getElementById("rung"),scan=document.getElementById("scan");
-function tick(){n++;m1=stop&&(start||m1);coil.className="lamp"+(m1?" on":"");rung.textContent="START="+start+"  STOP_OK="+stop+"  M1="+m1+"\nSeal-in keeps M1 after Start is released.";scan.textContent="scan "+n;}
-document.getElementById("start").onmousedown=()=>{start=true;};
-document.getElementById("start").onmouseup=()=>{start=false;};
-document.getElementById("stop").onclick=()=>{stopHeld=!stopHeld;stop=stopHeld;document.getElementById("stop").textContent=stopHeld?"Stop (NC held)":"Stop PRESSED";};
-setInterval(tick,50);
-</script></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladder scan — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">PLC lab</p>
+      <h1>Start / stop with seal-in</h1>
+      <p class="lede">Start is momentary. Stop is NC. Seal-in holds the coil after Start is released.</p>
+    </section>
+    <div class="card panel-demo">
+      <div class="row">
+        <button class="ctl" id="start">START (NO)</button>
+        <button class="ctl on" id="stop">STOP (NC held)</button>
+      </div>
+      <p class="status" id="rung">--| | START  --|/|-- STOP  --( ) COIL=0  SEAL=0</p>
+    </div>
+  </div>
+  <script>
+    let start = false, stop = true, coil = false;
+    const rung = document.getElementById("rung");
+    function scan() {
+      coil = stop && (start || coil);
+      rung.textContent = `--|${start?"1":" "}| START  --|${stop?" ":"/"}|-- STOP  --( ) COIL=${coil?1:0}  SEAL=${coil?1:0}`;
+      document.getElementById("start").classList.toggle("on", start);
+      document.getElementById("stop").classList.toggle("on", stop);
+    }
+    const s = document.getElementById("start");
+    s.onmousedown = s.ontouchstart = () => { start = true; scan(); };
+    s.onmouseup = s.onmouseleave = s.ontouchend = () => { start = false; scan(); };
+    document.getElementById("stop").onclick = () => { stop = !stop; if (!stop) coil = false; scan(); };
+    scan();
+  </script>
+</body>
+</html>
