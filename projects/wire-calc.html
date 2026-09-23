@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wire size helper — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">Electrician lab · teaching tool</p>
+      <h1>Copper wire size helper</h1>
+      <p class="lede">Quick ampacity lookup for common THHN copper sizes at 75°C. Not a code book and not a substitute for NEC tables, ambient correction, or derating. Built so a hiring manager can see I work in both plant language and the browser.</p>
+    </section>
+    <div class="card panel-demo">
+      <div class="row">
+        <label>Load (amps)
+          <input id="amps" type="number" min="1" value="20" style="margin-left:8px;background:#071016;color:#e8eef6;border:1px solid #243041;padding:8px;border-radius:8px;width:88px">
+        </label>
+        <button class="ctl on" id="go">Size it</button>
+      </div>
+      <p class="status" id="out">Enter a load and pick a size.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr><th align="left">AWG</th><th align="left">75°C copper (A)</th></tr></thead>
+        <tbody id="table"></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const table = [
+      [14, 20], [12, 25], [10, 35], [8, 50], [6, 65],
+      [4, 85], [3, 100], [2, 115], [1, 130], ["1/0", 150], ["2/0", 175], ["3/0", 200], ["4/0", 230]
+    ];
+    const tbody = document.getElementById("table");
+    table.forEach(([awg, a]) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${awg}</td><td>${a}</td>`;
+      tbody.appendChild(tr);
+    });
+    function size() {
+      const load = Number(document.getElementById("amps").value);
+      const hit = table.find(([, a]) => a >= load);
+      document.getElementById("out").textContent = hit
+        ? `For ${load} A continuous-style lookup, start at ${hit[0]} AWG (${hit[1]} A @ 75°C). Apply NEC rules before you pull wire.`
+        : `Above the simple table — use the book, voltage drop, and ambient.`;
+    }
+    document.getElementById("go").onclick = size;
+    size();
+  </script>
+</body>
+</html>

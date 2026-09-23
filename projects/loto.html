@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LOTO walkthrough — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="../index.html">NICHOLAS LANE</a>
+      <nav><a href="../projects.html">Projects</a></nav>
+    </header>
+    <section class="hero">
+      <p class="kicker">Safety lab</p>
+      <h1>Lockout / tagout walkthrough</h1>
+      <p class="lede">A click-through of the sequence I used on the floor: identify energy, isolate, lock, verify zero energy, work, then restore. Teaching demo only — follow the plant procedure and OSHA 1910.147.</p>
+    </section>
+    <div class="card panel-demo">
+      <p class="status" id="step">Ready.</p>
+      <div class="row" id="checks"></div>
+      <div class="row">
+        <button class="ctl" id="prev">Back</button>
+        <button class="ctl on" id="next">Next</button>
+        <button class="ctl" id="reset">Reset</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const steps = [
+      "1. Notify affected employees and identify every energy source on the machine.",
+      "2. Shut down using the normal stopping procedure.",
+      "3. Isolate electrical, pneumatic, hydraulic, and stored energy.",
+      "4. Apply your lock and tag. One person, one lock.",
+      "5. Verify zero energy — try-start, meter, gauge to zero.",
+      "6. Perform the work. Do not remove anyone else's lock.",
+      "7. Inspect the area, notify, remove YOUR lock, restore energy."
+    ];
+    let i = 0;
+    const el = document.getElementById("step");
+    const box = document.getElementById("checks");
+    function paint() {
+      el.textContent = steps[i];
+      box.innerHTML = steps.map((s, n) => `<span class="pill" style="${n===i?'border-color:#3ee0a8;color:#3ee0a8':''}">${n+1}</span>`).join("");
+    }
+    document.getElementById("next").onclick = () => { i = Math.min(steps.length-1, i+1); paint(); };
+    document.getElementById("prev").onclick = () => { i = Math.max(0, i-1); paint(); };
+    document.getElementById("reset").onclick = () => { i = 0; paint(); };
+    paint();
+  </script>
+</body>
+</html>
