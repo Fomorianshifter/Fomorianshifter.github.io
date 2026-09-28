@@ -1,104 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nicholas Lane — Industrial electrician &amp; controls</title>
-  <meta name="description" content="Industrial electrician in Green Bay, WI moving into controls and automation. Live PLC labs, motor control demos, and the Loki embedded project." />
-  <meta property="og:title" content="Nicholas Lane — Industrial electrician &amp; controls" />
-  <meta property="og:description" content="Plant-floor electrician with public PLC, motor-control, and embedded projects. Open to relocate." />
-  <meta property="og:url" content="https://fomorianshifter.github.io/" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary" />
-  <link rel="icon" href="favicon.svg" />
+  <title>Nicholas Lane — Controls, Electrical & Web</title>
+  <meta name="description" content="Industrial electrician moving into controls and software. PLC support, embedded systems, and web projects." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="wrap">
-    <header class="nav">
-      <a class="brand" href="index.html">NICHOLAS LANE</a>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">NL<span>/</span>controls</a>
       <nav>
         <a class="active" href="index.html">Home</a>
         <a href="projects.html">Projects</a>
         <a href="resume.html">Resume</a>
         <a href="linkedin.html">LinkedIn kit</a>
       </nav>
-    </header>
+    </div>
+  </header>
+  <main class="wrap">
     <section class="hero">
-      <p class="kicker">Green Bay, WI · open to relocate · US work authorized</p>
-      <h1>Industrial electrician moving into controls, automation, and the software that sits on the panel.</h1>
-      <p class="lede">Five-plus years installing, inspecting, and troubleshooting plant-floor electrical systems. Public projects so a hiring manager can click the same skills listed on the resume: PLC logic, motor control, embedded hardware, and clean web work.</p>
-      <p>
-        <a class="btn" href="projects.html">Open live projects</a>
-        <a class="btn ghost" href="resume.html">Read the resume</a>
-        <a class="btn ghost" href="linkedin.html">Paste into LinkedIn</a>
-        <a class="btn ghost" href="mailto:nlane713@gmail.com">Email</a>
-      </p>
-      <div class="pills">
-        <span class="pill">Industrial electrician</span>
-        <span class="pill">PLC install &amp; troubleshooting</span>
-        <span class="pill">Electrical diagnostics</span>
-        <span class="pill">Blueprint / schematic reading</span>
-        <span class="pill">Motor control</span>
-        <span class="pill">NEC (in progress)</span>
-        <span class="pill">C / embedded</span>
-        <span class="pill">HTML · CSS · JavaScript</span>
-        <span class="pill">Git</span>
+      <p class="kicker">Green Bay, WI · open to relocate</p>
+      <h1>Industrial electrician building toward controls, automation, and software.</h1>
+      <p class="lede">Five-plus years in electrical systems with hands-on PLC install and troubleshooting support. Pairing plant-floor experience with FreeCodeCamp coursework, embedded C, and web projects.</p>
+      <div class="actions">
+        <a class="btn primary" href="projects.html">View projects</a>
+        <a class="btn" href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
       </div>
     </section>
     <section>
-      <h2>What recruiters should see first</h2>
-      <div class="grid">
+      <h2>Featured work</h2>
+      <div class="grid cards-3">
         <article class="card">
-          <div class="kicker">Plant floor</div>
-          <h3>Grede Foundries</h3>
-          <p>PLC install support, 50+ electrical issues a month with engineering, monthly inspections at 100% safety compliance.</p>
-        </article>
-        <article class="card">
-          <div class="kicker">Hardware + C</div>
+          <div class="meta">C · Embedded · Hardware</div>
           <h3>Loki</h3>
-          <p>Embedded companion for Linux SBCs: TFT drivers, local config UI, Flipper Zero UART, Orange Pi / Raspberry Pi.</p>
+          <p>Dragon companion firmware for Linux SBCs: TFT drivers, local config UI, and Flipper Zero UART integration.</p>
+          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p>
         </article>
         <article class="card">
-          <div class="kicker">Browser demos</div>
-          <h3>Clickable labs</h3>
-          <p>HOA starter, ladder scan, wire-size helper, LOTO walkthrough, solar-system canvas, and Locus grapher.</p>
+          <div class="meta">Embedded · Sensors</div>
+          <h3>GhostGPS</h3>
+          <p>Location / tracking experiment next to field diagnostics work.</p>
+          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/GhostGPS">github.com/Fomorianshifter/GhostGPS</a></p>
+        </article>
+        <article class="card">
+          <div class="meta">Interactive lab</div>
+          <h3>PLC ladder scan</h3>
+          <p>Browser demo of a scan cycle: inputs, rungs, and coil state.</p>
+          <p style="margin-top:14px"><a href="projects/ladder.html">Open lab</a></p>
         </article>
       </div>
     </section>
     <section>
-      <h2>Featured projects</h2>
-      <div class="grid">
-        <article class="card">
-          <div class="kicker">C · embedded · SBC</div>
-          <h3>Loki</h3>
-          <p>Strongest public repo. Dragon companion framework with HAL, drivers, and UART integration.</p>
-          <a class="btn" href="https://github.com/Fomorianshifter/Loki">GitHub</a>
-        </article>
-        <article class="card">
-          <div class="kicker">Live demo · controls</div>
-          <h3>Motor control panel</h3>
-          <p>HAND / OFF / AUTO, thermal-style overload, reset.</p>
-          <a class="btn" href="projects/hoa.html">Open demo</a>
-        </article>
-        <article class="card">
-          <div class="kicker">Live demo · PLC</div>
-          <h3>Ladder scan</h3>
-          <p>Start/stop circuit with seal-in.</p>
-          <a class="btn" href="projects/ladder.html">Open demo</a>
-        </article>
-        <article class="card">
-          <div class="kicker">Live demo · field tool</div>
-          <h3>Wire size helper</h3>
-          <p>Copper THHN ampacity table with a load input.</p>
-          <a class="btn" href="projects/wire-calc.html">Open demo</a>
-        </article>
+      <h2>What I bring</h2>
+      <div class="grid cards-3">
+        <article class="card"><h3>Plant floor</h3><p>Grede Foundries: PLC install support, 50+ electrical issues a month with engineering, 100% safety inspection compliance.</p></article>
+        <article class="card"><h3>Construction & service</h3><p>AC Electric and Greenfield Electric: construction, remodels, service, blueprints, motors, wiring.</p></article>
+        <article class="card"><h3>Software path</h3><p>freeCodeCamp CS track, responsive web design cert, C/JS practice, public GitHub.</p></article>
       </div>
     </section>
-    <footer>
-      nlane713@gmail.com · <a href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a> ·
-      <a href="https://fomorianshifter.github.io">fomorianshifter.github.io</a>
-    </footer>
-  </div>
+    <section>
+      <h2>Core skills</h2>
+      <div class="skills">
+        <span>PLC install & troubleshooting</span><span>Electrical diagnostics</span><span>Blueprint / schematic reading</span><span>Industrial maintenance</span><span>Motors & controls</span><span>HTML / CSS / JavaScript</span><span>C on embedded Linux</span><span>Git</span><span>Safety compliance</span>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">Nicholas Lane · +1 608 717 7602 · <a href="linkedin.html">Copy for LinkedIn</a></div></footer>
 </body>
 </html>
