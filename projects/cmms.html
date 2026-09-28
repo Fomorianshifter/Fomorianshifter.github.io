@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Service log lab</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet"/></head>
+<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a><nav><a href="../projects.html">Projects</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Maintenance documentation</p><h1>Service call log</h1><p class="lede">Stored in this browser only.</p></section>
+<section class="card"><div class="controls">
+<input id="eq" placeholder="Equipment" style="flex:1;min-width:140px;background:#0a0f13;color:#e8eef3;border:1px solid #2a3946;border-radius:10px;padding:8px 12px"/>
+<input id="fault" placeholder="Fault / notes" style="flex:2;min-width:180px;background:#0a0f13;color:#e8eef3;border:1px solid #2a3946;border-radius:10px;padding:8px 12px"/>
+<button id="add">Log call</button></div><div id="list" style="margin-top:16px"></div></section></main>
+<script>
+const KEY='nl-cmms';const rows=JSON.parse(localStorage.getItem(KEY)||'[]');const list=document.getElementById('list');
+function save(){localStorage.setItem(KEY,JSON.stringify(rows));render();}
+function render(){list.innerHTML=rows.map((r,i)=>`<div class="job"><h3>${r.eq}</h3><div class="when">${r.open} ${r.done?'· cleared '+r.done:'· OPEN'}</div><p>${r.fault}</p>${r.done?'':`<button data-i="${i}">Mark cleared</button>`}</div>`).join('')||"<p class='lede'>No calls yet.</p>";
+list.querySelectorAll('button').forEach(b=>b.onclick=()=>{rows[+b.dataset.i].done=new Date().toLocaleString();save();});}
+document.getElementById('add').onclick=()=>{const eq=document.getElementById('eq').value.trim();const fault=document.getElementById('fault').value.trim();if(!eq||!fault)return;rows.unshift({eq,fault,open:new Date().toLocaleString(),done:null});document.getElementById('eq').value='';document.getElementById('fault').value='';save();};render();
+</script></body></html>
