@@ -1,96 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Projects — Nicholas Lane</title>
-  <meta name="description" content="GitHub work and browser labs for Nicholas Lane." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="nav">
-    <a class="mark" href="/">NL</a>
-    <nav>
-      <a href="/">Home</a>
-      <a href="resume.html">Resume</a>
-      <a href="linkedin.html">LinkedIn copy</a>
-      <a href="https://github.com/Fomorianshifter" rel="noopener">GitHub</a>
-    </nav>
-  </header>
-  <main>
-    <p class="eyebrow">Portfolio · live demos + source</p>
-    <h1>Projects</h1>
-    <p class="lede">Best public work first. Labs are small on-purpose so a hiring manager can click through in under a minute.</p>
-
-    <h2>GitHub</h2>
-    <div class="grid">
-      <article class="card">
-        <p class="tag">Flagship · C</p>
-        <h3>Loki</h3>
-        <p>Embedded dragon companion for Linux SBCs: TFT drivers, local config UI, Flipper Zero UART.</p>
-        <a href="https://github.com/Fomorianshifter/Loki">Source</a>
-        <a href="projects/loki.html">Notes</a>
-      </article>
-      <article class="card">
-        <p class="tag">Sensors</p>
-        <h3>GhostGPS</h3>
-        <p>Location / tracking experiment next to field diagnostics.</p>
-        <a href="https://github.com/Fomorianshifter/GhostGPS">Source</a>
-      </article>
-      <article class="card">
-        <p class="tag">JavaScript</p>
-        <h3>Solar System</h3>
-        <p>Orbit visualization coursework turned into a live canvas demo.</p>
-        <a href="https://github.com/Fomorianshifter/SolarSystem">Source</a>
-        <a href="projects/orbit.html">Live demo</a>
-      </article>
-      <article class="card">
-        <p class="tag">Web basics</p>
-        <h3>One</h3>
-        <p>Microsoft Web-Dev-For-Beginners import — HTML, CSS, JavaScript foundation.</p>
-        <a href="https://github.com/Fomorianshifter/One">Source</a>
-      </article>
-    </div>
-
-    <h2>Browser labs</h2>
-    <div class="grid">
-      <article class="card">
-        <p class="tag">Controls</p>
-        <h3>PLC ladder scan</h3>
-        <p>Inputs, rung logic, coil state, scan counter.</p>
-        <a href="projects/ladder.html">Open</a>
-      </article>
-      <article class="card">
-        <p class="tag">Electrical</p>
-        <h3>Wire size helper</h3>
-        <p>THHN copper ampacity lookup. Teaching tool, not a code book.</p>
-        <a href="projects/wire-calc.html">Open</a>
-      </article>
-      <article class="card">
-        <p class="tag">Canvas</p>
-        <h3>Orbit lab</h3>
-        <p>Planets in motion. Same idea as the SolarSystem repo.</p>
-        <a href="projects/orbit.html">Open</a>
-      </article>
-      <article class="card">
-        <p class="tag">Math</p>
-        <h3>Locus</h3>
-        <p>Function grapher sketch.</p>
-        <a href="projects/locus.html">Open</a>
-      </article>
-      <article class="card">
-        <p class="tag">Plant floor</p>
-        <h3>Panel / LOTO / CMMS sketches</h3>
-        <p>Small industrial-language pages: panel load, lockout, work-order flavor.</p>
-        <a href="projects/panel.html">Panel</a>
-        <a href="projects/loto.html">LOTO</a>
-        <a href="projects/cmms.html">CMMS</a>
-      </article>
-    </div>
+  <header class="nav"><div class="wrap"><a class="brand" href="index.html">NL<span>/</span>controls</a>
+  <nav><a href="index.html">Home</a><a class="active" href="projects.html">Projects</a><a href="resume.html">Resume</a><a href="linkedin.html">LinkedIn kit</a></nav></div></header>
+  <main class="wrap">
+    <section class="hero"><p class="kicker">GitHub + interactive labs</p>
+    <h1>Projects you can click through.</h1>
+    <p class="lede">Public repos first, then browser labs that show electrical, controls, and web skills without a recruiter having to clone anything.</p></section>
+    <section>
+      <h2>GitHub</h2>
+      <div class="grid cards-3">
+        <article class="card"><div class="meta">C · Embedded · Hardware</div><h3>Loki</h3><p>Companion firmware for Linux SBCs: TFT drivers, local config UI, Flipper Zero UART.</p><p style="margin-top:12px"><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="projects/loki.html">Notes</a></p></article>
+        <article class="card"><div class="meta">Embedded · Sensors</div><h3>GhostGPS</h3><p>GPS / location firmware experiment next to field diagnostics work.</p><p style="margin-top:12px"><a href="https://github.com/Fomorianshifter/GhostGPS">Source</a></p></article>
+        <article class="card"><div class="meta">JavaScript</div><h3>Solar System</h3><p>Early orbital visualization practice.</p><p style="margin-top:12px"><a href="https://github.com/Fomorianshifter/SolarSystem">Source</a> · <a href="projects/orbit.html">Live lab</a></p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Interactive labs</h2>
+      <div class="grid cards-3">
+        <article class="card"><div class="meta">Controls</div><h3>PLC ladder scan</h3><p>Scan cycle with start/stop seal-in and e-stop.</p><p style="margin-top:12px"><a href="projects/ladder.html">Open lab</a></p></article>
+        <article class="card"><div class="meta">Maintenance</div><h3>Service call log</h3><p>Tiny CMMS-style work log stored in the browser.</p><p style="margin-top:12px"><a href="projects/cmms.html">Open lab</a></p></article>
+        <article class="card"><div class="meta">Safety</div><h3>LOTO checklist</h3><p>Lockout / tagout steps as a simple interactive list.</p><p style="margin-top:12px"><a href="projects/loto.html">Open lab</a></p></article>
+        <article class="card"><div class="meta">Electrical</div><h3>Wire calculator</h3><p>Quick ampacity / sizing helper for practice problems.</p><p style="margin-top:12px"><a href="projects/wire-calc.html">Open lab</a></p></article>
+        <article class="card"><div class="meta">Electrical</div><h3>Panel load</h3><p>Panel / circuit load sketch for interviews.</p><p style="margin-top:12px"><a href="projects/panel.html">Open lab</a></p></article>
+        <article class="card"><div class="meta">Web</div><h3>Orbit lab</h3><p>Canvas animation from the Solar System project.</p><p style="margin-top:12px"><a href="projects/orbit.html">Open lab</a></p></article>
+      </div>
+    </section>
   </main>
-  <footer>
-    <p>Nicholas Lane · <a href="/">Home</a> · <a href="https://github.com/Fomorianshifter">GitHub</a></p>
-  </footer>
-</body>
-</html>
+  <footer><div class="wrap">Nicholas Lane · Green Bay, WI · <a href="https://fomorianshifter.github.io">fomorianshifter.github.io</a></div></footer>
+</body></html>

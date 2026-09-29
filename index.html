@@ -1,152 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nicholas Lane — Electrical, Controls &amp; Web</title>
-  <meta name="description" content="Industrial electrician moving into controls, automation, and web. Green Bay, WI. Open to relocate." />
-  <meta property="og:title" content="Nicholas Lane — Electrical, Controls & Web" />
-  <meta property="og:description" content="Plant-floor electrical experience plus embedded C and web projects. Portfolio for LinkedIn." />
-  <meta property="og:url" content="https://fomorianshifter.github.io/" />
+  <title>Nicholas Lane — Controls, Electrical &amp; Web</title>
+  <meta name="description" content="Industrial electrician moving into controls and software. PLC support, embedded systems, and web projects." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="nav">
-    <a class="mark" href="/">NL</a>
-    <nav>
-      <a href="#work">Work</a>
-      <a href="#labs">Labs</a>
-      <a href="projects.html">Projects</a>
-      <a href="resume.html">Resume</a>
-      <a href="linkedin.html">LinkedIn</a>
-      <a href="https://github.com/Fomorianshifter" rel="noopener">GitHub</a>
-      <a class="btn" href="mailto:nlane713@gmail.com">Email</a>
-    </nav>
+    <div class="wrap">
+      <a class="brand" href="index.html">NL<span>/</span>controls</a>
+      <nav>
+        <a class="active" href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html">Resume</a>
+        <a href="linkedin.html">LinkedIn kit</a>
+      </nav>
+    </div>
   </header>
-
-  <main>
+  <main class="wrap">
     <section class="hero">
-      <p class="eyebrow">Green Bay, WI · Authorized to work in the US · Willing to relocate</p>
+      <p class="kicker">Green Bay, WI · open to relocate · authorized to work in the US</p>
       <h1>Industrial electrician building toward controls, automation, and software.</h1>
-      <p class="lede">Five-plus years installing and troubleshooting electrical systems. Hands-on PLC support on the plant floor, plus public work in embedded C and HTML/CSS/JavaScript.</p>
+      <p class="lede">Five-plus years in electrical systems with hands-on PLC install and troubleshooting support. Pairing plant-floor experience with freeCodeCamp coursework, embedded C, and public web labs.</p>
       <div class="actions">
-        <a class="btn primary" href="projects.html">See projects</a>
-        <a class="btn" href="resume.html">Read resume</a>
-        <a class="btn" href="linkedin.html">LinkedIn copy</a>
+        <a class="btn primary" href="projects.html">View projects</a>
+        <a class="btn" href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="resume.html">Resume</a>
+        <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
       </div>
     </section>
-
-    <section id="work">
-      <h2>Featured GitHub work</h2>
-      <div class="grid">
+    <section>
+      <h2>Featured work</h2>
+      <div class="grid cards-3">
         <article class="card">
-          <p class="tag">C · Embedded · Hardware</p>
+          <div class="meta">C · Embedded · Hardware</div>
           <h3>Loki</h3>
-          <p>Dragon companion firmware for Linux SBCs. TFT drivers, local config UI, and Flipper Zero UART integration. Flagship project — C on Raspberry Pi / Orange Pi.</p>
-          <a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a>
+          <p>Dragon companion firmware for Linux SBCs: TFT drivers, local config UI, and Flipper Zero UART integration.</p>
+          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/Loki">GitHub</a></p>
         </article>
         <article class="card">
-          <p class="tag">Embedded · Sensors</p>
+          <div class="meta">Embedded · Sensors</div>
           <h3>GhostGPS</h3>
-          <p>Location experiment sitting next to field diagnostics. Useful talking point for sensors, serial data, and hardware bring-up.</p>
-          <a href="https://github.com/Fomorianshifter/GhostGPS">github.com/Fomorianshifter/GhostGPS</a>
+          <p>Location / tracking experiment next to field diagnostics work.</p>
+          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/GhostGPS">GitHub</a></p>
         </article>
         <article class="card">
-          <p class="tag">JavaScript · Visual</p>
-          <h3>Solar System</h3>
-          <p>Early orbit visualization — planets in motion. Kept as a clean demo of HTML/CSS/JS animation.</p>
-          <a href="projects/orbit.html">Open live demo</a>
-          · <a href="https://github.com/Fomorianshifter/SolarSystem">Source</a>
-        </article>
-        <article class="card">
-          <p class="tag">Web · freeCodeCamp</p>
-          <h3>Responsive Web Design</h3>
-          <p>Certified responsive layout work. This site is the practical continuation: semantic HTML, readable CSS, and a URL you can drop on LinkedIn.</p>
-          <a href="projects.html">Project index</a>
-        </article>
-      </div>
-    </section>
-
-    <section id="labs">
-      <h2>Interactive labs (built for this portfolio)</h2>
-      <div class="grid">
-        <article class="card">
-          <p class="tag">Controls</p>
+          <div class="meta">Interactive lab</div>
           <h3>PLC ladder scan</h3>
           <p>Browser demo of a scan cycle: inputs, rungs, and coil state.</p>
-          <a href="projects/ladder.html">Open lab</a>
-        </article>
-        <article class="card">
-          <p class="tag">Electrical</p>
-          <h3>Wire size helper</h3>
-          <p>Quick THHN copper ampacity lookup. Teaching tool, not a substitute for the NEC.</p>
-          <a href="projects/wire-calc.html">Open lab</a>
-        </article>
-        <article class="card">
-          <p class="tag">Canvas</p>
-          <h3>Orbit lab</h3>
-          <p>Simple solar-system canvas — same idea as the GitHub SolarSystem repo.</p>
-          <a href="projects/orbit.html">Open lab</a>
-        </article>
-        <article class="card">
-          <p class="tag">Safety / CMMS</p>
-          <h3>Plant-floor sketches</h3>
-          <p>LOTO, panel, and work-order pages in industrial language.</p>
-          <a href="projects/loto.html">LOTO</a> · <a href="projects/panel.html">Panel</a> · <a href="projects/cmms.html">CMMS</a>
+          <p style="margin-top:14px"><a href="projects/ladder.html">Open lab</a></p>
         </article>
       </div>
     </section>
-
-    <section id="path">
-      <h2>What I bring</h2>
-      <div class="grid three">
-        <article>
-          <h3>Plant floor</h3>
-          <p>Grede Foundries (2021–2024): PLC install support, 50+ electrical issues a month with engineering, monthly inspections at 100% safety compliance.</p>
-        </article>
-        <article>
-          <h3>Construction &amp; service</h3>
-          <p>AC Electric and Greenfield Electric: new construction, remodels, service calls, blueprint reading, motors, and wiring.</p>
-        </article>
-        <article>
-          <h3>Software path</h3>
-          <p>freeCodeCamp computer science track (2023–present), Responsive Web Design cert, C and JavaScript practice, public GitHub.</p>
-        </article>
-      </div>
-    </section>
-
     <section>
-      <h2>Core skills I actually use</h2>
-      <ul class="chips">
-        <li>PLC install &amp; troubleshooting</li>
-        <li>Electrical diagnostics</li>
-        <li>Blueprint / schematic reading</li>
-        <li>Industrial maintenance</li>
-        <li>Motors &amp; controls</li>
-        <li>HTML / CSS / JavaScript</li>
-        <li>C on embedded Linux</li>
-        <li>Git</li>
-        <li>Safety compliance</li>
-      </ul>
-      <p class="note">The long Indeed skills dump is trimmed here on purpose. LinkedIn and this site should show the same tight list.</p>
+      <h2>What I bring</h2>
+      <div class="grid cards-3">
+        <article class="card"><h3>Plant floor</h3><p>Grede Foundries: PLC install support, 50+ electrical issues a month with engineering, 100% safety inspection compliance.</p></article>
+        <article class="card"><h3>Construction &amp; service</h3><p>AC Electric and Greenfield Electric: construction, remodels, service, blueprints, motors, wiring.</p></article>
+        <article class="card"><h3>Software path</h3><p>freeCodeCamp CS track, responsive web design cert, C and JavaScript practice, public GitHub.</p></article>
+      </div>
     </section>
-
-    <section id="linkedin">
-      <h2>How to connect this to LinkedIn</h2>
-      <ol class="steps">
-        <li>Open LinkedIn → Me → View profile → pencil on the intro card.</li>
-        <li>Website: add <strong>https://fomorianshifter.github.io/</strong> with label <em>Portfolio</em>.</li>
-        <li>Featured section: add the same URL plus Loki (<code>https://github.com/Fomorianshifter/Loki</code>).</li>
-        <li>Headline suggestion: <em>Industrial Electrician → Controls &amp; Web | PLC support, HTML/CSS/JS, embedded C</em>.</li>
-        <li>About section: use the copy on the <a href="linkedin.html">LinkedIn page</a>.</li>
-      </ol>
-      <p>Contact: <a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a> · +1 608 717 7602</p>
+    <section>
+      <h2>Core skills</h2>
+      <div class="skills">
+        <span>PLC install &amp; troubleshooting</span><span>Electrical diagnostics</span><span>Blueprint / schematic reading</span><span>Industrial maintenance</span><span>Motors &amp; controls</span><span>HTML / CSS / JavaScript</span><span>C on embedded Linux</span><span>Git</span><span>Safety compliance</span>
+      </div>
+    </section>
+    <section>
+      <h2>Put this on LinkedIn</h2>
+      <article class="card">
+        <p>Website field → <strong>https://fomorianshifter.github.io</strong> labeled Portfolio. Featured section → same URL. Copy-ready headline and About text: <a href="linkedin.html">LinkedIn kit</a>.</p>
+      </article>
     </section>
   </main>
-
-  <footer>
-    <p>Nicholas Lane · <a href="https://github.com/Fomorianshifter">GitHub</a> · <a href="resume.html">Resume</a> · <a href="projects.html">Projects</a></p>
-  </footer>
+  <footer><div class="wrap">Nicholas Lane · +1 608 717 7602 · <a href="linkedin.html">Copy for LinkedIn</a></div></footer>
 </body>
 </html>
