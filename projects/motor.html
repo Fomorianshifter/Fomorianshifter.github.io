@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motor starter lab — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
+  <nav><a href="../projects.html">Projects</a></nav></div></header>
+  <div class="lab-wrap">
+    <p class="kicker">Interactive lab</p>
+    <h1>3-wire motor starter</h1>
+    <p class="muted">Start / Stop seal-in with overload and e-stop. Teaching demo only.</p>
+    <div class="panel" style="padding:1rem">
+      <label><input type="checkbox" id="estop" checked /> E-stop healthy (NC)</label>
+      <label><input type="checkbox" id="ol" checked /> Overload healthy (NC)</label>
+      <p class="actions">
+        <button class="btn primary" id="start" type="button">Start (NO)</button>
+        <button class="btn" id="stop" type="button">Stop (NC)</button>
+      </p>
+      <p>Seal-in: <strong id="aux">OPEN</strong></p>
+      <p>Motor: <strong id="motor">OFF</strong></p>
+      <p class="muted" id="why">Press Start with a healthy circuit.</p>
+    </div>
+  </div>
+  <script>
+    const estop = document.getElementById('estop');
+    const ol = document.getElementById('ol');
+    const aux = document.getElementById('aux');
+    const motor = document.getElementById('motor');
+    const why = document.getElementById('why');
+    let sealed = false;
+    let startPulse = false;
+    function evalRung() {
+      const healthy = estop.checked && ol.checked;
+      if (!healthy) sealed = false;
+      sealed = healthy && (startPulse || sealed);
+      aux.textContent = sealed ? 'CLOSED' : 'OPEN';
+      motor.textContent = sealed ? 'RUN' : 'OFF';
+      motor.style.color = sealed ? '#7ad0a5' : '#e08b6f';
+      if (!estop.checked) why.textContent = 'E-stop dropped the circuit.';
+      else if (!ol.checked) why.textContent = 'Overload opened the circuit.';
+      else if (sealed) why.textContent = 'Seal-in holding the coil after Start.';
+      else why.textContent = 'Circuit healthy. Waiting for Start.';
+    }
+    document.getElementById('start').onclick = () => { startPulse = true; evalRung(); startPulse = false; };
+    document.getElementById('stop').onclick = () => { sealed = false; evalRung(); };
+    estop.onchange = ol.onchange = evalRung;
+    evalRung();
+  </script>
+</body>
+</html>
