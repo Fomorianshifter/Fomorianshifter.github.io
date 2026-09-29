@@ -1,38 +1,41 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PLC ladder scan lab</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a><nav><a href="../projects.html">Projects</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Interactive lab</p><h1>Ladder scan</h1><p class="lede">Start/Stop seal-in plus e-stop. Scan updates the motor coil.</p></section>
-<section class="demo"><svg id="lad" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg"></svg>
-<div class="controls"><button id="start">Pulse START</button><button id="stop">Pulse STOP</button><button id="estop">Toggle E-STOP</button><button id="run">Run / Pause</button></div>
-<p id="status" class="lede" style="margin:12px 0 0"></p></section></main>
-<script>
-const S={start:false,stop:true,estop:false,motor:false,running:true};
-const svg=document.getElementById('lad'),status=document.getElementById('status');
-function contact(x,y,label,closed,hot){const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-g.innerHTML=`<line x1="${x}" y1="${y}" x2="${x+18}" y2="${y}" stroke="${hot?'#3dd6c6':'#5b6d7a'}" stroke-width="3"/><line x1="${x+18}" y1="${y-16}" x2="${x+18}" y2="${y+16}" stroke="${hot?'#3dd6c6':'#5b6d7a'}" stroke-width="3"/><line x1="${x+42}" y1="${y-16}" x2="${x+42}" y2="${y+16}" stroke="${hot?'#3dd6c6':'#5b6d7a'}" stroke-width="3"/>${closed?`<line x1="${x+18}" y1="${y-14}" x2="${x+42}" y2="${y+14}" stroke="#f0b429" stroke-width="2"/>`:''}<line x1="${x+42}" y1="${y}" x2="${x+60}" y2="${y}" stroke="${hot?'#3dd6c6':'#5b6d7a'}" stroke-width="3"/><text x="${x+30}" y="${y-22}" text-anchor="middle" fill="#93a4b3" font-size="12" font-family="IBM Plex Mono">${label}</text>`;return g;}
-function coil(x,y,label,on){const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-g.innerHTML=`<circle cx="${x+20}" cy="${y}" r="16" fill="none" stroke="${on?'#3dd6c6':'#5b6d7a'}" stroke-width="3"/><text x="${x+20}" y="${y+5}" text-anchor="middle" fill="${on?'#3dd6c6':'#93a4b3'}" font-size="12" font-family="IBM Plex Mono">${label}</text>`;return g;}
-function draw(){svg.innerHTML='<line x1="30" y1="30" x2="30" y2="230" stroke="#2a3946" stroke-width="6"/><line x1="690" y1="30" x2="690" y2="230" stroke="#2a3946" stroke-width="6"/>';
-const r1hot=!S.estop&&(S.start||S.motor)&&S.stop,y1=90,y2=180;
-svg.appendChild(contact(50,y1,'ESTOP NC',true,!S.estop));
-svg.appendChild(contact(140,y1,'START',false,S.start||S.motor));
-svg.appendChild(contact(230,y1,'STOP NC',true,S.stop));
-svg.appendChild(coil(600,y1,'M',S.motor));
-const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-line.setAttribute('x1','320');line.setAttribute('y1',String(y1));line.setAttribute('x2','600');line.setAttribute('y2',String(y1));
-line.setAttribute('stroke',r1hot?'#3dd6c6':'#5b6d7a');line.setAttribute('stroke-width','3');svg.appendChild(line);
-svg.appendChild(contact(140,y2,'M seal',false,S.motor));
-const seal=document.createElementNS('http://www.w3.org/2000/svg','line');
-seal.setAttribute('x1','200');seal.setAttribute('y1',String(y2));seal.setAttribute('x2','200');seal.setAttribute('y2',String(y1));
-seal.setAttribute('stroke',S.motor?'#3dd6c6':'#5b6d7a');seal.setAttribute('stroke-width','3');svg.appendChild(seal);
-status.textContent=`E-STOP ${S.estop?'TRIPPED':'ok'} · MOTOR ${S.motor?'ON':'OFF'}`;
-}
-function scan(){S.motor=!S.estop&&S.stop&&(S.start||S.motor);S.start=false;draw();}
-document.getElementById('start').onclick=()=>{S.start=true;};
-document.getElementById('stop').onclick=()=>{S.stop=false;scan();S.stop=true;draw();};
-document.getElementById('estop').onclick=()=>{S.estop=!S.estop;scan();};
-document.getElementById('run').onclick=()=>{S.running=!S.running;};
-setInterval(()=>{if(S.running)scan();},400);draw();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PLC ladder scan</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="nav"><a class="mark" href="/">NL</a><nav><a href="/">Home</a></nav></header>
+  <div class="lab-wrap">
+    <h1>PLC ladder scan</h1>
+    <p class="muted">Toggle inputs. The scan evaluates the rung and lights the coil. This is a teaching demo, not a real controller.</p>
+    <div class="panel" style="padding:1rem">
+      <p><label><input type="checkbox" id="i1" /> Input I1 (start)</label></p>
+      <p><label><input type="checkbox" id="i2" checked /> Input I2 (permissive / not-stop)</label></p>
+      <p>Rung: <code>I1 AND I2 → Coil C1</code></p>
+      <p>Coil C1: <strong id="coil">OFF</strong></p>
+      <p class="muted" id="scan">Scan #0</p>
+    </div>
+  </div>
+  <script>
+    const i1 = document.getElementById('i1');
+    const i2 = document.getElementById('i2');
+    const coil = document.getElementById('coil');
+    const scan = document.getElementById('scan');
+    let n = 0;
+    function tick() {
+      n += 1;
+      const on = i1.checked && i2.checked;
+      coil.textContent = on ? 'ON' : 'OFF';
+      coil.style.color = on ? '#7ad0a5' : '#e08b6f';
+      scan.textContent = 'Scan #' + n;
+    }
+    i1.addEventListener('change', tick);
+    i2.addEventListener('change', tick);
+    setInterval(tick, 400);
+    tick();
+  </script>
+</body>
+</html>

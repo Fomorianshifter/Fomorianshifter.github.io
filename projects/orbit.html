@@ -1,13 +1,48 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Orbit lab</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a><nav><a href="../projects.html">Projects</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Early JavaScript, rebuilt clean</p><h1>Orbit sketch</h1></section>
-<section class="demo"><canvas id="c" width="900" height="520"></canvas></section></main>
-<script>
-const c=document.getElementById('c'),x=c.getContext('2d');
-const planets=[{r:50,s:.028,size:4,color:'#c4b5a0'},{r:80,s:.018,size:7,color:'#f0b429'},{r:115,s:.014,size:8,color:'#3dd6c6'},{r:150,s:.011,size:6,color:'#ff6b4a'},{r:200,s:.006,size:12,color:'#d9a066'}];
-let t=0;function frame(){t++;x.fillStyle='#0a0f13';x.fillRect(0,0,c.width,c.height);const cx=c.width/2,cy=c.height/2;x.fillStyle='#f0b429';x.beginPath();x.arc(cx,cy,16,0,Math.PI*2);x.fill();
-planets.forEach(p=>{x.strokeStyle='#2a3946';x.beginPath();x.arc(cx,cy,p.r,0,Math.PI*2);x.stroke();const a=t*p.s;x.fillStyle=p.color;x.beginPath();x.arc(cx+Math.cos(a)*p.r,cy+Math.sin(a)*p.r,p.size,0,Math.PI*2);x.fill();});requestAnimationFrame(frame);}frame();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Orbit lab</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="nav"><a class="mark" href="/">NL</a><nav><a href="/">Home</a></nav></header>
+  <div class="lab-wrap">
+    <h1>Orbit lab</h1>
+    <p class="muted">Minimal solar-system demo for the portfolio. Same idea as the SolarSystem GitHub repo.</p>
+    <canvas id="c" width="680" height="420"></canvas>
+  </div>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const planets = [
+      { r: 40, size: 4, speed: 0.028, color: '#c9a27a' },
+      { r: 70, size: 6, speed: 0.018, color: '#7ad0a5' },
+      { r: 105, size: 7, speed: 0.012, color: '#8bb4ff' },
+      { r: 145, size: 5, speed: 0.008, color: '#e08b6f' },
+      { r: 185, size: 10, speed: 0.005, color: '#d7b56a' }
+    ];
+    let t = 0;
+    function draw() {
+      const cx = canvas.width / 2, cy = canvas.height / 2;
+      ctx.fillStyle = '#0b0f14';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffd36a';
+      ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
+      planets.forEach((p) => {
+        ctx.strokeStyle = '#243042';
+        ctx.beginPath(); ctx.arc(cx, cy, p.r, 0, Math.PI * 2); ctx.stroke();
+        const a = t * p.speed;
+        const x = cx + Math.cos(a) * p.r;
+        const y = cy + Math.sin(a) * p.r * 0.62;
+        ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.arc(x, y, p.size, 0, Math.PI * 2); ctx.fill();
+      });
+      t += 1;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>
