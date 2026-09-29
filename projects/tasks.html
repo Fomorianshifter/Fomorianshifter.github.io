@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job board — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
+  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a><a href="../resume.html">Resume</a></nav></div></header>
+  <main class="wrap">
+    <p class="kicker">Basic web lab · localStorage</p>
+    <h1>Shop-floor task board</h1>
+    <p class="lede">A small to-do app with persist-in-browser storage. Same pattern as a CMMS punch list.</p>
+    <form id="f" class="card" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:end">
+      <label style="flex:1;min-width:12rem">Task
+        <input id="t" required placeholder="Replace overload on AHU-2" style="width:100%;padding:.5rem;margin-top:.2rem;background:#0b0f14;color:#e8edf4;border:1px solid #2a3340;border-radius:8px">
+      </label>
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+    <ul id="list" class="steps" style="margin-top:1.2rem"></ul>
+  </main>
+  <script>
+    const KEY = 'nl-tasks-v1';
+    let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+    const list = document.getElementById('list');
+    function save() { localStorage.setItem(KEY, JSON.stringify(items)); render(); }
+    function render() {
+      list.innerHTML = items.map((it, i) => '<li><label><input type="checkbox" data-i="'+i+'" '+(it.done?'checked':'')+'> '+(it.done?'<s>':'')+it.text+(it.done?'</s>':'')+'</label> <button data-del="'+i+'" class="btn" style="padding:.15rem .5rem;font-size:.8rem">remove</button></li>').join('') || '<li class="muted">No open work.</li>';
+    }
+    document.getElementById('f').addEventListener('submit', e => {
+      e.preventDefault();
+      items.push({ text: document.getElementById('t').value.trim(), done: false });
+      document.getElementById('t').value = '';
+      save();
+    });
+    list.addEventListener('click', e => {
+      if (e.target.dataset.i != null) { items[+e.target.dataset.i].done = e.target.checked; save(); }
+      if (e.target.dataset.del != null) { items.splice(+e.target.dataset.del, 1); save(); }
+    });
+    render();
+  </script>
+</body></html>
