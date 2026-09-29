@@ -4,20 +4,93 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Projects — Nicholas Lane</title>
+  <meta name="description" content="GitHub work and browser labs for Nicholas Lane." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="nav"><a class="mark" href="/">NL</a><nav><a href="/">Home</a></nav></header>
+  <header class="nav">
+    <a class="mark" href="/">NL</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="resume.html">Resume</a>
+      <a href="linkedin.html">LinkedIn copy</a>
+      <a href="https://github.com/Fomorianshifter" rel="noopener">GitHub</a>
+    </nav>
+  </header>
   <main>
+    <p class="eyebrow">Portfolio · live demos + source</p>
     <h1>Projects</h1>
-    <ul>
-      <li><a href="https://github.com/Fomorianshifter/Loki">Loki</a> — embedded companion firmware</li>
-      <li><a href="https://github.com/Fomorianshifter/GhostGPS">GhostGPS</a> — location / sensor experiment</li>
-      <li><a href="projects/orbit.html">Orbit lab</a> — canvas solar system</li>
-      <li><a href="projects/ladder.html">PLC ladder scan</a> — controls demo</li>
-      <li><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></li>
-      <li><a href="https://github.com/Fomorianshifter/One">One</a> — early JavaScript import</li>
-    </ul>
+    <p class="lede">Best public work first. Labs are small on-purpose so a hiring manager can click through in under a minute.</p>
+
+    <h2>GitHub</h2>
+    <div class="grid">
+      <article class="card">
+        <p class="tag">Flagship · C</p>
+        <h3>Loki</h3>
+        <p>Embedded dragon companion for Linux SBCs: TFT drivers, local config UI, Flipper Zero UART.</p>
+        <a href="https://github.com/Fomorianshifter/Loki">Source</a>
+        <a href="projects/loki.html">Notes</a>
+      </article>
+      <article class="card">
+        <p class="tag">Sensors</p>
+        <h3>GhostGPS</h3>
+        <p>Location / tracking experiment next to field diagnostics.</p>
+        <a href="https://github.com/Fomorianshifter/GhostGPS">Source</a>
+      </article>
+      <article class="card">
+        <p class="tag">JavaScript</p>
+        <h3>Solar System</h3>
+        <p>Orbit visualization coursework turned into a live canvas demo.</p>
+        <a href="https://github.com/Fomorianshifter/SolarSystem">Source</a>
+        <a href="projects/orbit.html">Live demo</a>
+      </article>
+      <article class="card">
+        <p class="tag">Web basics</p>
+        <h3>One</h3>
+        <p>Microsoft Web-Dev-For-Beginners import — HTML, CSS, JavaScript foundation.</p>
+        <a href="https://github.com/Fomorianshifter/One">Source</a>
+      </article>
+    </div>
+
+    <h2>Browser labs</h2>
+    <div class="grid">
+      <article class="card">
+        <p class="tag">Controls</p>
+        <h3>PLC ladder scan</h3>
+        <p>Inputs, rung logic, coil state, scan counter.</p>
+        <a href="projects/ladder.html">Open</a>
+      </article>
+      <article class="card">
+        <p class="tag">Electrical</p>
+        <h3>Wire size helper</h3>
+        <p>THHN copper ampacity lookup. Teaching tool, not a code book.</p>
+        <a href="projects/wire-calc.html">Open</a>
+      </article>
+      <article class="card">
+        <p class="tag">Canvas</p>
+        <h3>Orbit lab</h3>
+        <p>Planets in motion. Same idea as the SolarSystem repo.</p>
+        <a href="projects/orbit.html">Open</a>
+      </article>
+      <article class="card">
+        <p class="tag">Math</p>
+        <h3>Locus</h3>
+        <p>Function grapher sketch.</p>
+        <a href="projects/locus.html">Open</a>
+      </article>
+      <article class="card">
+        <p class="tag">Plant floor</p>
+        <h3>Panel / LOTO / CMMS sketches</h3>
+        <p>Small industrial-language pages: panel load, lockout, work-order flavor.</p>
+        <a href="projects/panel.html">Panel</a>
+        <a href="projects/loto.html">LOTO</a>
+        <a href="projects/cmms.html">CMMS</a>
+      </article>
+    </div>
   </main>
+  <footer>
+    <p>Nicholas Lane · <a href="/">Home</a> · <a href="https://github.com/Fomorianshifter">GitHub</a></p>
+  </footer>
 </body>
 </html>
