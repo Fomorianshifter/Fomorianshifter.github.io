@@ -1,102 +1,164 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nicholas Lane — Controls, Electrical & Web</title>
-  <meta name="description" content="Industrial electrician moving into controls and software. PLC support, embedded systems, and web projects." />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Nicholas Lane — Controls, Electrical &amp; Web</title>
+  <meta name="description" content="Industrial electrician building toward controls, automation, and junior web roles." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#0c1116; --panel:#151c24; --line:#2a3644; --text:#e8eef4; --muted:#9aacbd; --accent:#7bd4c4; --accent2:#e6b35a; --danger:#e07a6a; }
+    * { box-sizing:border-box } html { scroll-behavior:smooth }
+    body { margin:0; font-family:"IBM Plex Sans",system-ui,sans-serif; background:radial-gradient(1200px 600px at 10% -10%,#1a2a33 0%,var(--bg) 50%); color:var(--text); line-height:1.55 }
+    a { color:var(--accent) }
+    header,main,footer { max-width:1080px; margin:0 auto; padding:0 20px }
+    header { display:flex; justify-content:space-between; align-items:center; padding-top:22px; padding-bottom:22px; gap:16px; flex-wrap:wrap }
+    nav { display:flex; gap:16px; flex-wrap:wrap }
+    nav a { color:var(--muted); text-decoration:none }
+    nav a:hover { color:var(--text) }
+    .eyebrow { color:var(--accent); font-family:"IBM Plex Mono",monospace; font-size:.82rem; letter-spacing:.06em }
+    h1 { font-size:clamp(2rem,4vw,3.1rem); line-height:1.15; margin:10px 0 14px }
+    .lede { max-width:720px; color:var(--muted); font-size:1.08rem }
+    .cta { display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 8px }
+    .btn { display:inline-block; text-decoration:none; border-radius:8px; padding:10px 14px; font-weight:600; border:1px solid var(--line); background:var(--panel); color:var(--text) }
+    .btn.primary { background:var(--accent); color:#08201c; border-color:transparent }
+    section { padding:36px 0; border-top:1px solid var(--line) }
+    h2 { margin:0 0 16px; font-size:1.45rem }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px }
+    .tag { font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--accent2) }
+    .skills { display:flex; flex-wrap:wrap; gap:8px }
+    .skills span { border:1px solid var(--line); background:#10171e; border-radius:999px; padding:6px 10px; font-size:.86rem; color:var(--muted) }
+    .job { margin-bottom:18px } .job h3 { margin:0 0 4px } .meta { color:var(--muted); font-size:.92rem }
+    ul { margin:8px 0 0; padding-left:18px }
+    .lab { display:grid; grid-template-columns:1fr; gap:16px }
+    @media (min-width:860px){ .lab { grid-template-columns:1fr 1fr } }
+    label { display:block; font-size:.86rem; color:var(--muted); margin-top:8px }
+    input,button { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
+    button { cursor:pointer; background:#1c2a34 }
+    .rung { font-family:"IBM Plex Mono",monospace; font-size:.85rem; padding:8px; border:1px dashed var(--line); border-radius:8px; margin-top:8px }
+    .on { color:var(--accent) } .off { color:var(--danger) }
+    #tasks { list-style:none; padding:0; margin:10px 0 0 }
+    #tasks li { display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line) }
+    footer { padding:28px 20px 48px; color:var(--muted); font-size:.92rem }
+  </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap">
-      <a class="brand" href="index.html">NL<span>/</span>controls</a>
-      <nav>
-        <a class="active" href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="resume.html">Resume</a>
-        <a href="linkedin.html">LinkedIn kit</a>
-      </nav>
+<header>
+  <strong>Nicholas Lane</strong>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#projects">Projects</a>
+    <a href="#labs">Labs</a>
+    <a href="#resume">Resume</a>
+    <a href="#linkedin">LinkedIn</a>
+    <a href="https://github.com/Fomorianshifter">GitHub</a>
+  </nav>
+</header>
+<main>
+  <div class="hero" style="padding:28px 0 12px">
+    <div class="eyebrow">GREEN BAY, WI · OPEN TO RELOCATE · US WORK AUTHORIZED</div>
+    <h1>Industrial electrician building toward controls, automation, and the web.</h1>
+    <p class="lede">Five-plus years on construction sites and in a foundry. PLC install and troubleshooting support at Grede Foundries. Pairing that floor experience with freeCodeCamp, embedded C, and public HTML/CSS/JS labs.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/Fomorianshifter">GitHub</a>
+      <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
+      <a class="btn" href="https://fomorianshifter.github.io">Live site</a>
     </div>
-  </header>
-  <main class="wrap">
-    <section class="hero">
-      <p class="kicker">Green Bay, WI · open to relocate · authorized to work in the US</p>
-      <h1>Industrial electrician building toward controls, automation, and software.</h1>
-      <p class="lede">Five-plus years in electrical systems with hands-on PLC install and troubleshooting support. Pairing plant-floor experience with freeCodeCamp coursework, embedded C, and public web labs.</p>
-      <div class="actions">
-        <a class="btn primary" href="projects.html">View projects</a>
-        <a class="btn" href="https://github.com/Fomorianshifter" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="btn" href="resume.html">Resume</a>
-        <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
-      </div>
-    </section>
-    <section>
-      <h2>Featured work</h2>
-      <div class="grid cards-3">
-        <article class="card">
-          <div class="meta">C · Embedded · Hardware</div>
-          <h3>Loki</h3>
-          <p>Dragon companion firmware for Linux SBCs: TFT drivers, local config UI, and Flipper Zero UART integration.</p>
-          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/Loki">GitHub</a></p>
-        </article>
-        <article class="card">
-          <div class="meta">Embedded · Sensors</div>
-          <h3>GhostGPS</h3>
-          <p>Location / tracking experiment next to field diagnostics work.</p>
-          <p style="margin-top:14px"><a href="https://github.com/Fomorianshifter/GhostGPS">GitHub</a></p>
-        </article>
-        <article class="card">
-          <div class="meta">Interactive lab</div>
-          <h3>PLC ladder scan</h3>
-          <p>Browser demo of a scan cycle: inputs, rungs, and coil state.</p>
-          <p style="margin-top:14px"><a href="projects/ladder.html">Open lab</a></p>
-        </article>
-        <article class="card">
-          <div class="meta">Interactive lab</div>
-          <h3>Motor starter</h3>
-          <p>3-wire start/stop seal-in with overload and e-stop — interview-ready demo.</p>
-          <p style="margin-top:14px"><a href="projects/motor.html">Open lab</a></p>
-        </article>
-        <article class="card">
-          <div class="meta">Electrical math</div>
-          <h3>Voltage divider</h3>
-          <p>Live Vout and current from Vin, R1, and R2.</p>
-          <p style="margin-top:14px"><a href="projects/divider.html">Open lab</a></p>
-        </article>
-        <article class="card">
-          <div class="meta">Basic JS</div>
-          <h3>Task board</h3>
-          <p>Add / complete / persist work items in the browser.</p>
-          <p style="margin-top:14px"><a href="projects/tasks.html">Open lab</a></p>
-        </article>
-      </div>
-    </section>
-    <section>
-      <h2>What I bring</h2>
-      <div class="grid cards-3">
-        <article class="card"><h3>Plant floor</h3><p>Grede Foundries: PLC install support, 50+ electrical issues a month with engineering, 100% safety inspection compliance.</p></article>
-        <article class="card"><h3>Construction & service</h3><p>AC Electric and Greenfield Electric: construction, remodels, service, blueprints, motors, wiring.</p></article>
-        <article class="card"><h3>Software path</h3><p>freeCodeCamp CS track, responsive web design cert, C and JavaScript practice, public GitHub.</p></article>
-      </div>
-    </section>
-    <section>
-      <h2>Core skills</h2>
-      <div class="skills">
-        <span>PLC install & troubleshooting</span><span>Electrical diagnostics</span><span>Blueprint / schematic reading</span><span>Industrial maintenance</span><span>Motors & controls</span><span>HTML / CSS / JavaScript</span><span>C on embedded Linux</span><span>Git</span><span>Safety compliance</span>
-      </div>
-    </section>
-    <section>
-      <h2>Put this on LinkedIn</h2>
+  </div>
+
+  <section id="work">
+    <h2>What I bring</h2>
+    <div class="grid">
+      <article class="card"><div class="tag">PLANT FLOOR</div><h3>Grede Foundries</h3><p>PLC install support, 50+ electrical issues a month with engineering, 100% safety inspection compliance.</p></article>
+      <article class="card"><div class="tag">CONSTRUCTION &amp; SERVICE</div><h3>AC Electric / Greenfield</h3><p>New construction, remodels, service calls, blueprint reading, motors, wiring.</p></article>
+      <article class="card"><div class="tag">SOFTWARE PATH</div><h3>freeCodeCamp + C</h3><p>Responsive web design cert, CS track in progress, Loki firmware in C on Linux SBCs, public GitHub.</p></article>
+    </div>
+    <p class="skills" style="margin-top:18px">
+      <span>PLC install &amp; troubleshooting</span><span>Electrical diagnostics</span><span>Blueprint / schematic reading</span><span>Industrial maintenance</span><span>Motors &amp; controls</span><span>HTML / CSS / JavaScript</span><span>C on embedded Linux</span><span>Git</span><span>Safety compliance</span>
+    </p>
+  </section>
+
+  <section id="projects">
+    <h2>Featured GitHub work</h2>
+    <div class="grid">
+      <article class="card"><div class="tag">C · EMBEDDED · HARDWARE</div><h3>Loki</h3><p>Dragon companion firmware for Linux SBCs: HAL (GPIO/SPI/I2C/UART/PWM), TFT / SD / EEPROM drivers, Flipper Zero UART, local config UI, and a life-cycle state machine.</p><p><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p></article>
+      <article class="card"><div class="tag">MOBILE · LOCATION EXPERIMENT</div><h3>GhostGPS</h3><p>Early location / routing experiment next to field diagnostics work. Keep this framed as a learning repo.</p><p><a href="https://github.com/Fomorianshifter/GhostGPS">github.com/Fomorianshifter/GhostGPS</a></p></article>
+      <article class="card"><div class="tag">JS · FIRST PUBLIC PAGES</div><h3>Solar System / One</h3><p>Early orbit sketches and a first JavaScript import — proof of shipping in public, not finished products.</p><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/One">One</a></p></article>
+    </div>
+  </section>
+
+  <section id="labs">
+    <h2>Basic projects you can demo in an interview</h2>
+    <div class="lab">
       <article class="card">
-        <p>Website field → <strong>https://fomorianshifter.github.io</strong> labeled Portfolio. Featured section → same URL. Copy-ready headline and About text: <a href="linkedin.html">LinkedIn kit</a>.</p>
+        <div class="tag">ELECTRICAL MATH</div><h3>Voltage divider</h3>
+        <label>Vin (V) <input id="vin" type="number" value="24" step="0.1"></label>
+        <label>R1 (Ω) <input id="r1" type="number" value="10000" step="100"></label>
+        <label>R2 (Ω) <input id="r2" type="number" value="10000" step="100"></label>
+        <p id="divOut" class="rung">Vout = —</p>
       </article>
-    </section>
-  </main>
-  <footer><div class="wrap">Nicholas Lane · +1 608 717 7602 · <a href="linkedin.html">Copy for LinkedIn</a></div></footer>
+      <article class="card">
+        <div class="tag">CONTROLS</div><h3>3-wire motor starter</h3>
+        <p>Start / Stop seal-in with overload and e-stop.</p>
+        <div class="cta"><button id="start">Start</button><button id="stop">Stop</button><button id="ol">Toggle OL</button><button id="estop">E-stop</button></div>
+        <p id="motor" class="rung off">MOTOR OFF</p>
+      </article>
+      <article class="card">
+        <div class="tag">PLC MENTAL MODEL</div><h3>Ladder scan</h3>
+        <label><input id="inA" type="checkbox"> Input A</label>
+        <label><input id="inB" type="checkbox"> Input B</label>
+        <p class="rung">Rung 1: A AND B → Coil C</p>
+        <p id="coil" class="rung off">Coil C = 0</p>
+      </article>
+      <article class="card">
+        <div class="tag">BASIC JS</div><h3>Task board</h3>
+        <div class="cta"><input id="taskIn" placeholder="Add a task"><button id="addTask">Add</button></div>
+        <ul id="tasks"></ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="resume">
+    <h2>Experience &amp; education</h2>
+    <div class="job"><h3>Industrial Electrician — Grede Foundries, Reedsburg, WI</h3><div class="meta">Oct 2021 – Mar 2024</div><ul><li>Assisted installation and programming of PLC systems.</li><li>Closed 50+ electrical issues per month with engineering.</li><li>Monthly inspections at 100% safety-standard compliance.</li></ul></div>
+    <div class="job"><h3>Electrician — AC Electric, Hayward, WI</h3><div class="meta">Sep 2018 – Oct 2021</div><ul><li>New construction, remodels, and service calls.</li><li>Observed PLC installs on automated systems.</li></ul></div>
+    <div class="job"><h3>Electrician (Laborer / Apprentice) — Greenfield Electric</h3><div class="meta">Jul 2016 – Sep 2018</div><ul><li>Assisted journeyman and master electricians on installs.</li></ul></div>
+    <div class="job"><h3>Quality Control Inspector — Comp X, Grayslake, IL</h3><div class="meta">Apr 2013 – Dec 2015</div><ul><li>CNC process oversight and quality inspections.</li></ul></div>
+    <div class="job"><h3>Education</h3><ul><li>Computer Science — freeCodeCamp, Mar 2023 – present</li><li>Liberal Arts &amp; Sciences, Associate’s — Cardinal Stritch University, 2010–2012</li><li>High School Diploma — Round Lake Senior High School, 2006</li></ul></div>
+  </section>
+
+  <section id="linkedin">
+    <h2>Paste this into LinkedIn</h2>
+    <article class="card">
+      <p><strong>Website field:</strong> https://fomorianshifter.github.io — type Portfolio. Add the same URL under Featured.</p>
+      <p><strong>Headline:</strong><br>Industrial Electrician → Controls &amp; Web | PLC support, HTML/CSS/JS, embedded C</p>
+      <p><strong>About:</strong><br>Industrial electrician with 5+ years on construction sites and in a foundry. At Grede Foundries I supported PLC installs and helped close 50+ electrical issues a month with engineering, at 100% inspection compliance.<br><br>I am building the software side in public: Loki (C firmware on Linux SBCs with TFT + Flipper Zero UART), GhostGPS, and interactive labs on this site (ladder scan, motor starter, voltage divider).<br><br>Open to controls, industrial maintenance, and junior web or automation roles. Willing to relocate anywhere in the US.<br><br>Portfolio: https://fomorianshifter.github.io/<br>GitHub: https://github.com/Fomorianshifter<br>Email: nlane713@gmail.com</p>
+    </article>
+  </section>
+</main>
+<footer>Nicholas Lane · Green Bay, WI · nlane713@gmail.com · +1 608 717 7602</footer>
+<script>
+const vin=document.getElementById('vin'), r1=document.getElementById('r1'), r2=document.getElementById('r2'), divOut=document.getElementById('divOut');
+function divider(){const V=+vin.value,a=+r1.value,b=+r2.value; if(!(a+b)){divOut.textContent='Enter resistances';return;} const vout=V*(b/(a+b)), i=V/(a+b); divOut.textContent=`Vout = ${vout.toFixed(3)} V · I = ${(i*1000).toFixed(3)} mA`;}
+[vin,r1,r2].forEach(el=>el.addEventListener('input',divider)); divider();
+const state={run:false,ol:false,estop:false}; const motor=document.getElementById('motor');
+function renderMotor(){const can=state.run&&!state.ol&&!state.estop; motor.className='rung '+(can?'on':'off'); motor.textContent=`MOTOR ${can?'ON':'OFF'} · OL ${state.ol?'TRIP':'OK'} · E-STOP ${state.estop?'HIT':'OK'}`;}
+document.getElementById('start').onclick=()=>{if(!state.ol&&!state.estop) state.run=true; renderMotor();};
+document.getElementById('stop').onclick=()=>{state.run=false; renderMotor();};
+document.getElementById('ol').onclick=()=>{state.ol=!state.ol; if(state.ol) state.run=false; renderMotor();};
+document.getElementById('estop').onclick=()=>{state.estop=!state.estop; if(state.estop) state.run=false; renderMotor();};
+renderMotor();
+const coil=document.getElementById('coil');
+function scan(){const c=document.getElementById('inA').checked&&document.getElementById('inB').checked; coil.className='rung '+(c?'on':'off'); coil.textContent='Coil C = '+(c?'1':'0');}
+document.getElementById('inA').onchange=scan; document.getElementById('inB').onchange=scan;
+const tasks=JSON.parse(localStorage.getItem('nl-tasks')||'[]'); const list=document.getElementById('tasks');
+function drawTasks(){list.innerHTML=''; tasks.forEach((t,i)=>{const li=document.createElement('li'); li.innerHTML=`<span style="${t.done?'text-decoration:line-through;color:#9aacbd':''}">${t.text}</span>`; const b=document.createElement('button'); b.textContent=t.done?'Undo':'Done'; b.onclick=()=>{tasks[i].done=!tasks[i].done; save();}; li.appendChild(b); list.appendChild(li);});}
+function save(){localStorage.setItem('nl-tasks',JSON.stringify(tasks)); drawTasks();}
+document.getElementById('addTask').onclick=()=>{const v=document.getElementById('taskIn').value.trim(); if(!v) return; tasks.push({text:v,done:false}); document.getElementById('taskIn').value=''; save();};
+drawTasks();
+</script>
 </body>
 </html>
