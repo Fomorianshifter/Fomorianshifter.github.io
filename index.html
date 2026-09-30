@@ -4,7 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nicholas Lane — Controls, Electrical &amp; Web</title>
-  <meta name="description" content="Industrial electrician building toward controls, automation, and junior web roles." />
+  <meta name="description" content="Industrial electrician building toward controls, automation, and junior web roles. Portfolio, GitHub projects, and interactive labs." />
+  <link rel="canonical" href="https://fomorianshifter.github.io/" />
+  <meta property="og:title" content="Nicholas Lane — Controls, Electrical &amp; Web" />
+  <meta property="og:description" content="Industrial electrician. PLC support at Grede Foundries. Loki firmware, HTML/CSS/JS labs. Open to relocate." />
+  <meta property="og:url" content="https://fomorianshifter.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -43,6 +49,7 @@
     #tasks { list-style:none; padding:0; margin:10px 0 0 }
     #tasks li { display:flex; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line) }
     footer { padding:28px 20px 48px; color:var(--muted); font-size:.92rem }
+    pre { white-space:pre-wrap; font-family:"IBM Plex Sans",sans-serif; margin:0 }
   </style>
 </head>
 <body>
@@ -52,8 +59,9 @@
     <a href="#work">Work</a>
     <a href="#projects">Projects</a>
     <a href="#labs">Labs</a>
-    <a href="#resume">Resume</a>
-    <a href="#linkedin">LinkedIn</a>
+    <a href="projects.html">All projects</a>
+    <a href="resume.html">Resume</a>
+    <a href="linkedin.html">LinkedIn kit</a>
     <a href="https://github.com/Fomorianshifter">GitHub</a>
   </nav>
 </header>
@@ -65,7 +73,7 @@
     <div class="cta">
       <a class="btn primary" href="https://github.com/Fomorianshifter">GitHub</a>
       <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
-      <a class="btn" href="https://fomorianshifter.github.io">Live site</a>
+      <a class="btn" href="projects.html">Demo labs</a>
     </div>
   </div>
 
@@ -84,9 +92,9 @@
   <section id="projects">
     <h2>Featured GitHub work</h2>
     <div class="grid">
-      <article class="card"><div class="tag">C · EMBEDDED · HARDWARE</div><h3>Loki</h3><p>Dragon companion firmware for Linux SBCs: HAL (GPIO/SPI/I2C/UART/PWM), TFT / SD / EEPROM drivers, Flipper Zero UART, local config UI, and a life-cycle state machine.</p><p><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p></article>
-      <article class="card"><div class="tag">MOBILE · LOCATION EXPERIMENT</div><h3>GhostGPS</h3><p>Early location / routing experiment next to field diagnostics work. Keep this framed as a learning repo.</p><p><a href="https://github.com/Fomorianshifter/GhostGPS">github.com/Fomorianshifter/GhostGPS</a></p></article>
-      <article class="card"><div class="tag">JS · FIRST PUBLIC PAGES</div><h3>Solar System / One</h3><p>Early orbit sketches and a first JavaScript import — proof of shipping in public, not finished products.</p><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/One">One</a></p></article>
+      <article class="card"><div class="tag">C · EMBEDDED · HARDWARE</div><h3>Loki</h3><p>Dragon companion firmware for Linux SBCs: HAL (GPIO/SPI/I2C/UART/PWM), TFT / SD / EEPROM drivers, Flipper Zero UART, local config UI, and a life-cycle state machine.</p><p><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="projects/loki.html">Notes</a></p></article>
+      <article class="card"><div class="tag">MOBILE · LOCATION EXPERIMENT</div><h3>GhostGPS</h3><p>Location / routing experiment next to field diagnostics work. Learning repo, not a finished product.</p><p><a href="https://github.com/Fomorianshifter/GhostGPS">Source</a></p></article>
+      <article class="card"><div class="tag">JS · FIRST PUBLIC PAGES</div><h3>Solar System / One</h3><p>Early orbit sketches and a first JavaScript import — proof of shipping in public.</p><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="projects/orbit.html">Live orbit lab</a> · <a href="https://github.com/Fomorianshifter/One">One</a></p></article>
     </div>
   </section>
 
@@ -99,12 +107,14 @@
         <label>R1 (Ω) <input id="r1" type="number" value="10000" step="100"></label>
         <label>R2 (Ω) <input id="r2" type="number" value="10000" step="100"></label>
         <p id="divOut" class="rung">Vout = —</p>
+        <p><a href="projects/divider.html">Open full lab</a></p>
       </article>
       <article class="card">
         <div class="tag">CONTROLS</div><h3>3-wire motor starter</h3>
         <p>Start / Stop seal-in with overload and e-stop.</p>
         <div class="cta"><button id="start">Start</button><button id="stop">Stop</button><button id="ol">Toggle OL</button><button id="estop">E-stop</button></div>
         <p id="motor" class="rung off">MOTOR OFF</p>
+        <p><a href="projects/motor.html">Open full lab</a></p>
       </article>
       <article class="card">
         <div class="tag">PLC MENTAL MODEL</div><h3>Ladder scan</h3>
@@ -112,13 +122,16 @@
         <label><input id="inB" type="checkbox"> Input B</label>
         <p class="rung">Rung 1: A AND B → Coil C</p>
         <p id="coil" class="rung off">Coil C = 0</p>
+        <p><a href="projects/ladder.html">Open full lab</a></p>
       </article>
       <article class="card">
         <div class="tag">BASIC JS</div><h3>Task board</h3>
         <div class="cta"><input id="taskIn" placeholder="Add a task"><button id="addTask">Add</button></div>
         <ul id="tasks"></ul>
+        <p><a href="projects/tasks.html">Open full lab</a></p>
       </article>
     </div>
+    <p style="margin-top:18px" class="meta">More labs: <a href="projects/cmms.html">service-call log</a> · <a href="projects/loto.html">LOTO checklist</a> · <a href="projects/wire-calc.html">wire calculator</a> · <a href="projects/panel.html">panel load</a> · <a href="projects.html">all projects</a></p>
   </section>
 
   <section id="resume">
@@ -128,14 +141,27 @@
     <div class="job"><h3>Electrician (Laborer / Apprentice) — Greenfield Electric</h3><div class="meta">Jul 2016 – Sep 2018</div><ul><li>Assisted journeyman and master electricians on installs.</li></ul></div>
     <div class="job"><h3>Quality Control Inspector — Comp X, Grayslake, IL</h3><div class="meta">Apr 2013 – Dec 2015</div><ul><li>CNC process oversight and quality inspections.</li></ul></div>
     <div class="job"><h3>Education</h3><ul><li>Computer Science — freeCodeCamp, Mar 2023 – present</li><li>Liberal Arts &amp; Sciences, Associate’s — Cardinal Stritch University, 2010–2012</li><li>High School Diploma — Round Lake Senior High School, 2006</li></ul></div>
+    <p><a href="resume.html">Clean one-page resume</a></p>
   </section>
 
   <section id="linkedin">
     <h2>Paste this into LinkedIn</h2>
     <article class="card">
       <p><strong>Website field:</strong> https://fomorianshifter.github.io — type Portfolio. Add the same URL under Featured.</p>
-      <p><strong>Headline:</strong><br>Industrial Electrician → Controls &amp; Web | PLC support, HTML/CSS/JS, embedded C</p>
-      <p><strong>About:</strong><br>Industrial electrician with 5+ years on construction sites and in a foundry. At Grede Foundries I supported PLC installs and helped close 50+ electrical issues a month with engineering, at 100% inspection compliance.<br><br>I am building the software side in public: Loki (C firmware on Linux SBCs with TFT + Flipper Zero UART), GhostGPS, and interactive labs on this site (ladder scan, motor starter, voltage divider).<br><br>Open to controls, industrial maintenance, and junior web or automation roles. Willing to relocate anywhere in the US.<br><br>Portfolio: https://fomorianshifter.github.io/<br>GitHub: https://github.com/Fomorianshifter<br>Email: nlane713@gmail.com</p>
+      <p><strong>Headline</strong></p>
+      <pre id="li-headline">Industrial Electrician → Controls &amp; Web | PLC support, HTML/CSS/JS, embedded C</pre>
+      <p><strong>About</strong></p>
+      <pre id="li-about">Industrial electrician with 5+ years on construction sites and in a foundry. At Grede Foundries I supported PLC installs and helped close 50+ electrical issues a month with engineering, at 100% inspection compliance.
+
+I am building the software side in public: Loki (C firmware on Linux SBCs with TFT + Flipper Zero UART), GhostGPS, and interactive labs on this site (ladder scan, motor starter, voltage divider).
+
+Open to controls, industrial maintenance, and junior web or automation roles. Willing to relocate anywhere in the US.
+
+Portfolio: https://fomorianshifter.github.io/
+GitHub: https://github.com/Fomorianshifter
+Email: nlane713@gmail.com</pre>
+      <div class="cta"><button type="button" id="copyAbout">Copy About text</button> <a class="btn" href="linkedin.html">Full LinkedIn kit</a></div>
+      <p id="copied" class="meta"></p>
     </article>
   </section>
 </main>
@@ -159,6 +185,11 @@ function drawTasks(){list.innerHTML=''; tasks.forEach((t,i)=>{const li=document.
 function save(){localStorage.setItem('nl-tasks',JSON.stringify(tasks)); drawTasks();}
 document.getElementById('addTask').onclick=()=>{const v=document.getElementById('taskIn').value.trim(); if(!v) return; tasks.push({text:v,done:false}); document.getElementById('taskIn').value=''; save();};
 drawTasks();
+document.getElementById('copyAbout').onclick=async()=>{
+  const text=document.getElementById('li-about').textContent;
+  try { await navigator.clipboard.writeText(text); document.getElementById('copied').textContent='Copied.'; }
+  catch { document.getElementById('copied').textContent='Select the About text and copy manually.'; }
+};
 </script>
 </body>
 </html>
