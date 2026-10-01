@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shift log — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    form { display:grid; gap:8px; max-width:520px }
+    input, select, button { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
+    table { width:100%; border-collapse:collapse; margin-top:14px }
+    th, td { text-align:left; border-bottom:1px solid var(--line); padding:8px 6px; font-size:.92rem }
+    button { cursor:pointer }
+  </style>
+</head>
+<body>
+  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
+  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a></nav></div></header>
+  <main class="wrap">
+    <p class="kicker">Maintenance · basic project</p>
+    <h1>Foundry shift log</h1>
+    <p class="lede">A small browser CMMS. Calls stay in this browser. Use it to show how a service call gets logged: asset, fault, status.</p>
+    <form id="form">
+      <input name="asset" placeholder="Asset, e.g. Mold line 2 VFD" required />
+      <input name="fault" placeholder="Fault, e.g. overload trip after start" required />
+      <select name="status"><option>Open</option><option>Waiting parts</option><option>Closed</option></select>
+      <button>Add call</button>
+    </form>
+    <table><thead><tr><th>When</th><th>Asset</th><th>Fault</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+  </main>
+  <script>
+    const KEY = "nl-shift-log";
+    const rows = document.getElementById("rows");
+    const load = () => JSON.parse(localStorage.getItem(KEY) || "[]");
+    const save = (items) => localStorage.setItem(KEY, JSON.stringify(items));
+    const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    function render() {
+      rows.innerHTML = load().map((item, i) => `<tr><td>${esc(item.when)}</td><td>${esc(item.asset)}</td><td>${esc(item.fault)}</td><td>${esc(item.status)}</td><td><button data-i="${i}">Remove</button></td></tr>`).join("");
+    }
+    document.getElementById("form").onsubmit = (e) => {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const items = load();
+      items.unshift({ when: new Date().toLocaleString(), asset: data.get("asset"), fault: data.get("fault"), status: data.get("status") });
+      save(items); e.target.reset(); render();
+    };
+    rows.onclick = (e) => {
+      if (!e.target.dataset.i) return;
+      const items = load(); items.splice(+e.target.dataset.i, 1); save(items); render();
+    };
+    render();
+  </script>
+</body>
+</html>

@@ -1,52 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Locus — Nicholas Lane</title>
+  <title>Locus — function grapher</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css" />
+  <style>
+    canvas { width:100%; background:#070b10; border:1px solid var(--line); border-radius:12px; display:block; cursor:crosshair }
+    .row { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 }
+    input, button { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
+    button { cursor:pointer }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="nav">
-      <a class="brand" href="../index.html">NICHOLAS LANE</a>
-      <nav><a href="../projects.html">Projects</a></nav>
-    </header>
-    <section class="hero">
-      <p class="kicker">Function grapher</p>
-      <h1>Locus</h1>
-      <p class="lede">Scroll to zoom. Drag to pan. Cursor shows x, y.</p>
-    </section>
-    <p class="status" id="readout">x=0.00  y=0.00</p>
-    <canvas id="c" width="900" height="520"></canvas>
-  </div>
+  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
+  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a></nav></div></header>
+  <main class="wrap">
+    <p class="kicker">JavaScript · math · basic project</p>
+    <h1>Locus function grapher</h1>
+    <p class="lede">Type a function of x. Scroll to zoom, drag to pan. Allowed: numbers, x, + - * / ^, parentheses, sin cos tan sqrt abs.</p>
+    <div class="row">
+      <input id="expr" value="sin(x)*x" size="28" />
+      <button id="plot">Plot</button>
+      <span class="muted" id="status"></span>
+    </div>
+    <canvas id="g" width="900" height="480"></canvas>
+  </main>
   <script>
-    const c = document.getElementById("c"), g = c.getContext("2d");
-    let scale = 40, ox = c.width/2, oy = c.height/2, drag=false, lx=0, ly=0;
-    const fn = x => Math.sin(x) + 0.35*Math.sin(3*x);
-    function world(px,py){ return { x:(px-ox)/scale, y:(oy-py)/scale }; }
-    function draw() {
-      g.fillStyle="#070b10"; g.fillRect(0,0,c.width,c.height);
-      g.strokeStyle="#1a2430"; g.beginPath();
-      for(let x=ox%scale; x<c.width; x+=scale){ g.moveTo(x,0); g.lineTo(x,c.height); }
-      for(let y=oy%scale; y<c.height; y+=scale){ g.moveTo(0,y); g.lineTo(c.width,y); }
-      g.stroke();
-      g.strokeStyle="#3ee0a8"; g.lineWidth=2; g.beginPath();
-      for(let px=0; px<c.width; px++){
-        const x = (px-ox)/scale, y = fn(x), py = oy - y*scale;
-        if(px===0) g.moveTo(px,py); else g.lineTo(px,py);
-      }
-      g.stroke(); g.lineWidth=1;
+    const expr = document.getElementById("expr");
+    const status = document.getElementById("status");
+    const canvas = document.getElementById("g");
+    const ctx = canvas.getContext("2d");
+    let scale = 40, ox = 450, oy = 240, drag = null;
+    function compile(src) {
+      const safe = src.replace(/\s+/g,"").replace(/\^/g,"**");
+      if (!/^[0-9x+\-*/().,a-z]+$/i.test(safe)) throw new Error("unsupported characters");
+      const fn = new Function("x", "const {sin,cos,tan,sqrt,abs,PI,E}=Math; return (" + safe + ");");
+      fn(1);
+      return fn;
     }
-    c.addEventListener("wheel", e => { e.preventDefault(); scale *= e.deltaY<0?1.1:0.9; scale=Math.max(12,Math.min(140,scale)); draw(); }, {passive:false});
-    c.addEventListener("mousedown", e => { drag=true; lx=e.offsetX; ly=e.offsetY; });
-    window.addEventListener("mouseup", () => drag=false);
-    c.addEventListener("mousemove", e => {
-      const w = world(e.offsetX, e.offsetY);
-      document.getElementById("readout").textContent = `x=${w.x.toFixed(2)}  y=${w.y.toFixed(2)}`;
-      if(drag){ ox += e.offsetX-lx; oy += e.offsetY-ly; lx=e.offsetX; ly=e.offsetY; draw(); }
+    let f = compile(expr.value);
+    function draw() {
+      const w = canvas.width, h = canvas.height;
+      ctx.fillStyle = "#070b10";
+      ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle = "#1c2833";
+      ctx.lineWidth = 1;
+      for (let x = ((ox % scale) + scale) % scale; x < w; x += scale) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+      for (let y = ((oy % scale) + scale) % scale; y < h; y += scale) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+      ctx.strokeStyle = "#9aacbd";
+      ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, h); ctx.stroke();
+      ctx.strokeStyle = "#7bd4c4";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let started = false;
+      for (let px = 0; px < w; px++) {
+        const x = (px - ox) / scale;
+        let y;
+        try { y = f(x); } catch (e) { started = false; continue; }
+        if (!Number.isFinite(y)) { started = false; continue; }
+        const py = oy - y * scale;
+        if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+    function plot() {
+      try { f = compile(expr.value); status.textContent = "ok"; draw(); }
+      catch (e) { status.textContent = "check the expression"; }
+    }
+    document.getElementById("plot").onclick = plot;
+    expr.addEventListener("keydown", e => { if (e.key === "Enter") plot(); });
+    canvas.addEventListener("wheel", e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+      const gx = (mx - ox) / scale, gy = (oy - my) / scale;
+      scale *= e.deltaY < 0 ? 1.1 : 0.9;
+      scale = Math.max(8, Math.min(200, scale));
+      ox = mx - gx * scale; oy = my + gy * scale;
+      draw();
+    }, { passive:false });
+    canvas.addEventListener("pointerdown", e => { drag = { x:e.clientX, y:e.clientY, ox, oy }; });
+    window.addEventListener("pointerup", () => drag = null);
+    window.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const rect = canvas.getBoundingClientRect();
+      const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+      ox = drag.ox + (e.clientX - drag.x) * sx;
+      oy = drag.oy + (e.clientY - drag.y) * sy;
+      draw();
     });
-    draw();
+    plot();
   </script>
 </body>
 </html>
