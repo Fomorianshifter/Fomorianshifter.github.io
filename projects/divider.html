@@ -1,37 +1,22 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voltage divider — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
-  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a><a href="../resume.html">Resume</a></nav></div></header>
-  <main class="wrap">
-    <p class="kicker">Basic web lab · electrical math</p>
-    <h1>Voltage divider</h1>
-    <p class="lede">Vout = Vin × R2 / (R1 + R2). Change values and see the output immediately — good interview whiteboard companion.</p>
-    <article class="card" style="max-width:28rem">
-      <label>Vin (V) <input id="vin" type="number" value="24" step="0.1" style="width:100%;padding:.5rem;margin-top:.2rem;background:#0b0f14;color:#e8edf4;border:1px solid #2a3340;border-radius:8px"></label>
-      <label>R1 (Ω) <input id="r1" type="number" value="4700" step="1" style="width:100%;padding:.5rem;margin-top:.2rem;background:#0b0f14;color:#e8edf4;border:1px solid #2a3340;border-radius:8px"></label>
-      <label>R2 (Ω) <input id="r2" type="number" value="1000" step="1" style="width:100%;padding:.5rem;margin-top:.2rem;background:#0b0f14;color:#e8edf4;border:1px solid #2a3340;border-radius:8px"></label>
-      <p id="out" style="font-family:IBM Plex Mono,monospace;font-size:1.2rem;margin-top:1rem"></p>
-    </article>
-  </main>
-  <script>
-    const $ = id => document.getElementById(id);
-    function calc() {
-      const vin = +$('vin').value, r1 = +$('r1').value, r2 = +$('r2').value;
-      if (!(r1 + r2)) { $('out').textContent = 'R1 + R2 must be greater than 0.'; return; }
-      const vout = vin * r2 / (r1 + r2);
-      const i = vin / (r1 + r2) * 1000;
-      $('out').innerHTML = 'Vout = <strong>' + vout.toFixed(3) + ' V</strong><br>Current = ' + i.toFixed(3) + ' mA';
-    }
-    ['vin','r1','r2'].forEach(id => $(id).addEventListener('input', calc));
-    calc();
-  </script>
-</body></html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Voltage divider — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
+<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="starter.html">Starter</a><a href="orbit.html">Orbit</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Circuit lab</p><h1>Voltage divider</h1><p class="lede">Vout = Vin × R2 / (R1 + R2). Handy when a sensor or analog input needs a lower voltage than the source.</p></section>
+<section class="lab">
+<label>Vin <span id="vinL">12</span> V <input id="vin" type="range" min="1" max="24" value="12"/></label>
+<label>R1 <span id="r1L">1000</span> Ω <input id="r1" type="range" min="100" max="10000" step="100" value="1000"/></label>
+<label>R2 <span id="r2L">1000</span> Ω <input id="r2" type="range" min="100" max="10000" step="100" value="1000"/></label>
+<p class="out" id="out"></p>
+</section></main>
+<script>
+function calc(){
+  var vin=+document.getElementById("vin").value, r1=+document.getElementById("r1").value, r2=+document.getElementById("r2").value;
+  document.getElementById("vinL").textContent=vin;
+  document.getElementById("r1L").textContent=r1;
+  document.getElementById("r2L").textContent=r2;
+  var vout = vin * r2 / (r1 + r2);
+  document.getElementById("out").textContent = "Vout = " + vout.toFixed(2) + " V   ·   I = " + ((vin/(r1+r2))*1000).toFixed(2) + " mA";
+}
+["vin","r1","r2"].forEach(function(id){ document.getElementById(id).oninput=calc; });
+calc();
+</script></body></html>

@@ -1,78 +1,21 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Orbit lab — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
-  <style>
-    canvas { width:100%; height:auto; background:#070b10; border:1px solid var(--line); border-radius:12px; display:block }
-    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:end; margin:12px 0 }
-    label { font-size:.86rem; color:var(--muted) }
-    input { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
-  </style>
-</head>
-<body>
-  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
-  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a><a href="../resume.html">Resume</a></nav></div></header>
-  <main class="wrap">
-    <p class="kicker">JavaScript · canvas · from SolarSystem</p>
-    <h1>Planet orbit lab</h1>
-    <p class="lede">A small interactive version of the public Solar System sketches. Inner planets orbit a sun. Speed is not to scale so the motion is readable in an interview.</p>
-    <div class="row">
-      <label>Speed <input id="speed" type="range" min="0.2" max="4" step="0.1" value="1"></label>
-      <label><input id="labels" type="checkbox" checked> Labels</label>
-      <span class="muted" id="readout"></span>
-    </div>
-    <canvas id="sky" width="900" height="520"></canvas>
-    <p class="muted">Source sketches: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a></p>
-  </main>
-  <script>
-    const planets = [
-      { name:"Mercury", a:70, color:"#c4b8a5", r:4, period:0.24 },
-      { name:"Venus", a:100, color:"#e6c27a", r:6, period:0.62 },
-      { name:"Earth", a:135, color:"#6eb5ff", r:6.5, period:1 },
-      { name:"Mars", a:170, color:"#e07a6a", r:5, period:1.88 }
-    ];
-    const c = document.getElementById("sky");
-    const ctx = c.getContext("2d");
-    const speed = document.getElementById("speed");
-    const labels = document.getElementById("labels");
-    const readout = document.getElementById("readout");
-    let t = 0;
-    function frame() {
-      const w = c.width, h = c.height, cx = w/2, cy = h/2;
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "#070b10";
-      ctx.fillRect(0,0,w,h);
-      planets.forEach(p => {
-        ctx.strokeStyle = "rgba(154,172,189,.25)";
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, p.a, p.a*0.72, 0, 0, Math.PI*2);
-        ctx.stroke();
-      });
-      ctx.fillStyle = "#e6b35a";
-      ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI*2); ctx.fill();
-      const s = +speed.value;
-      planets.forEach(p => {
-        const ang = t / p.period;
-        const x = cx + Math.cos(ang) * p.a;
-        const y = cy + Math.sin(ang) * p.a * 0.72;
-        ctx.fillStyle = p.color;
-        ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI*2); ctx.fill();
-        if (labels.checked) {
-          ctx.fillStyle = "#e8eef4";
-          ctx.font = "13px IBM Plex Sans, sans-serif";
-          ctx.fillText(p.name, x+8, y-8);
-        }
-      });
-      readout.textContent = "speed " + s.toFixed(1) + "x";
-      t += 0.012 * s;
-      requestAnimationFrame(frame);
-    }
-    frame();
-  </script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Orbit lab — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
+<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a><a href="loto.html">LOTO</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">From the SolarSystem repo</p><h1>Orbit lab</h1><p class="lede">A small live version of the planet-alignment idea in github.com/Fomorianshifter/SolarSystem. Four bodies, different periods.</p></section>
+<section class="lab"><canvas id="c" width="640" height="360" style="width:100%;max-width:640px;background:#0b0f0c;border-radius:10px"></canvas>
+<p class="meta">Canvas animation. Original repo: <a href="https://github.com/Fomorianshifter/SolarSystem">Fomorianshifter/SolarSystem</a></p></section></main>
+<script>
+var c=document.getElementById("c"), x=c.getContext("2d"), t=0;
+var bodies=[{r:46,p:2.4,col:"#c45b4a",s:5},{r:78,p:4.2,col:"#e2a23a",s:7},{r:118,p:7.1,col:"#7dba6a",s:6},{r:156,p:11,col:"#8eb4e8",s:5}];
+function frame(){
+  t+=0.016; x.clearRect(0,0,640,360);
+  x.fillStyle="#f3c56b"; x.beginPath(); x.arc(320,180,16,0,6.28); x.fill();
+  bodies.forEach(function(b){
+    x.strokeStyle="#2a352c"; x.beginPath(); x.arc(320,180,b.r,0,6.28); x.stroke();
+    var a=t*6.28/b.p, px=320+Math.cos(a)*b.r, py=180+Math.sin(a)*b.r*0.42;
+    x.fillStyle=b.col; x.beginPath(); x.arc(px,py,b.s,0,6.28); x.fill();
+  });
+  requestAnimationFrame(frame);
+}
+frame();
+</script></body></html>

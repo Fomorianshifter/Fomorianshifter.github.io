@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Motor starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
+<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="ladder.html">Ladder</a><a href="divider.html">Divider</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Training lab</p><h1>Three-wire motor starter</h1><p class="lede">Same seal-in idea as the ladder page, plus an overload. If the overload trips, the coil drops even if Start is held.</p></section>
+<section class="lab">
+<button class="ctrl on" id="stop" type="button">Stop: closed</button>
+<button class="ctrl" id="start" type="button">Start: open</button>
+<button class="ctrl on" id="ol" type="button">Overload: healthy</button>
+<p class="out" id="state"></p>
+<p class="meta">coil = stop AND overload AND (start OR aux). Aux contact copies the coil.</p>
+</section></main>
+<script>
+var stop=true, start=false, ol=true, coil=false;
+function draw(){
+  coil = stop && ol && (start || coil);
+  document.getElementById("state").textContent = coil ? "Contactor picked up — motor running" : "Contactor dropped — motor stopped";
+  document.getElementById("stop").textContent = stop ? "Stop: closed" : "Stop: open";
+  document.getElementById("stop").className = "ctrl" + (stop ? " on" : "");
+  document.getElementById("start").textContent = start ? "Start: closed" : "Start: open";
+  document.getElementById("start").className = "ctrl" + (start ? " on" : "");
+  document.getElementById("ol").textContent = ol ? "Overload: healthy" : "Overload: tripped";
+  document.getElementById("ol").className = "ctrl" + (ol ? " on" : "");
+}
+document.getElementById("stop").onclick=function(){stop=!stop;draw();};
+document.getElementById("start").onclick=function(){start=!start;draw();};
+document.getElementById("ol").onclick=function(){ol=!ol;draw();};
+draw();
+</script></body></html>

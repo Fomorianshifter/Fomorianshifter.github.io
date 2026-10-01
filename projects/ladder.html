@@ -1,41 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PLC ladder scan</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header class="nav"><a class="mark" href="/">NL</a><nav><a href="/">Home</a></nav></header>
-  <div class="lab-wrap">
-    <h1>PLC ladder scan</h1>
-    <p class="muted">Toggle inputs. The scan evaluates the rung and lights the coil. This is a teaching demo, not a real controller.</p>
-    <div class="panel" style="padding:1rem">
-      <p><label><input type="checkbox" id="i1" /> Input I1 (start)</label></p>
-      <p><label><input type="checkbox" id="i2" checked /> Input I2 (permissive / not-stop)</label></p>
-      <p>Rung: <code>I1 AND I2 → Coil C1</code></p>
-      <p>Coil C1: <strong id="coil">OFF</strong></p>
-      <p class="muted" id="scan">Scan #0</p>
-    </div>
-  </div>
-  <script>
-    const i1 = document.getElementById('i1');
-    const i2 = document.getElementById('i2');
-    const coil = document.getElementById('coil');
-    const scan = document.getElementById('scan');
-    let n = 0;
-    function tick() {
-      n += 1;
-      const on = i1.checked && i2.checked;
-      coil.textContent = on ? 'ON' : 'OFF';
-      coil.style.color = on ? '#7ad0a5' : '#e08b6f';
-      scan.textContent = 'Scan #' + n;
-    }
-    i1.addEventListener('change', tick);
-    i2.addEventListener('change', tick);
-    setInterval(tick, 400);
-    tick();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Ladder scan — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
+<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="../index.html#labs">Labs</a><a href="starter.html">Starter</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Training lab · not a PLC program</p><h1>Ladder scan — seal-in rung</h1><p class="lede">Stop is normally closed. Start is momentary. When the coil picks up, the auxiliary contact seals around Start so the motor stays on until Stop opens.</p></section>
+<section class="lab">
+<button class="ctrl" id="stop" type="button">Stop closed</button>
+<button class="ctrl" id="start" type="button">Start open</button>
+<p class="out" id="state">Coil: off · Motor: stopped</p>
+<svg class="diagram" viewBox="0 0 640 180" id="svg" role="img" aria-label="Ladder rung">
+<line x1="40" y1="40" x2="40" y2="150" stroke="#7dba6a" stroke-width="4"/>
+<line x1="600" y1="40" x2="600" y2="150" stroke="#7dba6a" stroke-width="4"/>
+<line x1="40" y1="70" x2="600" y2="70" stroke="#9aab9c" stroke-width="3"/>
+<line x1="40" y1="120" x2="180" y2="120" stroke="#9aab9c" stroke-width="3"/>
+<line x1="260" y1="120" x2="600" y2="120" stroke="#9aab9c" stroke-width="3"/>
+<line x1="180" y1="70" x2="180" y2="120" stroke="#9aab9c" stroke-width="3"/>
+<line x1="260" y1="70" x2="260" y2="120" stroke="#9aab9c" stroke-width="3"/>
+<rect id="stopBox" x="80" y="55" width="50" height="30" fill="none" stroke="#e2a23a" stroke-width="3"/>
+<rect id="startBox" x="190" y="55" width="50" height="30" fill="none" stroke="#9aab9c" stroke-width="3"/>
+<rect id="sealBox" x="190" y="105" width="50" height="30" fill="none" stroke="#9aab9c" stroke-width="3"/>
+<circle id="coil" cx="520" cy="70" r="18" fill="none" stroke="#9aab9c" stroke-width="3"/>
+<text x="86" y="34" fill="#e7efe6" font-size="12">STOP</text>
+<text x="192" y="34" fill="#e7efe6" font-size="12">START</text>
+<text x="198" y="154" fill="#e7efe6" font-size="12">SEAL</text>
+<text x="500" y="40" fill="#e7efe6" font-size="12">M</text>
+</svg>
+<p class="meta">Logic: coil = stopClosed AND (start OR seal). Seal follows the coil.</p>
+</section></main>
+<script>
+var stopClosed = true, start = false, coil = false;
+var stopBtn = document.getElementById("stop"), startBtn = document.getElementById("start");
+function draw(){
+  coil = stopClosed && (start || coil);
+  document.getElementById("state").textContent = "Coil: " + (coil ? "on" : "off") + " · Motor: " + (coil ? "running" : "stopped");
+  stopBtn.textContent = stopClosed ? "Stop closed" : "Stop open";
+  stopBtn.className = "ctrl" + (stopClosed ? " on" : "");
+  startBtn.textContent = start ? "Start closed" : "Start open";
+  startBtn.className = "ctrl" + (start ? " on" : "");
+  document.getElementById("stopBox").setAttribute("stroke", stopClosed ? "#7dba6a" : "#c45b4a");
+  document.getElementById("startBox").setAttribute("stroke", start ? "#7dba6a" : "#9aab9c");
+  document.getElementById("sealBox").setAttribute("stroke", coil ? "#7dba6a" : "#9aab9c");
+  document.getElementById("coil").setAttribute("stroke", coil ? "#e2a23a" : "#9aab9c");
+  document.getElementById("coil").setAttribute("fill", coil ? "#3d5a28" : "none");
+}
+stopBtn.onclick = function(){ stopClosed = !stopClosed; draw(); };
+startBtn.onclick = function(){ start = !start; draw(); };
+draw();
+</script></body></html>
