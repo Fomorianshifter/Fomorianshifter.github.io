@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>LinkedIn kit — Nicholas Lane</title><link rel="stylesheet" href="styles.css"/><link rel="icon" href="favicon.svg"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="index.html">NL <span>//</span> LANE</a><nav><a href="index.html">Home</a><a href="resume.html">Resume</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">LinkedIn</p><h1>Paste these into LinkedIn</h1><p class="lede">Website field and Featured both get the live portfolio URL. Headline and About are written to match the resume without the keyword dump.</p></section>
-<section><h2>Website field</h2><p class="copybox" id="url">https://fomorianshifter.github.io</p><button class="copy" data-copy="url">Copy URL</button><p class="meta">Type: Portfolio. Add the same URL under Featured, with a short title like “Controls and electrical portfolio.”</p></section>
-<section><h2>Headline</h2><p class="copybox" id="head">Industrial Electrician → Controls &amp; Web | PLC support, HTML/CSS/JS, embedded C</p><button class="copy" data-copy="head">Copy headline</button></section>
-<section><h2>About</h2><p class="copybox" id="about">Industrial electrician with 5+ years on construction sites and in a foundry. At Grede Foundries I supported PLC installs and helped close 50+ electrical issues a month with engineering, at 100% inspection compliance.
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn copy — Nicholas Lane</title>
+<style>
+  body { margin:0; background:#14110e; color:#e8e2d6; font-family: system-ui, sans-serif; line-height:1.5; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+  a { color:#e2a04a; }
+  textarea { width:100%; min-height: 220px; background:#1c1814; color:#e8e2d6; border:1px solid #3a342c; border-radius:8px; padding:12px; font: 14px/1.45 ui-monospace, monospace; }
+  h1 { font-family: Georgia, serif; }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="index.html">Back to portfolio</a></p>
+  <h1>Paste this into LinkedIn</h1>
+  <p>Website field: <strong>https://fomorianshifter.github.io</strong></p>
+  <p>Featured link title: Nicholas Lane — controls and electrical portfolio</p>
+  <h2>About</h2>
+  <textarea readonly>Industrial electrician in Green Bay, WI, with more than five years on residential, commercial, and foundry electrical work. At Grede Foundries I supported PLC installation and troubleshooting, worked with engineering on electrical issues, and kept monthly inspections at full safety compliance.
 
-I am building the software side in public: Loki (C firmware on Linux SBCs with TFT and Flipper Zero UART), GhostGPS, and interactive labs on this site (ladder scan, motor starter, voltage divider).
+I am moving toward controls and industrial maintenance while finishing freeCodeCamp coursework and building public projects: Loki, an embedded C companion for a Linux single-board computer, and small browser labs for motor starter logic and voltage drop.
 
-Open to controls, industrial maintenance, and junior web or automation roles. Willing to relocate anywhere in the US.
-
-Portfolio: https://fomorianshifter.github.io/
+Open to relocate in the US. Authorized to work for any US employer.
+Portfolio: https://fomorianshifter.github.io
 GitHub: https://github.com/Fomorianshifter
-Email: nlane713@gmail.com</p><button class="copy" data-copy="about">Copy About</button></section>
-<section><h2>Featured links</h2><ul class="clean"><li>https://fomorianshifter.github.io/ — portfolio</li><li>https://github.com/Fomorianshifter/Loki — embedded C</li><li>https://fomorianshifter.github.io/projects/ladder.html — ladder lab</li></ul></section>
+Email: nlane713@gmail.com</textarea>
+  <h2>Featured projects to pin</h2>
+  <ul>
+    <li>Portfolio — https://fomorianshifter.github.io</li>
+    <li>Loki — https://github.com/Fomorianshifter/Loki</li>
+    <li>Solar System — https://github.com/Fomorianshifter/SolarSystem</li>
+  </ul>
+  <p>Headline option: Industrial electrician | PLC support | embedded and web labs</p>
 </main>
-<footer><div class="wrap">Nicholas Lane · nlane713@gmail.com</div></footer>
-<script>
-document.querySelectorAll(".copy").forEach(function(btn){
-  btn.addEventListener("click", function(){
-    var el = document.getElementById(btn.getAttribute("data-copy"));
-    navigator.clipboard.writeText(el.innerText).then(function(){ btn.textContent = "Copied"; });
-  });
-});
-</script>
-</body></html>
+</body>
+</html>
