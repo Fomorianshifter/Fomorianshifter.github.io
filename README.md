@@ -1,7 +1,13 @@
-# Nicholas Lane portfolio
+# Nicholas Lane
+
+Personal portfolio for LinkedIn.
 
 Live site: https://fomorianshifter.github.io
 
-Static portfolio for LinkedIn. Featured public repos are Loki and the Solar System sketches. Browser labs cover a three-wire motor starter, a fault log, a copper voltage-drop estimate, and a small orbit sketch.
+GitHub display name is Beau (`@Fomorianshifter`). Professional name is Nicholas Lane. Wisconsin.
 
-Add https://fomorianshifter.github.io in the LinkedIn website field. Copy for the About section is on linkedin.html.
+Featured public repo: [Loki](https://github.com/Fomorianshifter/Loki).
+
+Browser labs: three-wire motor starter, copper voltage-drop estimate, shift fault log, orbit sketch.
+
+Add https://fomorianshifter.github.io in the LinkedIn website field. Paste copy is on linkedin.html.
