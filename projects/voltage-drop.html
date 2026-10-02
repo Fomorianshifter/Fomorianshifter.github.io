@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header class="site"><div class="wrap nav"><a class="brand" href="../index.html">NL · Lane</a><a href="../index.html#projects">Projects</a></div></header>
+<main class="wrap"><section>
+<p class="kicker">Field estimate</p><h1>Copper voltage-drop estimate</h1>
+<p class="lede">Single-phase approximation: drop = 2 × K × I × one-way feet / circular mils, with K = 12.9 for uncoated copper. Use it to talk through a run, then check the real code tables.</p>
+<div class="lab"><form class="panel" id="form">
+<label>Voltage</label><input id="volts" type="number" value="240" min="1">
+<label>Load amps</label><input id="amps" type="number" value="20" min="0" step="0.1">
+<label>One-way length, feet</label><input id="feet" type="number" value="80" min="0">
+<label>Copper AWG</label><select id="awg">
+<option value="4107">14</option><option value="6530">12</option><option value="10380" selected>10</option>
+<option value="16510">8</option><option value="26240">6</option><option value="41740">4</option>
+<option value="66360">2</option><option value="105600">1/0</option><option value="133100">2/0</option>
+<option value="167800">3/0</option><option value="211600">4/0</option></select>
+</form>
+<div class="panel"><p class="result" id="drop">—</p><p id="pct"></p><p class="note" id="hint"></p></div>
+</div></section></main>
+<script>
+function calc(){
+  const v = Number(volts.value), i = Number(amps.value), l = Number(feet.value), c = Number(awg.value);
+  const drop = (2 * 12.9 * i * l) / c;
+  const pct = v ? (drop / v) * 100 : 0;
+  document.getElementById("drop").textContent = drop.toFixed(2) + " V";
+  document.getElementById("pct").textContent = pct.toFixed(2) + "% of " + v + " V";
+  document.getElementById("hint").textContent = pct > 3 ? "Over 3% on this branch estimate. Look at a larger conductor or a shorter run before calling it good." : "Under 3% on this estimate. Still confirm temperature, conduit fill, and the actual circuit type.";
+}
+form.oninput = calc; calc();
+</script></body></html>

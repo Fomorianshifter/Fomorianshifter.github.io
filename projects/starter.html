@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Motor starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="ladder.html">Ladder</a><a href="divider.html">Divider</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Training lab</p><h1>Three-wire motor starter</h1><p class="lede">Same seal-in idea as the ladder page, plus an overload. If the overload trips, the coil drops even if Start is held.</p></section>
-<section class="lab">
-<button class="ctrl on" id="stop" type="button">Stop: closed</button>
-<button class="ctrl" id="start" type="button">Start: open</button>
-<button class="ctrl on" id="ol" type="button">Overload: healthy</button>
-<p class="out" id="state"></p>
-<p class="meta">coil = stop AND overload AND (start OR aux). Aux contact copies the coil.</p>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three-wire starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header class="site"><div class="wrap nav"><a class="brand" href="../index.html">NL · Lane</a><a href="../index.html#projects">Projects</a></div></header>
+<main class="wrap"><section>
+<p class="kicker">Controls lab</p><h1>Three-wire motor starter</h1>
+<p class="lede">Stop is normally closed. Start is normally open and paralleled by the seal-in contact. Overload contacts are normally closed. The coil stays in only while the seal-in path is made and nothing in series is open.</p>
+<div class="lab"><div class="ladder" id="ladder"></div>
+<div class="panel">
+<button class="btn" id="start">Press Start</button>
+<button class="btn ghost" id="stop">Open Stop</button>
+<button class="btn ghost" id="ol">Trip overload</button>
+<p class="result" id="state">Coil de-energized</p>
+<p class="note" id="why">Press and hold Start. It is momentary.</p>
+</div></div>
 </section></main>
 <script>
-var stop=true, start=false, ol=true, coil=false;
+const state = { start: false, stop: true, ol: true, seal: false };
+const ladder = document.getElementById("ladder");
+function energized(){ return state.stop && state.ol && (state.start || state.seal); }
 function draw(){
-  coil = stop && ol && (start || coil);
-  document.getElementById("state").textContent = coil ? "Contactor picked up — motor running" : "Contactor dropped — motor stopped";
-  document.getElementById("stop").textContent = stop ? "Stop: closed" : "Stop: open";
-  document.getElementById("stop").className = "ctrl" + (stop ? " on" : "");
-  document.getElementById("start").textContent = start ? "Start: closed" : "Start: open";
-  document.getElementById("start").className = "ctrl" + (start ? " on" : "");
-  document.getElementById("ol").textContent = ol ? "Overload: healthy" : "Overload: tripped";
-  document.getElementById("ol").className = "ctrl" + (ol ? " on" : "");
+  const on = energized();
+  state.seal = on;
+  const cls = (flag) => flag ? "device on" : "device";
+  ladder.innerHTML = '<div class="rung"><div class="'+cls(state.stop && on)+'">STOP NC</div><div class="'+cls(state.ol && on)+'">OL NC</div><div class="'+cls(on)+'">M coil</div></div><div class="rung"><div class="'+cls(state.start)+'">START NO</div><div class="'+cls(state.seal)+'">M seal-in</div></div>';
+  document.getElementById("state").textContent = on ? "Coil energized — motor contactor held in" : "Coil de-energized";
 }
-document.getElementById("stop").onclick=function(){stop=!stop;draw();};
-document.getElementById("start").onclick=function(){start=!start;draw();};
-document.getElementById("ol").onclick=function(){ol=!ol;draw();};
+document.getElementById("start").onpointerdown = () => { state.start = true; document.getElementById("why").textContent = "Start is made. If Stop and OL are closed, the coil pulls in and the seal-in closes."; draw(); };
+document.getElementById("start").onpointerup = () => { state.start = false; document.getElementById("why").textContent = state.seal ? "Start released. Seal-in is holding the coil." : "Start released. Coil did not seal in."; draw(); };
+document.getElementById("stop").onclick = () => { state.stop = !state.stop; document.getElementById("why").textContent = state.stop ? "Stop contact closed." : "Stop held open. Coil drops out."; draw(); };
+document.getElementById("ol").onclick = () => { state.ol = !state.ol; document.getElementById("why").textContent = state.ol ? "Overload reset." : "Overload open. Coil cannot stay in."; draw(); };
 draw();
 </script></body></html>
