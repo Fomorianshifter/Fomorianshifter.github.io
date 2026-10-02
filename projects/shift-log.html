@@ -1,56 +1,65 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shift log — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
-  <style>
-    form { display:grid; gap:8px; max-width:520px }
-    input, select, button { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
-    table { width:100%; border-collapse:collapse; margin-top:14px }
-    th, td { text-align:left; border-bottom:1px solid var(--line); padding:8px 6px; font-size:.92rem }
-    button { cursor:pointer }
-  </style>
-</head>
-<body>
-  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
-  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a></nav></div></header>
-  <main class="wrap">
-    <p class="kicker">Maintenance · basic project</p>
-    <h1>Foundry shift log</h1>
-    <p class="lede">A small browser CMMS. Calls stay in this browser. Use it to show how a service call gets logged: asset, fault, status.</p>
-    <form id="form">
-      <input name="asset" placeholder="Asset, e.g. Mold line 2 VFD" required />
-      <input name="fault" placeholder="Fault, e.g. overload trip after start" required />
-      <select name="status"><option>Open</option><option>Waiting parts</option><option>Closed</option></select>
-      <button>Add call</button>
-    </form>
-    <table><thead><tr><th>When</th><th>Asset</th><th>Fault</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table>
-  </main>
-  <script>
-    const KEY = "nl-shift-log";
-    const rows = document.getElementById("rows");
-    const load = () => JSON.parse(localStorage.getItem(KEY) || "[]");
-    const save = (items) => localStorage.setItem(KEY, JSON.stringify(items));
-    const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    function render() {
-      rows.innerHTML = load().map((item, i) => `<tr><td>${esc(item.when)}</td><td>${esc(item.asset)}</td><td>${esc(item.fault)}</td><td>${esc(item.status)}</td><td><button data-i="${i}">Remove</button></td></tr>`).join("");
-    }
-    document.getElementById("form").onsubmit = (e) => {
-      e.preventDefault();
-      const data = new FormData(e.target);
-      const items = load();
-      items.unshift({ when: new Date().toLocaleString(), asset: data.get("asset"), fault: data.get("fault"), status: data.get("status") });
-      save(items); e.target.reset(); render();
-    };
-    rows.onclick = (e) => {
-      if (!e.target.dataset.i) return;
-      const items = load(); items.splice(+e.target.dataset.i, 1); save(items); render();
-    };
-    render();
-  </script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shift fault log — Nicholas Lane</title><style>
+:root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
+a { color: var(--amber); }
+header, main, footer { padding-left:7vw; padding-right:7vw; }
+header { display:flex; justify-content:space-between; gap:16px; padding-top:14px; padding-bottom:14px; border-bottom:1px solid var(--line); font-family: system-ui, sans-serif; }
+.brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
+main { max-width:900px; padding-top:36px; padding-bottom:64px; }
+.kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
+h1 { font-size: clamp(2rem, 4vw, 3rem); line-height:1.05; }
+.lede, .sub { color: var(--muted); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-top:16px; }
+button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
+button.on { border-color: var(--ok); color: var(--ok); }
+.ladder, .result { font-family: ui-monospace, monospace; font-size:.9rem; }
+.ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
+.run { color: var(--ok); } .stop { color: var(--bad); }
+input, select, textarea { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
+label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
+.sky { height:280px; position:relative; overflow:hidden; }
+.sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
+.orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
+.planet { position:absolute; width:12px; height:12px; border-radius:50%; background:#7dba6a; }
+footer { border-top:1px solid var(--line); color:var(--muted); padding-top:20px; padding-bottom:28px; }
+textarea { min-height: 280px; }
+</style></head><body>
+<header><a class="brand" href="../index.html">NICHOLAS LANE</a><a href="../index.html#labs">All labs</a></header><main>
+<p class="kicker">Maintenance lab</p>
+<h1>Shift fault log</h1>
+<p class="lede">A small stand-in for a CMMS note. Entries stay in this browser only.</p>
+<div class="card">
+<label for="asset">Asset</label><input id="asset" placeholder="Conveyor 3 VFD">
+<label for="fault">What failed</label><input id="fault" placeholder="Overcurrent fault after start">
+<button id="addFault" type="button" style="margin-top:8px">Add entry</button>
+<button id="clear" type="button">Clear log</button>
+<ul id="faults"></ul>
+</div>
+<p><a href="../index.html">Back to portfolio</a></p></main><footer>Nicholas Lane · lab for LinkedIn</footer>
+<script>
+const KEY = "nlane-faults";
+function load() {
+  const list = document.getElementById("faults");
+  list.innerHTML = "";
+  JSON.parse(localStorage.getItem(KEY) || "[]").forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    list.appendChild(li);
+  });
+}
+document.getElementById("addFault").onclick = () => {
+  const asset = document.getElementById("asset").value.trim() || "Unnamed asset";
+  const text = document.getElementById("fault").value.trim();
+  if (!text) return;
+  const items = JSON.parse(localStorage.getItem(KEY) || "[]");
+  items.unshift(new Date().toLocaleString() + " — " + asset + " — " + text + " — open");
+  localStorage.setItem(KEY, JSON.stringify(items.slice(0, 20)));
+  document.getElementById("fault").value = "";
+  load();
+};
+document.getElementById("clear").onclick = () => { localStorage.removeItem(KEY); load(); };
+load();
+</script></body></html>

@@ -1,34 +1,58 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Three-wire starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body>
-<header class="site"><div class="wrap nav"><a class="brand" href="../index.html">NL · Lane</a><a href="../index.html#projects">Projects</a></div></header>
-<main class="wrap"><section>
-<p class="kicker">Controls lab</p><h1>Three-wire motor starter</h1>
-<p class="lede">Stop is normally closed. Start is normally open and paralleled by the seal-in contact. Overload contacts are normally closed. The coil stays in only while the seal-in path is made and nothing in series is open.</p>
-<div class="lab"><div class="ladder" id="ladder"></div>
-<div class="panel">
-<button class="btn" id="start">Press Start</button>
-<button class="btn ghost" id="stop">Open Stop</button>
-<button class="btn ghost" id="ol">Trip overload</button>
-<p class="result" id="state">Coil de-energized</p>
-<p class="note" id="why">Press and hold Start. It is momentary.</p>
-</div></div>
-</section></main>
+<title>Three-wire motor starter — Nicholas Lane</title><style>
+:root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
+a { color: var(--amber); }
+header, main, footer { padding-left:7vw; padding-right:7vw; }
+header { display:flex; justify-content:space-between; gap:16px; padding-top:14px; padding-bottom:14px; border-bottom:1px solid var(--line); font-family: system-ui, sans-serif; }
+.brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
+main { max-width:900px; padding-top:36px; padding-bottom:64px; }
+.kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
+h1 { font-size: clamp(2rem, 4vw, 3rem); line-height:1.05; }
+.lede, .sub { color: var(--muted); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-top:16px; }
+button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
+button.on { border-color: var(--ok); color: var(--ok); }
+.ladder, .result { font-family: ui-monospace, monospace; font-size:.9rem; }
+.ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
+.run { color: var(--ok); } .stop { color: var(--bad); }
+input, select, textarea { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
+label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
+.sky { height:280px; position:relative; overflow:hidden; }
+.sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
+.orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
+.planet { position:absolute; width:12px; height:12px; border-radius:50%; background:#7dba6a; }
+footer { border-top:1px solid var(--line); color:var(--muted); padding-top:20px; padding-bottom:28px; }
+textarea { min-height: 280px; }
+</style></head><body>
+<header><a class="brand" href="../index.html">NICHOLAS LANE</a><a href="../index.html#labs">All labs</a></header><main>
+<p class="kicker">Controls lab</p>
+<h1>Three-wire motor starter</h1>
+<p class="lede">Stop, overload, and E-stop are normally closed. Start is momentary and is held by a seal-in contact. Open any series contact and the coil drops out.</p>
+<div class="card">
+<button id="start" type="button">Start</button>
+<button class="on" id="stop" type="button">Stop (NC)</button>
+<button class="on" id="ol" type="button">OL (NC)</button>
+<button class="on" id="estop" type="button">E-stop (NC)</button>
+<div class="ladder" id="ladder"></div>
+<p class="sub" id="why"></p>
+</div>
+<p><a href="../index.html">Back to portfolio</a></p></main><footer>Nicholas Lane · lab for LinkedIn</footer>
 <script>
-const state = { start: false, stop: true, ol: true, seal: false };
-const ladder = document.getElementById("ladder");
-function energized(){ return state.stop && state.ol && (state.start || state.seal); }
-function draw(){
-  const on = energized();
-  state.seal = on;
-  const cls = (flag) => flag ? "device on" : "device";
-  ladder.innerHTML = '<div class="rung"><div class="'+cls(state.stop && on)+'">STOP NC</div><div class="'+cls(state.ol && on)+'">OL NC</div><div class="'+cls(on)+'">M coil</div></div><div class="rung"><div class="'+cls(state.start)+'">START NO</div><div class="'+cls(state.seal)+'">M seal-in</div></div>';
-  document.getElementById("state").textContent = on ? "Coil energized — motor contactor held in" : "Coil de-energized";
+const state = { start:false, stop:true, ol:true, estop:true, seal:false };
+function scan() {
+  const hold = state.stop && state.ol && state.estop;
+  state.seal = hold && (state.start || state.seal);
+  if (!hold) state.seal = false;
+  const run = state.seal;
+  document.getElementById("ladder").innerHTML = "Rung 1  [ Start " + (state.start ? "ON" : "off") + " ]--[ Stop " + (state.stop ? "NC" : "OPEN") + " ]--[ OL " + (state.ol ? "NC" : "OPEN") + " ]--[ E-stop " + (state.estop ? "NC" : "OPEN") + " ]--( M " + (run ? "ON" : "OFF") + " )<br>Seal-in " + (state.seal ? "closed" : "open") + " &nbsp; Motor <span class='" + (run ? "run" : "stop") + "'>" + (run ? "RUNNING" : "STOPPED") + "</span>";
+  document.getElementById("why").textContent = run ? "Coil is sealed in. Open Stop, OL, or E-stop to drop it out." : "Coil is out. Close the NC contacts, then press Start.";
 }
-document.getElementById("start").onpointerdown = () => { state.start = true; document.getElementById("why").textContent = "Start is made. If Stop and OL are closed, the coil pulls in and the seal-in closes."; draw(); };
-document.getElementById("start").onpointerup = () => { state.start = false; document.getElementById("why").textContent = state.seal ? "Start released. Seal-in is holding the coil." : "Start released. Coil did not seal in."; draw(); };
-document.getElementById("stop").onclick = () => { state.stop = !state.stop; document.getElementById("why").textContent = state.stop ? "Stop contact closed." : "Stop held open. Coil drops out."; draw(); };
-document.getElementById("ol").onclick = () => { state.ol = !state.ol; document.getElementById("why").textContent = state.ol ? "Overload reset." : "Overload open. Coil cannot stay in."; draw(); };
-draw();
+function wire(id, key) {
+  const el = document.getElementById(id);
+  el.addEventListener("click", () => { state[key] = !state[key]; el.classList.toggle("on", state[key]); scan(); });
+}
+wire("start","start"); wire("stop","stop"); wire("ol","ol"); wire("estop","estop"); scan();
 </script></body></html>

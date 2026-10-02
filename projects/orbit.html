@@ -1,27 +1,61 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orbit sketch — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body>
-<header class="site"><div class="wrap nav"><a class="brand" href="../index.html">NL · Lane</a><a href="../index.html#projects">Projects</a></div></header>
-<main class="wrap"><section>
-<p class="kicker">Browser sketch</p><h1>Orbit sketch</h1>
-<p class="lede">The public Solar System repo is a title and a license. This page is the working sketch: circular orbits, no physics claims.</p>
-<div class="canvas-wrap"><canvas id="sky" width="960" height="540"></canvas></div>
-</section></main>
+<title>Orbit sketch — Nicholas Lane</title><style>
+:root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
+a { color: var(--amber); }
+header, main, footer { padding-left:7vw; padding-right:7vw; }
+header { display:flex; justify-content:space-between; gap:16px; padding-top:14px; padding-bottom:14px; border-bottom:1px solid var(--line); font-family: system-ui, sans-serif; }
+.brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
+main { max-width:900px; padding-top:36px; padding-bottom:64px; }
+.kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
+h1 { font-size: clamp(2rem, 4vw, 3rem); line-height:1.05; }
+.lede, .sub { color: var(--muted); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-top:16px; }
+button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
+button.on { border-color: var(--ok); color: var(--ok); }
+.ladder, .result { font-family: ui-monospace, monospace; font-size:.9rem; }
+.ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
+.run { color: var(--ok); } .stop { color: var(--bad); }
+input, select, textarea { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
+label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
+.sky { height:280px; position:relative; overflow:hidden; }
+.sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
+.orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
+.planet { position:absolute; width:12px; height:12px; border-radius:50%; background:#7dba6a; }
+footer { border-top:1px solid var(--line); color:var(--muted); padding-top:20px; padding-bottom:28px; }
+textarea { min-height: 280px; }
+</style></head><body>
+<header><a class="brand" href="../index.html">NICHOLAS LANE</a><a href="../index.html#labs">All labs</a></header><main>
+<p class="kicker">From the Solar System repos</p>
+<h1>Orbit sketch</h1>
+<p class="lede">A small running version of the public SolarSystem repos. Three bodies, three periods.</p>
+<div class="card">
+<div class="sky">
+  <div class="sun"></div>
+  <div class="orbit" style="width:90px;height:90px"></div>
+  <div class="orbit" style="width:160px;height:160px"></div>
+  <div class="orbit" style="width:230px;height:230px"></div>
+  <div class="planet" id="p1" style="background:#d4654f"></div>
+  <div class="planet" id="p2" style="background:#e2a04a"></div>
+  <div class="planet" id="p3"></div>
+</div>
+<p class="sub"><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a></p>
+</div>
+<p><a href="../index.html">Back to portfolio</a></p></main><footer>Nicholas Lane · lab for LinkedIn</footer>
 <script>
-const c = document.getElementById("sky"), ctx = c.getContext("2d");
-const bodies = [{r:70,size:4,color:"#c4b6a6",w:0.02},{r:110,size:7,color:"#e0c07a",w:0.014},{r:150,size:8,color:"#6ea8d4",w:0.011},{r:190,size:6,color:"#c46b4a",w:0.009},{r:250,size:16,color:"#d7b48a",w:0.005}];
-let t = 0;
-function frame(){
-  ctx.fillStyle = "#14110e"; ctx.fillRect(0,0,c.width,c.height);
-  const cx = c.width/2, cy = c.height/2;
-  ctx.beginPath(); ctx.fillStyle = "#f2c14e"; ctx.arc(cx,cy,22,0,Math.PI*2); ctx.fill();
-  bodies.forEach(b => {
-    ctx.beginPath(); ctx.strokeStyle = "#3a332c"; ctx.arc(cx,cy,b.r,0,Math.PI*2); ctx.stroke();
-    const a = t * b.w, x = cx + Math.cos(a)*b.r, y = cy + Math.sin(a)*b.r*0.42;
-    ctx.beginPath(); ctx.fillStyle = b.color; ctx.arc(x,y,b.size,0,Math.PI*2); ctx.fill();
-  });
-  t += 1; requestAnimationFrame(frame);
+function orbit(id, radius, seconds) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function frame(now) {
+    const angle = ((now - start) / 1000 / seconds) * Math.PI * 2;
+    el.style.left = (50 + Math.cos(angle) * radius) + "%";
+    el.style.top = (50 + Math.sin(angle) * radius) + "%";
+    el.style.transform = "translate(-50%,-50%)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
-frame();
+orbit("p1", 16, 4); orbit("p2", 28, 7); orbit("p3", 40, 11);
 </script></body></html>
