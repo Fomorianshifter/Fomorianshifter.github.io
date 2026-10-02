@@ -1,132 +1,150 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nicholas Lane — Controls, Electrical & Web</title>
-<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay. PLC support, embedded C, and working controls labs.">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,650&family=Schibsted+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay moving into controls, PLC support, embedded C, and web.">
 <style>
-:root{--bg:#12140f;--panel:#22261c;--line:#3a4030;--ink:#efe8d6;--muted:#b7b09c;--amber:#e2a23a;--amber2:#f3c56b;--green:#8fb56a;--rust:#c46a45;--live:#d6ff6b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 420px at 90% -10%,rgba(226,162,58,.14),transparent 60%),#12140f;color:var(--ink);font-family:"Schibsted Grotesk",system-ui,sans-serif;line-height:1.5}
-a{color:var(--amber2)}header{display:flex;justify-content:space-between;align-items:center;padding:18px 6vw;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(18,20,15,.92)}
-.mark{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--amber);letter-spacing:.08em}nav{display:flex;gap:18px}nav a{color:var(--muted);text-decoration:none}
-main{width:min(1080px,92vw);margin:0 auto;padding-bottom:72px}.hero{padding:56px 0 20px;display:grid;grid-template-columns:1.4fr .8fr;gap:28px}
-h1{font-family:"Source Serif 4",serif;font-size:clamp(40px,6vw,64px);line-height:.95;margin:8px 0}h2{font-family:"Source Serif 4",serif;font-size:32px}
-.lede,.sub,.when{color:var(--muted)}.meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--amber2)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn,button.btn{border:1px solid var(--amber);background:var(--amber);color:#1a1408;padding:10px 14px;border-radius:4px;font-weight:600;text-decoration:none;cursor:pointer;font:inherit}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}.stat{background:var(--panel);border:1px solid var(--line);padding:12px 14px;border-radius:6px;margin-bottom:8px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card,.lab,.kit{background:#1b1e16;border:1px solid var(--line);border-radius:8px;padding:16px}
-.tag{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--green)}.tag.warn{color:var(--rust)}
-.pills{display:flex;gap:6px;flex-wrap:wrap}.pills span{border:1px solid var(--line);border-radius:99px;padding:2px 8px;font-size:12px;color:var(--muted)}
-.lab{margin-bottom:14px}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}label{font-size:13px;color:var(--muted)}
-input[type=number]{background:#0c0e0a;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px;width:100px;font-family:"IBM Plex Mono",monospace}
-.out{font-family:"IBM Plex Mono",monospace;color:var(--live)}canvas{width:100%;background:#0b0d09;border:1px solid var(--line);border-radius:6px}
-.ladder{display:grid;grid-template-columns:20px 1fr 1fr 1fr 70px;gap:8px;margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:13px}
-.rail{background:var(--amber);min-height:90px;border-radius:2px}.contact,.coil{border:1px solid var(--line);text-align:center;padding:8px;border-radius:4px}
-.on{border-color:var(--live);color:var(--live)}.job{border-left:3px solid var(--amber);padding-left:12px;margin-bottom:12px}
-pre{white-space:pre-wrap;background:#0c0e0a;padding:12px;border-radius:6px;font-family:"IBM Plex Mono",monospace;font-size:13px}
-footer{border-top:1px solid var(--line);padding:20px 6vw 36px;color:var(--muted);font-size:13px}
-@media(max-width:800px){.hero,.cards{grid-template-columns:1fr}nav{display:none}}
-</style></head><body>
-<header><div class="mark">NL · GREEN BAY</div><nav><a href="#work">Work</a><a href="#labs">Labs</a><a href="#path">Path</a><a href="#linkedin">LinkedIn</a></nav></header>
-<main>
-<div class="hero"><div>
-<div class="meta">INDUSTRIAL ELECTRICIAN · CONTROLS PATH · WEB</div>
-<h1>Nicholas Lane</h1>
-<p class="lede">Five-plus years on construction sites and in a foundry. This page is the public portfolio: the best GitHub projects, plus small controls labs that actually run in the browser, ready to paste into LinkedIn.</p>
-<div class="actions"><a class="btn" href="mailto:nlane713@gmail.com">Email</a><a class="btn ghost" href="https://github.com/Fomorianshifter">GitHub</a><a class="btn ghost" href="#linkedin">LinkedIn kit</a></div>
-</div><div>
-<div class="stat"><b>Green Bay, WI</b><br><span class="sub">Open to relocate anywhere in the US. Authorized to work for any employer.</span></div>
-<div class="stat"><b>50+ issues / month</b><br><span class="sub">Electrical troubleshooting with engineering at Grede Foundries.</span></div>
-<div class="stat"><b>100% compliance</b><br><span class="sub">Monthly electrical inspections, as stated on the resume.</span></div>
-</div></div>
-<section id="work"><h2>Selected GitHub work</h2>
-<p class="sub">Public repos only. Coursework is labeled. Private drafts are left off.</p>
-<div class="cards">
-<article class="card"><div class="tag">ORIGINAL · C / PYTHON · EMBEDDED</div><h3>Loki</h3>
-<p>Dragon companion for Linux single-board computers. HAL for GPIO, SPI, I2C, UART, PWM. Drivers for TFT, SD, flash, EEPROM, and Flipper Zero UART. Local config UI and a life-cycle loop from egg to adult.</p>
-<div class="pills"><span>Orange Pi / Pi</span><span>TFT</span><span>Flipper</span><span>MIT</span></div>
-<p><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p></article>
-<article class="card"><div class="tag">ORIGINAL · CONCEPT</div><h3>GhostGPS</h3>
-<p>Early app note for a route companion beside Maps or Waze: travel a planned route at posted limits, plus a cops-ahead style alert. README only, so it is a product note, not a shipped app.</p>
-<div class="pills"><span>Maps</span><span>Waze</span><span>MIT</span></div>
-<p><a href="https://github.com/Fomorianshifter/GhostGPS">github.com/Fomorianshifter/GhostGPS</a></p></article>
-<article class="card"><div class="tag">EARLY WEB</div><h3>Solar System</h3>
-<p>January 2024 planet-orbit sketches. The orbit bench lower on this page is a working version of that idea.</p>
-<div class="pills"><span>Canvas</span><span>JavaScript</span></div>
-<p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">alignment sketch</a></p></article>
-<article class="card"><div class="tag warn">FOUNDATION, NOT A PRODUCT</div><h3>One</h3>
-<p>First public import of beginner HTML, CSS, and JavaScript coursework. Kept so the learning path is visible.</p>
-<div class="pills"><span>HTML</span><span>CSS</span><span>JS</span></div>
-<p><a href="https://github.com/Fomorianshifter/One">github.com/Fomorianshifter/One</a></p></article>
-</div></section>
-<section id="labs"><h2>Basic projects, running here</h2>
-<p class="sub">Made for this portfolio so LinkedIn is not only a link to READMEs.</p>
-<div class="lab"><div class="tag">LAB 01 · VOLTAGE DIVIDER</div><h3>Series divider</h3>
-<p>Vout = Vin × R2 / (R1 + R2). The usual sensor-scaling step before a PLC analog card.</p>
-<div class="row"><label>Vin <input id="vin" type="number" value="24" step="0.1"></label>
-<label>R1 <input id="r1" type="number" value="10000"></label>
-<label>R2 <input id="r2" type="number" value="10000"></label>
-<span class="out" id="vout">12.00 V</span></div>
-<canvas id="divcanvas" width="900" height="150"></canvas></div>
-<div class="lab"><div class="tag">LAB 02 · MOTOR STARTER</div><h3>Start / stop with seal-in</h3>
-<p>Hold Start. The coil seals in. Stop or an overload drops it. Classic three-wire rung.</p>
-<div class="row"><button class="btn" id="startBtn" type="button">Hold Start</button>
-<button class="btn ghost" id="stopBtn" type="button">Stop</button>
-<button class="btn ghost" id="olBtn" type="button">Trip overload</button>
-<span class="out" id="motorState">MOTOR OFF</span></div>
-<div class="ladder"><div class="rail"></div><div class="contact on">STOP NC</div><div class="contact" id="cStart">START NO</div><div class="contact on" id="cOL">OL NC</div><div class="coil" id="cM">M</div></div></div>
-<div class="lab"><div class="tag">LAB 03 · PLC SCAN</div><h3>Inputs, logic, output</h3>
-<p>Check both inputs, then scan. Output is the AND of I0 and I1.</p>
-<div class="row"><label>I0 <input id="i0" type="checkbox"></label><label>I1 <input id="i1" type="checkbox"></label>
-<button class="btn" id="scanBtn" type="button">Single scan</button>
-<button class="btn ghost" id="autoBtn" type="button">Run</button>
-<span class="out" id="scanOut">Q0 = 0 · scans 0</span></div></div>
-<div class="lab"><div class="tag">LAB 04 · SOLAR SYSTEM, LIVE</div><h3>Orbit bench</h3>
-<canvas id="sky" width="900" height="260"></canvas>
-<div class="row"><button class="btn" id="skyPause" type="button">Pause</button>
-<label>Speed <input id="skySpeed" type="number" value="1" min="0" max="8" step="0.5"></label></div></div>
-</section>
-<section id="path"><h2>Work path</h2>
-<div class="job"><h3>Industrial Electrician · Grede Foundries, Reedsburg, WI</h3><div class="when">October 2021 – March 2024</div>
-<p>Supported PLC installation and programming for automated processes. Collaborated with engineering on electrical issues, resume figure over 50 a month, and monthly inspections at a stated 100% safety-compliance rate.</p></div>
-<div class="job"><h3>Electrician · AC Electric, Hayward, WI</h3><div class="when">September 2018 – October 2021</div>
-<p>New construction, remodels, and service calls. Observed PLC installs and maintenance.</p></div>
-<div class="job"><h3>Electrician, laborer / apprentice · Greenfield Electric, Greenfield, WI</h3><div class="when">July 2016 – September 2018</div>
-<p>Assisted journeyman and master electricians on installations and basic programming tasks.</p></div>
-<div class="job"><h3>Quality control inspector · Comp X, Grayslake, IL</h3><div class="when">April 2013 – December 2015</div>
-<p>CNC process oversight and inspections. Assisted operators and maintenance with programming and electronics integration.</p></div>
-<p class="sub">Education: freeCodeCamp computer science track, March 2023 to present. Associate's, liberal arts and sciences, Cardinal Stritch University, 2010–2012. Round Lake Senior High School. Resume-listed credentials include responsive web design, HAZWOPER, first aid, CPR, AED, aerial lift, scissor lift, driver's license, Fundamentals of Engineering, Engineer in Training, and NDT.</p>
-<p>Shown skills: electrical systems, motors, schematics, blueprint reading, PLC troubleshooting, sensors, industrial maintenance, HTML, CSS, JavaScript, embedded C. The long keyword list on the source resume is not repeated.</p>
-</section>
-<section id="linkedin"><h2>Paste into LinkedIn</h2><div class="kit">
-<p><b>Website field and Featured:</b> https://fomorianshifter.github.io/</p>
-<p><b>Headline</b></p>
-<pre>Industrial Electrician → Controls & Web | PLC support, HTML/CSS/JS, embedded C</pre>
-<p><b>About</b></p>
-<pre id="about">Industrial electrician with 5+ years on construction sites and in a foundry. At Grede Foundries I supported PLC installs and helped close 50+ electrical issues a month with engineering, at 100% inspection compliance.
-
-I am building the software side in public: Loki (C and Python on Linux SBCs, TFT, Flipper Zero UART), GhostGPS, and interactive labs on this site (voltage divider, motor starter seal-in, PLC scan, orbits).
-
-Open to controls, industrial maintenance, and junior web or automation roles. Willing to relocate anywhere in the US.
-
-Portfolio: https://fomorianshifter.github.io/
-GitHub: https://github.com/Fomorianshifter
-Email: nlane713@gmail.com</pre>
-<button class="btn" id="copyAbout" type="button">Copy About</button>
-</div></section>
+  :root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:radial-gradient(900px 420px at 90% -10%, rgba(226,160,74,.12), transparent 60%), var(--bg); color:var(--ink); font-family: Georgia, "Iowan Old Style", serif; line-height:1.5; }
+  a { color: var(--amber); }
+  header { position:sticky; top:0; display:flex; justify-content:space-between; gap:16px; padding:14px 7vw; background:rgba(20,17,14,.9); border-bottom:1px solid var(--line); }
+  .brand { font-weight:700; letter-spacing:.04em; color:var(--ink); text-decoration:none; font-family: system-ui, sans-serif; }
+  nav { display:flex; gap:18px; font-family: system-ui, sans-serif; }
+  nav a { color: var(--muted); text-decoration:none; }
+  main { padding: 0 7vw 80px; max-width: 1100px; margin: 0 auto; }
+  .hero { padding: 56px 0 20px; display:grid; grid-template-columns: 1.4fr .8fr; gap: 28px; }
+  .kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); line-height:1.05; margin:10px 0 14px; }
+  .lede, .sub { color: var(--muted); }
+  .cta { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+  .btn { border:1px solid var(--amber); color:#1a140c; background:var(--amber); padding:10px 14px; border-radius:4px; font-weight:600; text-decoration:none; font-family: system-ui, sans-serif; }
+  .btn.ghost { background:transparent; color:var(--ink); border-color:var(--line); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  section { margin-top: 48px; }
+  h2 { font-size: 1.8rem; margin: 0 0 8px; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  .grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; }
+  .tag { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 8px; margin:0 6px 6px 0; font-size:.78rem; color:var(--muted); font-family: system-ui, sans-serif; }
+  ul { color: var(--muted); }
+  button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
+  button.on { border-color: var(--ok); color: var(--ok); }
+  .ladder, .result, .meta { font-family: ui-monospace, monospace; font-size:.84rem; }
+  .ladder { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
+  .run { color: var(--ok); } .stop { color: var(--bad); }
+  input, select { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
+  label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
+  footer { border-top:1px solid var(--line); padding:28px 7vw; color:var(--muted); }
+  @media (max-width: 860px) { .hero, .grid, .grid-3 { grid-template-columns: 1fr; } nav { display:none; } header, main, footer { padding-left:20px; padding-right:20px; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="#top">NICHOLAS LANE</a>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#projects">Projects</a>
+    <a href="#labs">Labs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+<main id="top">
+  <section class="hero">
+    <div>
+      <div class="kicker">Green Bay, WI · open to relocate · US work authorized</div>
+      <h1>Industrial electrician moving into controls and the web.</h1>
+      <p class="lede">Five-plus years on construction sites and in a foundry. PLC install and troubleshooting support at Grede Foundries. Pairing that floor experience with freeCodeCamp, embedded C, and small public labs.</p>
+      <div class="cta">
+        <a class="btn" href="mailto:nlane713@gmail.com">Email Nicholas</a>
+        <a class="btn ghost" href="https://github.com/Fomorianshifter">GitHub</a>
+        <a class="btn ghost" href="#labs">Try the labs</a>
+      </div>
+    </div>
+    <aside class="card">
+      <div class="kicker">Now</div>
+      <p>Looking for controls, industrial maintenance, and junior automation roles. Studying toward NEC certification. Building embedded and web projects in public.</p>
+      <p class="meta">608-717-7602 · nlane713@gmail.com</p>
+    </aside>
+  </section>
+  <section id="work">
+    <h2>Floor experience</h2>
+    <p class="sub">Taken from the resume, without the unrelated skill dump.</p>
+    <div class="grid">
+      <article class="card"><h3>Industrial Electrician</h3><div class="meta">Grede Foundries · Reedsburg, WI · Oct 2021 – Mar 2024</div><ul><li>Supported PLC installation and programming on automated processes.</li><li>Worked with engineering to close 50+ electrical issues a month.</li><li>Monthly inspections at a 100% safety-compliance rate.</li></ul></article>
+      <article class="card"><h3>Electrician</h3><div class="meta">AC Electric · Hayward, WI · Sep 2018 – Oct 2021</div><ul><li>New construction, remodels, and service calls.</li><li>Observed PLC installs and maintenance.</li><li>Service work aimed at fast, clean fixes.</li></ul></article>
+      <article class="card"><h3>Electrician, laborer / apprentice</h3><div class="meta">Greenfield Electric · Greenfield, WI · Jul 2016 – Sep 2018</div><ul><li>Assisted journeyman and master electricians on installs.</li><li>Hands-on residential and commercial systems.</li></ul></article>
+      <article class="card"><h3>Quality control inspector</h3><div class="meta">Comp X · Grayslake, IL · Apr 2013 – Dec 2015</div><ul><li>Oversaw CNC machining and quality inspections.</li><li>Helped with programming and electronics integration.</li></ul></article>
+    </div>
+  </section>
+  <section id="projects">
+    <h2>Best of GitHub</h2>
+    <p class="sub">Public work under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+    <div class="grid">
+      <article class="card"><div class="kicker">Featured · C / embedded</div><h3>Loki</h3><p>Embedded companion for a Linux single-board computer. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, EEPROM, and Flipper Zero UART. Local config UI on the USB network.</p><span class="tag">C</span><span class="tag">Python</span><span class="tag">Orange Pi</span><span class="tag">UART</span><p><a href="https://github.com/Fomorianshifter/Loki">View repository</a></p></article>
+      <article class="card"><div class="kicker">Lab · HTML / CSS / JS</div><h3>Solar System</h3><p>Small orbit visual from early front-end practice. A self-contained layout and animation example.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a></p></article>
+      <article class="card"><div class="kicker">Early · JavaScript</div><h3>One</h3><p>First public JavaScript import. Kept as a starting point, not a product.</p><p><a href="https://github.com/Fomorianshifter/One">View repository</a></p></article>
+      <article class="card"><div class="kicker">Concept · not production</div><h3>GhostGPS</h3><p>Early notes for a mobile route-simulation idea. The repo is still a stub, so it is listed for honesty, not as a shipped app.</p><p><a href="https://github.com/Fomorianshifter/GhostGPS">View repository</a></p></article>
+    </div>
+  </section>
+  <section id="labs">
+    <h2>Labs in this portfolio</h2>
+    <p class="sub">Built into the page so a LinkedIn visit is not only links.</p>
+    <div class="grid-3">
+      <article class="card"><h3>Motor starter scan</h3><p class="sub">Three-wire start/stop with seal-in, overload, and E-stop.</p><button id="start" type="button">Start</button> <button class="on" id="stop" type="button">Stop (NC)</button> <button class="on" id="ol" type="button">OL (NC)</button> <button class="on" id="estop" type="button">E-stop (NC)</button><div class="ladder" id="ladder"></div></article>
+      <article class="card"><h3>Fault log</h3><p class="sub">Short work-order note, the kind that goes in a CMMS.</p><label for="fault">What failed</label><input id="fault" placeholder="VFD fault, conveyor 3"><button id="addFault" type="button" style="margin-top:8px">Add entry</button><ul id="faults"></ul></article>
+      <article class="card"><h3>Voltage drop</h3><p class="sub">Single-phase copper estimate. Planning only, not a code stamp.</p><label for="amps">Load (A)</label><input id="amps" type="number" value="16"><label for="feet">One-way length (ft)</label><input id="feet" type="number" value="80"><label for="awg">Copper AWG</label><select id="awg"><option value="12">12</option><option value="10">10</option><option value="8">8</option><option value="6">6</option></select><label for="volts">Source (V)</label><input id="volts" type="number" value="120"><div class="result" id="drop"></div></article>
+    </div>
+  </section>
+  <section>
+    <h2>Education and tickets</h2>
+    <div class="grid">
+      <article class="card"><h3>Education</h3><ul><li>Computer science coursework, freeCodeCamp, remote, Mar 2023 – present</li><li>Associate’s, Liberal Arts & Sciences, Cardinal Stritch University, 2010–2012</li><li>High school diploma, Round Lake Senior High School, 2006</li></ul></article>
+      <article class="card"><h3>Listed credentials</h3><p class="sub">As shown on the resume. Confirm dates and issuers before an application.</p><span class="tag">HAZWOPER</span><span class="tag">First aid / CPR / AED</span><span class="tag">Aerial lift</span><span class="tag">Scissor lift</span><span class="tag">Driver’s license</span><span class="tag">Responsive web design</span><span class="tag">NDT</span><span class="tag">FE / EIT listed</span></article>
+    </div>
+  </section>
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Green Bay, WI 54313. Willing to relocate anywhere in the US. Authorized to work for any US employer.</p>
+    <p><a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a> · 608-717-7602 · <a href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a></p>
+  </section>
 </main>
-<footer>Nicholas Lane · Green Bay, WI 54313 · nlane713@gmail.com · +1 608 717 7602 · <a href="https://github.com/Fomorianshifter">GitHub @Fomorianshifter</a></footer>
+<footer>Nicholas Lane · controls, electrical, and web · portfolio for LinkedIn</footer>
 <script>
-const $=id=>document.getElementById(id);
-function drawDivider(){const vin=+$("vin").value,r1=+$("r1").value,r2=+$("r2").value,vout=(r1+r2)?vin*r2/(r1+r2):0;$("vout").textContent=vout.toFixed(2)+" V";const c=$("divcanvas"),g=c.getContext("2d");g.clearRect(0,0,c.width,c.height);g.strokeStyle="#e2a23a";g.lineWidth=3;g.beginPath();g.moveTo(40,28);g.lineTo(170,28);g.lineTo(170,62);g.moveTo(170,98);g.lineTo(170,132);g.lineTo(40,132);g.stroke();g.strokeStyle="#efe8d6";g.strokeRect(145,62,50,36);g.fillStyle="#d6ff6b";g.font="16px IBM Plex Mono, monospace";g.fillText("Vin "+vin+" V",40,20);g.fillText("R1 "+r1,220,78);g.fillText("R2 "+r2,220,110);g.fillText("Vout "+vout.toFixed(2)+" V",220,140);}
-["vin","r1","r2"].forEach(id=>$(id).addEventListener("input",drawDivider));drawDivider();
-let motor=false,held=false,ol=false;
-function render(){motor=!ol&&(held||motor);$("cStart").className="contact"+(held||motor?" on":"");$("cOL").className="contact"+(ol?"":" on");$("cM").className="coil"+(motor?" on":"");$("motorState").textContent=motor?"MOTOR RUN":ol?"OVERLOAD":"MOTOR OFF";}
-$("startBtn").onmousedown=()=>{held=true;render()};$("startBtn").onmouseup=$("startBtn").onmouseleave=()=>{held=false;render()};
-$("stopBtn").onclick=()=>{motor=false;render()};$("olBtn").onclick=()=>{ol=!ol;if(ol)motor=false;render()};
-let scans=0,timer=null;function scan(){scans++;$("scanOut").textContent="Q0 = "+($("i0").checked&&$("i1").checked?1:0)+" · scans "+scans;}
-$("scanBtn").onclick=scan;$("autoBtn").onclick=()=>{if(timer){clearInterval(timer);timer=null;$("autoBtn").textContent="Run";return}$("autoBtn").textContent="Stop";timer=setInterval(scan,400)};
-const sky=$("sky"),sg=sky.getContext("2d");let ang=0,paused=false;const bodies=[{n:"Mercury",a:46,c:"#c9b59a"},{n:"Venus",a:70,c:"#e2a23a"},{n:"Earth",a:98,c:"#8fb56a"},{n:"Mars",a:128,c:"#c46a45"}];
-function frame(){if(!paused)ang+=0.008*(+$("skySpeed").value||0);sg.clearRect(0,0,sky.width,sky.height);sg.fillStyle="#f3c56b";sg.beginPath();sg.arc(150,130,14,0,7);sg.fill();bodies.forEach((b,i)=>{const t=ang*(1.4-i*.25),x=150+Math.cos(t)*b.a*1.6,y=130+Math.sin(t)*b.a*.5;sg.strokeStyle="#3a4030";sg.beginPath();sg.ellipse(150,130,b.a*1.6,b.a*.5,0,0,7);sg.stroke();sg.fillStyle=b.c;sg.beginPath();sg.arc(x,y,5,0,7);sg.fill();sg.fillStyle="#efe8d6";sg.font="12px IBM Plex Mono, monospace";sg.fillText(b.n,x+8,y);});requestAnimationFrame(frame)}
-$("skyPause").onclick=()=>{paused=!paused;$("skyPause").textContent=paused?"Resume":"Pause"};frame();
-$("copyAbout").onclick=async()=>{try{await navigator.clipboard.writeText($("about").innerText);$("copyAbout").textContent="Copied"}catch(e){$("copyAbout").textContent="Select About and copy"}};
-</script></body></html>
+const state = { start:false, stop:true, ol:true, estop:true, seal:false };
+function scan() {
+  const hold = state.stop && state.ol && state.estop;
+  state.seal = hold && (state.start || state.seal);
+  if (!hold) state.seal = false;
+  const run = state.seal;
+  document.getElementById("ladder").innerHTML = "Rung 1  [ Start " + (state.start ? "ON" : "off") + " ]--[ Stop " + (state.stop ? "NC" : "OPEN") + " ]--[ OL " + (state.ol ? "NC" : "OPEN") + " ]--[ E-stop " + (state.estop ? "NC" : "OPEN") + " ]--( M " + (run ? "ON" : "OFF") + " )<br>Seal-in " + (state.seal ? "closed" : "open") + " &nbsp; Motor <span class='" + (run ? "run" : "stop") + "'>" + (run ? "RUNNING" : "STOPPED") + "</span>";
+}
+function wire(id, key) {
+  const el = document.getElementById(id);
+  el.addEventListener("click", () => { state[key] = !state[key]; el.classList.toggle("on", state[key]); scan(); });
+}
+wire("start","start"); wire("stop","stop"); wire("ol","ol"); wire("estop","estop"); scan();
+document.getElementById("addFault").addEventListener("click", () => {
+  const input = document.getElementById("fault");
+  const text = input.value.trim();
+  if (!text) return;
+  const li = document.createElement("li");
+  li.textContent = new Date().toLocaleString() + " — " + text + " — open";
+  document.getElementById("faults").prepend(li);
+  input.value = "";
+});
+const ohms = { "12":1.98, "10":1.24, "8":0.778, "6":0.491 };
+function drop() {
+  const amps = Number(document.getElementById("amps").value) || 0;
+  const feet = Number(document.getElementById("feet").value) || 0;
+  const volts = Number(document.getElementById("volts").value) || 120;
+  const vd = (2 * feet * amps * ohms[document.getElementById("awg").value]) / 1000;
+  const pct = volts ? (vd / volts) * 100 : 0;
+  document.getElementById("drop").textContent = vd.toFixed(2) + " V drop (" + pct.toFixed(1) + "%). Branch circuits are often kept near 3%.";
+}
+["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", drop));
+drop();
+</script>
+</body>
+</html>
