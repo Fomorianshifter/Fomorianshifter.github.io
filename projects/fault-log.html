@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header class="site"><div class="wrap nav"><a class="brand" href="../index.html">NL · Lane</a><a href="../index.html#projects">Projects</a></div></header>
+<main class="wrap"><section>
+<p class="kicker">Maintenance lab</p><h1>Shift fault log</h1>
+<p class="lede">A small stand-in for notes on electrical callouts: asset, what it did, how bad it was. Stored in this browser only.</p>
+<div class="lab"><form class="panel" id="form">
+<label>Asset</label><input id="asset" required placeholder="Mould line conveyor 2">
+<label>Symptom</label><textarea id="symptom" required rows="3" placeholder="VFD fault, motor hot, seal-in chatter"></textarea>
+<label>Severity</label><select id="sev"><option>low</option><option selected>med</option><option>high</option></select>
+<p><button class="btn" type="submit">Add fault</button> <button class="btn ghost" type="button" id="clear">Clear log</button></p>
+</form><div class="panel" id="list"></div></div>
+</section></main>
+<script>
+const key = "lane-fault-log";
+const list = document.getElementById("list");
+function load(){ return JSON.parse(localStorage.getItem(key) || "[]"); }
+function render(){
+  const rows = load();
+  list.innerHTML = rows.length ? rows.map(r => '<div class="log-item"><div><strong>'+r.asset+'</strong><br>'+r.symptom+'<br><span class="note">'+r.when+'</span></div><span class="sev '+r.sev+'">'+r.sev+'</span></div>').join("") : "<p class='note'>No faults logged yet.</p>";
+}
+form.onsubmit = (e) => { e.preventDefault(); const rows = load(); rows.unshift({ asset: asset.value, symptom: symptom.value, sev: sev.value, when: new Date().toLocaleString() }); localStorage.setItem(key, JSON.stringify(rows)); form.reset(); render(); };
+clear.onclick = () => { localStorage.removeItem(key); render(); };
+render();
+</script></body></html>
