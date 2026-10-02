@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nicholas Lane — Controls, Electrical & Web</title>
-<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay moving into controls, PLC support, embedded C, and web.">
+<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay. PLC support, electrical maintenance, embedded C, and small web labs.">
+<link rel="icon" href="favicon.svg">
 <style>
   :root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
   * { box-sizing: border-box; }
   body { margin:0; background:radial-gradient(900px 420px at 90% -10%, rgba(226,160,74,.12), transparent 60%), var(--bg); color:var(--ink); font-family: Georgia, "Iowan Old Style", serif; line-height:1.5; }
   a { color: var(--amber); }
-  header { position:sticky; top:0; display:flex; justify-content:space-between; gap:16px; padding:14px 7vw; background:rgba(20,17,14,.9); border-bottom:1px solid var(--line); }
+  header { position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; gap:16px; padding:14px 7vw; background:rgba(20,17,14,.92); border-bottom:1px solid var(--line); }
   .brand { font-weight:700; letter-spacing:.04em; color:var(--ink); text-decoration:none; font-family: system-ui, sans-serif; }
   nav { display:flex; gap:18px; font-family: system-ui, sans-serif; }
   nav a { color: var(--muted); text-decoration:none; }
@@ -32,10 +33,14 @@
   button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
   button.on { border-color: var(--ok); color: var(--ok); }
   .ladder, .result, .meta { font-family: ui-monospace, monospace; font-size:.84rem; }
-  .ladder { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
+  .ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
   .run { color: var(--ok); } .stop { color: var(--bad); }
   input, select { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
   label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
+  .sky { height: 180px; position: relative; overflow: hidden; }
+  .sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
+  .orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
+  .planet { position:absolute; width:10px; height:10px; border-radius:50%; background:#7dba6a; }
   footer { border-top:1px solid var(--line); padding:28px 7vw; color:var(--muted); }
   @media (max-width: 860px) { .hero, .grid, .grid-3 { grid-template-columns: 1fr; } nav { display:none; } header, main, footer { padding-left:20px; padding-right:20px; } }
 </style>
@@ -47,6 +52,7 @@
     <a href="#work">Work</a>
     <a href="#projects">Projects</a>
     <a href="#labs">Labs</a>
+    <a href="linkedin.html">LinkedIn</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
@@ -59,13 +65,14 @@
       <div class="cta">
         <a class="btn" href="mailto:nlane713@gmail.com">Email Nicholas</a>
         <a class="btn ghost" href="https://github.com/Fomorianshifter">GitHub</a>
-        <a class="btn ghost" href="#labs">Try the labs</a>
+        <a class="btn ghost" href="linkedin.html">LinkedIn paste sheet</a>
       </div>
     </div>
     <aside class="card">
       <div class="kicker">Now</div>
       <p>Looking for controls, industrial maintenance, and junior automation roles. Studying toward NEC certification. Building embedded and web projects in public.</p>
       <p class="meta">608-717-7602 · nlane713@gmail.com</p>
+      <p class="meta">Site: https://fomorianshifter.github.io</p>
     </aside>
   </section>
   <section id="work">
@@ -80,22 +87,32 @@
   </section>
   <section id="projects">
     <h2>Best of GitHub</h2>
-    <p class="sub">Public work under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+    <p class="sub">Public work under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>. Private repos are left off this page.</p>
     <div class="grid">
-      <article class="card"><div class="kicker">Featured · C / embedded</div><h3>Loki</h3><p>Embedded companion for a Linux single-board computer. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, EEPROM, and Flipper Zero UART. Local config UI on the USB network.</p><span class="tag">C</span><span class="tag">Python</span><span class="tag">Orange Pi</span><span class="tag">UART</span><p><a href="https://github.com/Fomorianshifter/Loki">View repository</a></p></article>
-      <article class="card"><div class="kicker">Lab · HTML / CSS / JS</div><h3>Solar System</h3><p>Small orbit visual from early front-end practice. A self-contained layout and animation example.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a></p></article>
+      <article class="card"><div class="kicker">Featured · C / embedded</div><h3>Loki</h3><p>Embedded companion for a Linux single-board computer. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, EEPROM, and Flipper Zero UART. Local config UI on the USB network, plus a small life-cycle loop.</p><span class="tag">C</span><span class="tag">Python</span><span class="tag">Orange Pi</span><span class="tag">UART</span><p><a href="https://github.com/Fomorianshifter/Loki">View repository</a></p></article>
+      <article class="card"><div class="kicker">Lab · HTML / CSS / JS</div><h3>Solar System</h3><p>Early orbit visual. The live sketch below is a smaller version of that idea, built into this site so it does not depend on the old repo hosting.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a></p></article>
       <article class="card"><div class="kicker">Early · JavaScript</div><h3>One</h3><p>First public JavaScript import. Kept as a starting point, not a product.</p><p><a href="https://github.com/Fomorianshifter/One">View repository</a></p></article>
       <article class="card"><div class="kicker">Concept · not production</div><h3>GhostGPS</h3><p>Early notes for a mobile route-simulation idea. The repo is still a stub, so it is listed for honesty, not as a shipped app.</p><p><a href="https://github.com/Fomorianshifter/GhostGPS">View repository</a></p></article>
     </div>
   </section>
   <section id="labs">
     <h2>Labs in this portfolio</h2>
-    <p class="sub">Built into the page so a LinkedIn visit is not only links.</p>
+    <p class="sub">These run in the browser. LinkedIn visitors can try them without cloning a repo.</p>
     <div class="grid-3">
-      <article class="card"><h3>Motor starter scan</h3><p class="sub">Three-wire start/stop with seal-in, overload, and E-stop.</p><button id="start" type="button">Start</button> <button class="on" id="stop" type="button">Stop (NC)</button> <button class="on" id="ol" type="button">OL (NC)</button> <button class="on" id="estop" type="button">E-stop (NC)</button><div class="ladder" id="ladder"></div></article>
+      <article class="card"><h3>Motor starter scan</h3><p class="sub">Three-wire start/stop with seal-in, overload, and E-stop. Green means the contact is closed.</p><button id="start" type="button">Start</button> <button class="on" id="stop" type="button">Stop (NC)</button> <button class="on" id="ol" type="button">OL (NC)</button> <button class="on" id="estop" type="button">E-stop (NC)</button><div class="ladder" id="ladder"></div></article>
       <article class="card"><h3>Fault log</h3><p class="sub">Short work-order note, the kind that goes in a CMMS.</p><label for="fault">What failed</label><input id="fault" placeholder="VFD fault, conveyor 3"><button id="addFault" type="button" style="margin-top:8px">Add entry</button><ul id="faults"></ul></article>
       <article class="card"><h3>Voltage drop</h3><p class="sub">Single-phase copper estimate. Planning only, not a code stamp.</p><label for="amps">Load (A)</label><input id="amps" type="number" value="16"><label for="feet">One-way length (ft)</label><input id="feet" type="number" value="80"><label for="awg">Copper AWG</label><select id="awg"><option value="12">12</option><option value="10">10</option><option value="8">8</option><option value="6">6</option></select><label for="volts">Source (V)</label><input id="volts" type="number" value="120"><div class="result" id="drop"></div></article>
     </div>
+    <article class="card" style="margin-top:16px">
+      <h3>Orbit sketch</h3>
+      <p class="sub">A basic project from the Solar System repos, reduced to one animation.</p>
+      <div class="sky" id="sky">
+        <div class="sun"></div>
+        <div class="orbit" style="width:70px;height:70px"><div class="planet" id="p1" style="background:#d4654f"></div></div>
+        <div class="orbit" style="width:120px;height:120px"><div class="planet" id="p2" style="background:#e2a04a"></div></div>
+        <div class="orbit" style="width:170px;height:170px"><div class="planet" id="p3"></div></div>
+      </div>
+    </article>
   </section>
   <section>
     <h2>Education and tickets</h2>
@@ -108,6 +125,7 @@
     <h2>Contact</h2>
     <p>Green Bay, WI 54313. Willing to relocate anywhere in the US. Authorized to work for any US employer.</p>
     <p><a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a> · 608-717-7602 · <a href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a></p>
+    <p>Put this in the LinkedIn website field: <a href="https://fomorianshifter.github.io">https://fomorianshifter.github.io</a></p>
   </section>
 </main>
 <footer>Nicholas Lane · controls, electrical, and web · portfolio for LinkedIn</footer>
@@ -145,6 +163,31 @@ function drop() {
 }
 ["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", drop));
 drop();
+function spin(id, seconds) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function frame(now) {
+    const angle = ((now - start) / 1000 / seconds) * 360;
+    el.style.left = "50%";
+    el.style.top = "50%";
+    el.style.transform = "translate(-50%,-50%) rotate(" + angle + "deg) translateY(calc(-50% - 0px))";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function orbit(id, radius, seconds) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function frame(now) {
+    const angle = ((now - start) / 1000 / seconds) * Math.PI * 2;
+    el.style.left = (50 + Math.cos(angle) * radius) + "%";
+    el.style.top = (50 + Math.sin(angle) * radius) + "%";
+    el.style.transform = "translate(-50%,-50%)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+orbit("p1", 18, 4); orbit("p2", 31, 7); orbit("p3", 44, 11);
 </script>
 </body>
 </html>
