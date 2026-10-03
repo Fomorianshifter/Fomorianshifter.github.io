@@ -1,40 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shift log — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Shift fault log</h1>
-      <p class="sub">Notes stay in this browser only.</p>
-      <form class="card" id="form">
-        <label>Asset</label><input id="asset" required placeholder="Melt deck conveyor 2">
-        <label>Symptom</label><input id="symptom" required placeholder="VFD fault F005, no run permissive">
-        <label>Action</label><textarea id="action" rows="3" placeholder="Checked E-stop string, reset drive, logged for engineering"></textarea>
-        <p><button class="btn" type="submit">Add note</button></p>
-      </form>
-      <div class="card" style="margin-top:14px"><table><thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div>
-    </section>
-  </main>
-  <script>
-    const key = "nl-shift-log";
-    const load = () => JSON.parse(localStorage.getItem(key) || "[]");
-    const draw = () => {
-      rows.innerHTML = load().map(r => `<tr><td>${r.when}</td><td>${r.asset}</td><td>${r.symptom}</td><td>${r.action}</td></tr>`).join("") || "<tr><td colspan='4'>No notes yet.</td></tr>";
-    };
-    form.onsubmit = (e) => {
-      e.preventDefault();
-      const notes = load();
-      notes.unshift({ when: new Date().toLocaleString(), asset: asset.value, symptom: symptom.value, action: action.value });
-      localStorage.setItem(key, JSON.stringify(notes.slice(0, 30)));
-      form.reset();
-      draw();
-    };
-    draw();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shift fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html">Home</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Project · maintenance notes</p><h1>Shift fault log</h1>
+<p class="lede">A small stand-in for a CMMS entry. Entries stay in this browser only.</p>
+<div class="card">
+<label>Asset</label><input id="asset" placeholder="Melt line conveyor 2">
+<label>Symptom</label><input id="sym" placeholder="Starter chatters on start">
+<label>Action</label><input id="act" placeholder="Checked aux contact and overload reset">
+<label>Status</label><select id="st"><option>Open</option><option>Watching</option><option>Closed</option></select>
+<p><button class="ctrl" id="add" type="button">Add entry</button></p>
+<table><thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table>
+</div></section></main>
+<script>
+const key = "nl-shift-log";
+const rows = JSON.parse(localStorage.getItem(key) || "[]");
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&','<':'<','>':'>'}[c])); }
+function draw(){
+  document.getElementById("rows").innerHTML = rows.map(r => "<tr><td>"+esc(r.when)+"</td><td>"+esc(r.asset)+"</td><td>"+esc(r.sym)+"</td><td>"+esc(r.act)+"</td><td>"+esc(r.st)+"</td></tr>").join("");
+}
+document.getElementById("add").onclick = () => {
+  const asset = document.getElementById("asset").value.trim();
+  const sym = document.getElementById("sym").value.trim();
+  if (!asset || !sym) return;
+  rows.unshift({when: new Date().toLocaleString(), asset, sym, act: document.getElementById("act").value.trim(), st: document.getElementById("st").value});
+  localStorage.setItem(key, JSON.stringify(rows.slice(0, 40)));
+  draw();
+};
+draw();
+</script></body></html>

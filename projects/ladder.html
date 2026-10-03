@@ -1,51 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Motor starter ladder — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Three-wire motor starter</h1>
-      <p class="sub">Stop is normally closed. Start is momentary. The auxiliary contact seals the coil in. Overload opens the rung.</p>
-      <div class="card ladder">
-        <div class="rung">
-          <button class="btn ghost" id="stop" type="button">Stop NC</button>
-          <div>Stop contact · <span id="stopState">closed</span></div>
-          <div></div>
-        </div>
-        <div class="rung">
-          <button class="btn ghost" id="start" type="button">Start NO</button>
-          <div>Start in parallel with M aux seal-in</div>
-          <div class="coil" id="coil">M</div>
-        </div>
-        <div class="rung">
-          <button class="btn ghost" id="ol" type="button">OL NC</button>
-          <div>Overload · <span id="olState">closed</span></div>
-          <div></div>
-        </div>
-        <p class="out" id="status">Coil de-energized. Motor off.</p>
-      </div>
-    </section>
-  </main>
-  <script>
-    let stopClosed = true, olClosed = true, sealed = false, holding = false;
-    const paint = () => {
-      const on = stopClosed && olClosed && (holding || sealed);
-      sealed = on;
-      coil.className = on ? "coil on" : "coil";
-      stopState.textContent = stopClosed ? "closed" : "open";
-      olState.textContent = olClosed ? "closed" : "open";
-      status.textContent = on ? "Coil energized. Aux contact sealed in." : "Coil de-energized. Motor off.";
-    };
-    stop.onclick = () => { stopClosed = !stopClosed; paint(); };
-    ol.onclick = () => { olClosed = !olClosed; paint(); };
-    start.onpointerdown = () => { holding = true; paint(); };
-    start.onpointerup = start.onpointerleave = () => { holding = false; paint(); };
-    paint();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motor starter ladder — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html">Home</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Project · PLC logic</p><h1>Three-wire motor starter</h1>
+<p class="lede">Stop is normally closed. Start is momentary. The auxiliary contact seals in around Start. Overload opens the coil circuit. Teaching model, not a live panel.</p>
+<div class="card">
+<div class="rung"><button class="ctrl" id="stop" type="button">Stop closed</button><button class="ctrl" id="start" type="button">Start</button><button class="ctrl" id="ol" type="button">Overload OK</button></div>
+<div class="rung"><div class="contact" id="cStop">Stop</div><div class="contact" id="cStart">Start</div><div class="contact" id="cSeal">M aux</div><div class="contact" id="cOl">OL</div><div class="coil" id="coil">M</div></div>
+<p class="out" id="state">Motor off</p>
+<p class="meta">Hold Start only while the button is down. Seal-in keeps the coil after release if Stop and OL stay closed.</p>
+</div></section></main>
+<script>
+let stopClosed = true, startHeld = false, olClosed = true, sealed = false;
+const stop = document.getElementById("stop"), start = document.getElementById("start"), ol = document.getElementById("ol");
+function render(){
+  const coil = stopClosed && olClosed && (startHeld || sealed);
+  sealed = coil;
+  document.getElementById("cStop").className = "contact" + (stopClosed ? " on" : "");
+  document.getElementById("cStart").className = "contact" + (startHeld ? " on" : "");
+  document.getElementById("cSeal").className = "contact" + (sealed ? " on" : "");
+  document.getElementById("cOl").className = "contact" + (olClosed ? " on" : "");
+  document.getElementById("coil").className = "coil" + (coil ? " on" : "");
+  const state = document.getElementById("state");
+  state.textContent = coil ? "Motor running — seal-in held" : "Motor off";
+  state.className = coil ? "out ok" : "out";
+  stop.textContent = stopClosed ? "Stop closed" : "Stop open";
+  ol.textContent = olClosed ? "Overload OK" : "Overload tripped";
+}
+stop.onclick = () => { stopClosed = !stopClosed; if (!stopClosed) sealed = false; render(); };
+ol.onclick = () => { olClosed = !olClosed; if (!olClosed) sealed = false; render(); };
+start.onpointerdown = (e) => { e.preventDefault(); startHeld = true; render(); };
+window.onpointerup = () => { if (startHeld) { startHeld = false; render(); } };
+render();
+</script></body></html>

@@ -1,42 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Orbit sketch — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Orbit sketch</h1>
-      <p class="sub">A small canvas rewrite of the SolarSystem idea from GitHub. Circular orbits, not a physics simulator.</p>
-      <canvas id="sky" width="900" height="520"></canvas>
-    </section>
-  </main>
-  <script>
-    const c = document.getElementById("sky"), g = c.getContext("2d");
-    const bodies = [
-      { n: "Mercury", r: 50, s: 0.03, color: "#c4b4a0", size: 4 },
-      { n: "Venus", r: 78, s: 0.02, color: "#e0c07a", size: 6 },
-      { n: "Earth", r: 110, s: 0.016, color: "#7ea0d4", size: 6 },
-      { n: "Mars", r: 145, s: 0.012, color: "#c46b4a", size: 5 },
-      { n: "Jupiter", r: 200, s: 0.007, color: "#d7b48a", size: 12 }
-    ];
-    let t = 0;
-    function frame() {
-      g.clearRect(0, 0, c.width, c.height);
-      g.fillStyle = "#f3efe4";
-      g.beginPath(); g.arc(450, 260, 16, 0, Math.PI * 2); g.fill();
-      bodies.forEach(b => {
-        g.strokeStyle = "#3a4630"; g.beginPath(); g.arc(450, 260, b.r, 0, Math.PI * 2); g.stroke();
-        const a = t * b.s;
-        const x = 450 + Math.cos(a) * b.r, y = 260 + Math.sin(a) * b.r * 0.42;
-        g.fillStyle = b.color; g.beginPath(); g.arc(x, y, b.size, 0, Math.PI * 2); g.fill();
-      });
-      t += 1; requestAnimationFrame(frame);
-    }
-    frame();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit sketch — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/SolarSystem">Repo</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Project · early web</p><h1>Orbit sketch</h1>
+<p class="lede">Simple circular orbits from the SolarSystem idea. Not a physics simulation.</p>
+<canvas id="c" width="720" height="420"></canvas>
+</section></main>
+<script>
+const planets = [{r:46,s:0.02,c:"#c9b08a",rad:4},{r:78,s:0.012,c:"#d6a24a",rad:7},{r:118,s:0.008,c:"#8fbf6a",rad:7},{r:168,s:0.0045,c:"#d36b4f",rad:6}];
+let t = 0;
+const ctx = document.getElementById("c").getContext("2d");
+function frame(){
+  ctx.fillStyle = "#0d120c"; ctx.fillRect(0,0,720,420);
+  ctx.fillStyle = "#efe7d2"; ctx.beginPath(); ctx.arc(360,210,16,0,Math.PI*2); ctx.fill();
+  planets.forEach(p => {
+    ctx.strokeStyle = "#3a4330"; ctx.beginPath(); ctx.arc(360,210,p.r,0,Math.PI*2); ctx.stroke();
+    const a = t * p.s;
+    ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(360 + Math.cos(a)*p.r, 210 + Math.sin(a)*p.r, p.rad, 0, Math.PI*2); ctx.fill();
+  });
+  t++; requestAnimationFrame(frame);
+}
+frame();
+</script></body></html>

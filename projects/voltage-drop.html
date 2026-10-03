@@ -1,43 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voltage drop — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Single-phase voltage drop</h1>
-      <p class="sub">Approximate copper drop: VD = 2 × K × I × D / CM. K = 12.9 for copper. Study aid only — confirm with the NEC and the job spec.</p>
-      <div class="grid two">
-        <form class="card" id="form">
-          <label>Load current (A)</label><input id="amps" type="number" value="20" min="0" step="0.1">
-          <label>One-way length (ft)</label><input id="feet" type="number" value="100" min="0">
-          <label>Source voltage (V)</label><input id="volts" type="number" value="240" min="1">
-          <label>Copper AWG</label>
-          <select id="awg">
-            <option value="10380">14</option><option value="16510">12</option><option value="26240" selected>10</option>
-            <option value="41740">8</option><option value="66360">6</option><option value="105600">4</option>
-            <option value="133100">3</option><option value="167800">2</option><option value="211600">1</option>
-          </select>
-          <p><button class="btn" type="button" id="go">Calculate</button></p>
-        </form>
-        <div class="card">
-          <p class="out" id="out">Drop: —</p>
-          <p class="warn">Not a code compliance tool. Circular mil values are standard copper approximations.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-  <script>
-    document.getElementById("go").onclick = () => {
-      const I = Number(amps.value), D = Number(feet.value), V = Number(volts.value), CM = Number(awg.value);
-      const vd = (2 * 12.9 * I * D) / CM;
-      const pct = V ? (vd / V) * 100 : 0;
-      out.textContent = `Drop: ${vd.toFixed(2)} V (${pct.toFixed(2)}%). End voltage about ${(V - vd).toFixed(1)} V.`;
-    };
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop aid — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html">Home</a></nav></div></header>
+<main class="wrap"><section class="hero"><p class="kicker">Project · electrical</p><h1>Single-phase voltage drop</h1>
+<p class="lede">Estimate using VD = 2 x K x I x D / CM, with K = 12.9 for copper. Circular mils are approximate. Not a substitute for the NEC or a stamped design.</p>
+<div class="card">
+<label>Voltage</label><input id="v" type="number" value="240">
+<label>Load amps</label><input id="i" type="number" value="20">
+<label>One-way length, feet</label><input id="d" type="number" value="100">
+<label>Copper conductor</label>
+<select id="awg"><option value="10380">14 AWG</option><option value="16510" selected>12 AWG</option><option value="26240">10 AWG</option><option value="41740">8 AWG</option><option value="66360">6 AWG</option></select>
+<p class="out" id="out"></p>
+</div></section></main>
+<script>
+function calc(){
+  const v = +document.getElementById("v").value, i = +document.getElementById("i").value, d = +document.getElementById("d").value, cm = +document.getElementById("awg").value;
+  const vd = (2 * 12.9 * i * d) / cm, pct = v ? (vd / v) * 100 : 0;
+  const el = document.getElementById("out");
+  el.textContent = vd.toFixed(2) + " V drop (" + pct.toFixed(2) + "%). Receiving about " + (v - vd).toFixed(1) + " V.";
+  el.className = pct > 3 ? "out warn" : "out ok";
+}
+document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", calc));
+calc();
+</script></body></html>
