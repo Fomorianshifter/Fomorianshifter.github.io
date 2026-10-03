@@ -1,9 +1,7 @@
-# Nicholas Lane
+# Nicholas Lane portfolio
 
-Portfolio for Nicholas Lane, industrial electrician and controls learner in Green Bay, Wisconsin.
+Static site for GitHub Pages: https://fomorianshifter.github.io/
 
-Live site: https://fomorianshifter.github.io
-
-Featured public work: Loki, SolarSystem, GhostGPS.
-
-Interactive demos in /projects are original teaching tools for this site (voltage drop, motor starter ladder, shift log, orbit sketch, Loki status board). They are not copies of employer code.
+Public projects featured from github.com/Fomorianshifter: Loki, GhostGPS, SolarSystem.
+Labs on the page: voltage drop, orbit canvas, Loki life cycle, shift fault log.
+LinkedIn paste text: linkedin.html

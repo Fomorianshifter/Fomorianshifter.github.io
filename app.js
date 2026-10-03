@@ -1,79 +1,113 @@
-(function () {
-  var start = document.getElementById("start");
-  var stop = document.getElementById("stop");
-  var ol = document.getElementById("ol");
-  var estop = document.getElementById("estop");
-  var ladder = document.getElementById("ladder");
-  var motor = document.getElementById("motor");
-  var sealed = false;
+const $ = (id) => document.getElementById(id);
 
-  function scan() {
-    var path = (start.checked || sealed) && stop.checked && ol.checked && estop.checked;
-    sealed = path;
-    if (!stop.checked || !ol.checked || !estop.checked) sealed = false;
-    var on = sealed;
-    ladder.textContent =
-      "Rung 1  [" + (start.checked ? "Start ON " : "Start off") + "]--" +
-      "[" + (stop.checked ? "Stop NC" : "Stop OPEN") + "]--" +
-      "[" + (ol.checked ? "OL NC" : "OL OPEN") + "]--" +
-      "[" + (estop.checked ? "E-stop NC" : "E-stop OPEN") + "]--( M " + (on ? "ON " : "OFF") + " )\n" +
-      "Seal-in " + (sealed ? "closed" : "open");
-    motor.textContent = on ? "Motor RUNNING" : "Motor STOPPED";
-    motor.style.color = on ? "#8fbf6a" : "#e0a14a";
-  }
-  [start, stop, ol, estop].forEach(function (el) { el.addEventListener("change", scan); });
-  scan();
+function voltage() {
+  const amps = Number($("amps").value);
+  const feet = Number($("feet").value);
+  const volts = Number($("volts").value);
+  const phase = $("phase").value;
+  const k = phase === "1" ? 12.9 : 1.732 * 12.9;
+  const ohms = { "14": 3.14, "12": 1.98, "10": 1.24, "8": 0.778, "6": 0.491, "4": 0.308 };
+  const awg = $("awg").value;
+  const drop = (k * amps * feet * ohms[awg]) / 1000;
+  const pct = (drop / volts) * 100;
+  $("vdrop").textContent = `${drop.toFixed(2)} V  ·  ${pct.toFixed(2)}% of ${volts} V`;
+  $("vnote").textContent = pct > 3
+    ? "Over a common 3% branch-circuit target. Upsize the conductor or shorten the run."
+    : "Inside a common 3% branch-circuit planning target.";
+}
 
-  var faults = document.getElementById("faults");
-  document.getElementById("fault-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    var data = new FormData(e.target);
-    var li = document.createElement("li");
-    var when = new Date().toLocaleString();
-    li.textContent = when + " · " + data.get("asset") + " · " + data.get("symptom");
-    faults.prepend(li);
-    e.target.reset();
-  });
-
-  var ohms = { "12": 1.98, "10": 1.24, "8": 0.778, "6": 0.491 };
-  var vdForm = document.getElementById("vd-form");
-  var vdOut = document.getElementById("vd-out");
-  function voltage() {
-    var data = new FormData(vdForm);
-    var amps = Number(data.get("amps"));
-    var feet = Number(data.get("feet"));
-    var volts = Number(data.get("volts"));
-    var r = ohms[data.get("awg")];
-    var drop = (2 * feet * r * amps) / 1000;
-    var pct = volts ? (drop / volts) * 100 : 0;
-    vdOut.textContent = drop.toFixed(2) + " V drop (" + pct.toFixed(1) + "%). Branch circuits are often kept near 3%.";
-  }
-  vdForm.addEventListener("input", voltage);
-  voltage();
-
-  var canvas = document.getElementById("orbit");
-  var ctx = canvas.getContext("2d");
-  var t = 0;
-  function draw() {
-    var w = canvas.width, h = canvas.height;
+function orbit() {
+  const c = $("orbit");
+  const ctx = c.getContext("2d");
+  const planets = [
+    { n: "Mercury", r: 28, s: 0.03, c: "#c9b7a2" },
+    { n: "Venus", r: 42, s: 0.022, c: "#e2b15a" },
+    { n: "Earth", r: 58, s: 0.016, c: "#7d9a62" },
+    { n: "Mars", r: 74, s: 0.012, c: "#c45c4a" },
+    { n: "Jupiter", r: 96, s: 0.007, c: "#c9854a" }
+  ];
+  let t = 0;
+  function frame() {
+    const w = c.width = c.clientWidth * 2;
+    const h = c.height = 440;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = "#e0a14a";
-    ctx.beginPath();
-    ctx.arc(w / 2, h / 2, 16, 0, Math.PI * 2);
-    ctx.fill();
-    [[70, 0.8, "#c8d0c0"], [110, 0.45, "#8fbf6a"], [150, 0.28, "#7eb6d6"]].forEach(function (p) {
-      ctx.strokeStyle = "#2c3128";
+    ctx.translate(w / 2, h / 2);
+    ctx.fillStyle = "#e2b15a";
+    ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.fill();
+    planets.forEach((p) => {
+      ctx.strokeStyle = "#2d3328";
+      ctx.beginPath(); ctx.arc(0, 0, p.r * 2, 0, Math.PI * 2); ctx.stroke();
+      const a = t * p.s;
+      ctx.fillStyle = p.c;
       ctx.beginPath();
-      ctx.ellipse(w / 2, h / 2, p[0], p[0] * 0.42, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      var a = t * p[1];
-      ctx.fillStyle = p[2];
-      ctx.beginPath();
-      ctx.arc(w / 2 + Math.cos(a) * p[0], h / 2 + Math.sin(a) * p[0] * 0.42, 5, 0, Math.PI * 2);
+      ctx.arc(Math.cos(a) * p.r * 2, Math.sin(a) * p.r * 2, 5, 0, Math.PI * 2);
       ctx.fill();
     });
-    t += 0.02;
-    requestAnimationFrame(draw);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    t += 1;
+    requestAnimationFrame(frame);
   }
-  draw();
-})();
+  frame();
+}
+
+const stages = [
+  { name: "Egg", need: 0 },
+  { name: "Hatchling", need: 50 },
+  { name: "Young", need: 200 },
+  { name: "Adult", need: 500 }
+];
+const loki = { gp: 0, hunger: 40, happy: 50, energy: 70 };
+
+function stageOf(gp) {
+  return [...stages].reverse().find((s) => gp >= s.need).name;
+}
+function moodOf() {
+  if (loki.hunger >= 70) return "Hungry";
+  if (loki.energy <= 20) return "Sleepy";
+  if (loki.happy <= 30) return "Grumpy";
+  if (loki.happy >= 70) return "Happy";
+  if (loki.happy >= 50 && loki.energy >= 60) return "Playful";
+  return "Neutral";
+}
+function paintLoki() {
+  $("loki-status").textContent = `${stageOf(loki.gp)} · ${moodOf()} · ${loki.gp} gp`;
+  $("hunger").style.height = `${loki.hunger}%`;
+  $("happy").style.height = `${loki.happy}%`;
+  $("energy").style.height = `${loki.energy}%`;
+}
+function feed(kind) {
+  const table = { basic: [20, 5, 5], tasty: [40, 10, 15], special: [60, 20, 25] };
+  let [h, g, p] = table[kind];
+  if (loki.hunger < 30) { h /= 2; g /= 2; p /= 2; }
+  loki.hunger = Math.max(0, loki.hunger - h);
+  loki.gp += g;
+  loki.happy = Math.min(100, loki.happy + p);
+  paintLoki();
+}
+function tickLoki() {
+  loki.hunger = Math.min(100, loki.hunger + 4);
+  loki.energy = moodOf() === "Sleepy" ? Math.min(100, loki.energy + 8) : Math.max(0, loki.energy - 3);
+  paintLoki();
+}
+
+const faults = [];
+function addFault(e) {
+  e.preventDefault();
+  faults.unshift({
+    area: $("area").value,
+    note: $("note").value,
+    when: new Date().toLocaleString()
+  });
+  $("note").value = "";
+  $("log").innerHTML = faults.map((f) => `<div><strong>${f.area}</strong> · ${f.when}<br>${f.note}</div>`).join("");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  orbit();
+  paintLoki();
+  setInterval(tickLoki, 2500);
+  $("vform").addEventListener("input", voltage);
+  voltage();
+  $("logform").addEventListener("submit", addFault);
+  document.querySelectorAll("[data-feed]").forEach((b) => b.addEventListener("click", () => feed(b.dataset.feed)));
+});
