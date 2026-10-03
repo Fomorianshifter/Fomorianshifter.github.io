@@ -1,55 +1,43 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voltage drop — Nicholas Lane</title><style>
-:root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
-* { box-sizing: border-box; }
-body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
-a { color: var(--amber); }
-header, main, footer { padding-left:7vw; padding-right:7vw; }
-header { display:flex; justify-content:space-between; gap:16px; padding-top:14px; padding-bottom:14px; border-bottom:1px solid var(--line); font-family: system-ui, sans-serif; }
-.brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
-main { max-width:900px; padding-top:36px; padding-bottom:64px; }
-.kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height:1.05; }
-.lede, .sub { color: var(--muted); }
-.card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-top:16px; }
-button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
-button.on { border-color: var(--ok); color: var(--ok); }
-.ladder, .result { font-family: ui-monospace, monospace; font-size:.9rem; }
-.ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
-.run { color: var(--ok); } .stop { color: var(--bad); }
-input, select, textarea { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
-label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
-.sky { height:280px; position:relative; overflow:hidden; }
-.sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
-.orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
-.planet { position:absolute; width:12px; height:12px; border-radius:50%; background:#7dba6a; }
-footer { border-top:1px solid var(--line); color:var(--muted); padding-top:20px; padding-bottom:28px; }
-textarea { min-height: 280px; }
-</style></head><body>
-<header><a class="brand" href="../index.html">NICHOLAS LANE</a><a href="../index.html#labs">All labs</a></header><main>
-<p class="kicker">Planning lab</p>
-<h1>Copper voltage drop</h1>
-<p class="lede">Single-phase estimate using approximate DC resistance. Planning sketch only, not an NEC stamp.</p>
-<div class="card">
-<label for="amps">Load (A)</label><input id="amps" type="number" value="16">
-<label for="feet">One-way length (ft)</label><input id="feet" type="number" value="80">
-<label for="awg">Copper AWG</label><select id="awg"><option value="14">14</option><option value="12" selected>12</option><option value="10">10</option><option value="8">8</option><option value="6">6</option><option value="4">4</option></select>
-<label for="volts">Source (V)</label><input id="volts" type="number" value="120">
-<div class="result" id="drop"></div>
-</div>
-<p><a href="../index.html">Back to portfolio</a></p></main><footer>Nicholas Lane · lab for LinkedIn</footer>
-<script>
-const ohms = { "14":3.14, "12":1.98, "10":1.24, "8":0.778, "6":0.491, "4":0.308 };
-function drop() {
-  const amps = Number(document.getElementById("amps").value) || 0;
-  const feet = Number(document.getElementById("feet").value) || 0;
-  const volts = Number(document.getElementById("volts").value) || 120;
-  const vd = (2 * feet * amps * ohms[document.getElementById("awg").value]) / 1000;
-  const pct = volts ? (vd / volts) * 100 : 0;
-  const note = pct > 3 ? " Above a common 3% branch-circuit planning target." : " Within a common 3% branch-circuit planning target.";
-  document.getElementById("drop").textContent = vd.toFixed(2) + " V drop (" + pct.toFixed(1) + "%)." + note;
-}
-["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", drop));
-drop();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voltage drop — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
+  <main class="wrap">
+    <section>
+      <h1>Single-phase voltage drop</h1>
+      <p class="sub">Approximate copper drop: VD = 2 × K × I × D / CM. K = 12.9 for copper. Study aid only — confirm with the NEC and the job spec.</p>
+      <div class="grid two">
+        <form class="card" id="form">
+          <label>Load current (A)</label><input id="amps" type="number" value="20" min="0" step="0.1">
+          <label>One-way length (ft)</label><input id="feet" type="number" value="100" min="0">
+          <label>Source voltage (V)</label><input id="volts" type="number" value="240" min="1">
+          <label>Copper AWG</label>
+          <select id="awg">
+            <option value="10380">14</option><option value="16510">12</option><option value="26240" selected>10</option>
+            <option value="41740">8</option><option value="66360">6</option><option value="105600">4</option>
+            <option value="133100">3</option><option value="167800">2</option><option value="211600">1</option>
+          </select>
+          <p><button class="btn" type="button" id="go">Calculate</button></p>
+        </form>
+        <div class="card">
+          <p class="out" id="out">Drop: —</p>
+          <p class="warn">Not a code compliance tool. Circular mil values are standard copper approximations.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    document.getElementById("go").onclick = () => {
+      const I = Number(amps.value), D = Number(feet.value), V = Number(volts.value), CM = Number(awg.value);
+      const vd = (2 * 12.9 * I * D) / CM;
+      const pct = V ? (vd / V) * 100 : 0;
+      out.textContent = `Drop: ${vd.toFixed(2)} V (${pct.toFixed(2)}%). End voltage about ${(V - vd).toFixed(1)} V.`;
+    };
+  </script>
+</body>
+</html>

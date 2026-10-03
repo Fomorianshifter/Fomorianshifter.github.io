@@ -1,47 +1,51 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Ladder scan — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="../index.html#labs">Labs</a><a href="starter.html">Starter</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Training lab · not a PLC program</p><h1>Ladder scan — seal-in rung</h1><p class="lede">Stop is normally closed. Start is momentary. When the coil picks up, the auxiliary contact seals around Start so the motor stays on until Stop opens.</p></section>
-<section class="lab">
-<button class="ctrl" id="stop" type="button">Stop closed</button>
-<button class="ctrl" id="start" type="button">Start open</button>
-<p class="out" id="state">Coil: off · Motor: stopped</p>
-<svg class="diagram" viewBox="0 0 640 180" id="svg" role="img" aria-label="Ladder rung">
-<line x1="40" y1="40" x2="40" y2="150" stroke="#7dba6a" stroke-width="4"/>
-<line x1="600" y1="40" x2="600" y2="150" stroke="#7dba6a" stroke-width="4"/>
-<line x1="40" y1="70" x2="600" y2="70" stroke="#9aab9c" stroke-width="3"/>
-<line x1="40" y1="120" x2="180" y2="120" stroke="#9aab9c" stroke-width="3"/>
-<line x1="260" y1="120" x2="600" y2="120" stroke="#9aab9c" stroke-width="3"/>
-<line x1="180" y1="70" x2="180" y2="120" stroke="#9aab9c" stroke-width="3"/>
-<line x1="260" y1="70" x2="260" y2="120" stroke="#9aab9c" stroke-width="3"/>
-<rect id="stopBox" x="80" y="55" width="50" height="30" fill="none" stroke="#e2a23a" stroke-width="3"/>
-<rect id="startBox" x="190" y="55" width="50" height="30" fill="none" stroke="#9aab9c" stroke-width="3"/>
-<rect id="sealBox" x="190" y="105" width="50" height="30" fill="none" stroke="#9aab9c" stroke-width="3"/>
-<circle id="coil" cx="520" cy="70" r="18" fill="none" stroke="#9aab9c" stroke-width="3"/>
-<text x="86" y="34" fill="#e7efe6" font-size="12">STOP</text>
-<text x="192" y="34" fill="#e7efe6" font-size="12">START</text>
-<text x="198" y="154" fill="#e7efe6" font-size="12">SEAL</text>
-<text x="500" y="40" fill="#e7efe6" font-size="12">M</text>
-</svg>
-<p class="meta">Logic: coil = stopClosed AND (start OR seal). Seal follows the coil.</p>
-</section></main>
-<script>
-var stopClosed = true, start = false, coil = false;
-var stopBtn = document.getElementById("stop"), startBtn = document.getElementById("start");
-function draw(){
-  coil = stopClosed && (start || coil);
-  document.getElementById("state").textContent = "Coil: " + (coil ? "on" : "off") + " · Motor: " + (coil ? "running" : "stopped");
-  stopBtn.textContent = stopClosed ? "Stop closed" : "Stop open";
-  stopBtn.className = "ctrl" + (stopClosed ? " on" : "");
-  startBtn.textContent = start ? "Start closed" : "Start open";
-  startBtn.className = "ctrl" + (start ? " on" : "");
-  document.getElementById("stopBox").setAttribute("stroke", stopClosed ? "#7dba6a" : "#c45b4a");
-  document.getElementById("startBox").setAttribute("stroke", start ? "#7dba6a" : "#9aab9c");
-  document.getElementById("sealBox").setAttribute("stroke", coil ? "#7dba6a" : "#9aab9c");
-  document.getElementById("coil").setAttribute("stroke", coil ? "#e2a23a" : "#9aab9c");
-  document.getElementById("coil").setAttribute("fill", coil ? "#3d5a28" : "none");
-}
-stopBtn.onclick = function(){ stopClosed = !stopClosed; draw(); };
-startBtn.onclick = function(){ start = !start; draw(); };
-draw();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motor starter ladder — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
+  <main class="wrap">
+    <section>
+      <h1>Three-wire motor starter</h1>
+      <p class="sub">Stop is normally closed. Start is momentary. The auxiliary contact seals the coil in. Overload opens the rung.</p>
+      <div class="card ladder">
+        <div class="rung">
+          <button class="btn ghost" id="stop" type="button">Stop NC</button>
+          <div>Stop contact · <span id="stopState">closed</span></div>
+          <div></div>
+        </div>
+        <div class="rung">
+          <button class="btn ghost" id="start" type="button">Start NO</button>
+          <div>Start in parallel with M aux seal-in</div>
+          <div class="coil" id="coil">M</div>
+        </div>
+        <div class="rung">
+          <button class="btn ghost" id="ol" type="button">OL NC</button>
+          <div>Overload · <span id="olState">closed</span></div>
+          <div></div>
+        </div>
+        <p class="out" id="status">Coil de-energized. Motor off.</p>
+      </div>
+    </section>
+  </main>
+  <script>
+    let stopClosed = true, olClosed = true, sealed = false, holding = false;
+    const paint = () => {
+      const on = stopClosed && olClosed && (holding || sealed);
+      sealed = on;
+      coil.className = on ? "coil on" : "coil";
+      stopState.textContent = stopClosed ? "closed" : "open";
+      olState.textContent = olClosed ? "closed" : "open";
+      status.textContent = on ? "Coil energized. Aux contact sealed in." : "Coil de-energized. Motor off.";
+    };
+    stop.onclick = () => { stopClosed = !stopClosed; paint(); };
+    ol.onclick = () => { olClosed = !olClosed; paint(); };
+    start.onpointerdown = () => { holding = true; paint(); };
+    start.onpointerup = start.onpointerleave = () => { holding = false; paint(); };
+    paint();
+  </script>
+</body>
+</html>
