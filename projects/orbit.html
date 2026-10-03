@@ -1,24 +1,52 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orbit sketch — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/SolarSystem">Repo</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Project · early web</p><h1>Orbit sketch</h1>
-<p class="lede">Simple circular orbits from the SolarSystem idea. Not a physics simulation.</p>
-<canvas id="c" width="720" height="420"></canvas>
-</section></main>
-<script>
-const planets = [{r:46,s:0.02,c:"#c9b08a",rad:4},{r:78,s:0.012,c:"#d6a24a",rad:7},{r:118,s:0.008,c:"#8fbf6a",rad:7},{r:168,s:0.0045,c:"#d36b4f",rad:6}];
-let t = 0;
-const ctx = document.getElementById("c").getContext("2d");
-function frame(){
-  ctx.fillStyle = "#0d120c"; ctx.fillRect(0,0,720,420);
-  ctx.fillStyle = "#efe7d2"; ctx.beginPath(); ctx.arc(360,210,16,0,Math.PI*2); ctx.fill();
-  planets.forEach(p => {
-    ctx.strokeStyle = "#3a4330"; ctx.beginPath(); ctx.arc(360,210,p.r,0,Math.PI*2); ctx.stroke();
-    const a = t * p.s;
-    ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(360 + Math.cos(a)*p.r, 210 + Math.sin(a)*p.r, p.rad, 0, Math.PI*2); ctx.fill();
-  });
-  t++; requestAnimationFrame(frame);
-}
-frame();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbit — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header><a href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></nav></header>
+  <main>
+    <p class="kicker">From the Solar System repos</p>
+    <h1>Inner five</h1>
+    <p class="lede">Not to scale. Mercury through Mars, plus Earth.</p>
+    <canvas id="orbit" width="700" height="360"></canvas>
+  </main>
+  <script>
+    const c = document.getElementById("orbit");
+    const ctx = c.getContext("2d");
+    const bodies = [
+      { name: "Mercury", r: 40, size: 3, color: "#c4b7a6", a: 0 },
+      { name: "Venus", r: 62, size: 5, color: "#e0c07a", a: 1 },
+      { name: "Earth", r: 88, size: 5, color: "#7eb6d6", a: 2 },
+      { name: "Mars", r: 116, size: 4, color: "#d07a5a", a: 3.2 }
+    ];
+    function frame() {
+      const w = c.width, h = c.height;
+      ctx.fillStyle = "#0b0f0a";
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = "#d6a34a";
+      ctx.beginPath();
+      ctx.arc(w / 2, h / 2, 12, 0, Math.PI * 2);
+      ctx.fill();
+      bodies.forEach(b => {
+        b.a += 0.004 + 40 / b.r / 80;
+        ctx.strokeStyle = "#31402c";
+        ctx.beginPath();
+        ctx.ellipse(w / 2, h / 2, b.r, b.r * 0.62, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        const x = w / 2 + Math.cos(b.a) * b.r;
+        const y = h / 2 + Math.sin(b.a) * b.r * 0.62;
+        ctx.fillStyle = b.color;
+        ctx.beginPath();
+        ctx.arc(x, y, b.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(frame);
+    }
+    frame();
+  </script>
+</body>
+</html>
