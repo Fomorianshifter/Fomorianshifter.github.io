@@ -1,153 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nicholas Lane — electrician, controls, and builds</title>
-  <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC support, electrical maintenance, and public software projects." />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicholas Lane — Electrician and controls</title>
+<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, Wisconsin. PLC work, embedded projects, and small web labs.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"><link rel="icon" href="favicon.svg">
 </head>
 <body>
-  <header>
-    <a class="brand" href="#top">Nicholas Lane</a>
-    <nav>
-      <a href="#work">Work</a>
-      <a href="#projects">Projects</a>
-      <a href="#labs">Labs</a>
-      <a href="#linkedin">LinkedIn</a>
-      <a href="https://github.com/Fomorianshifter">GitHub</a>
-    </nav>
-  </header>
-  <main id="top">
-    <section class="hero">
-      <div class="kicker">Green Bay, WI · willing to relocate · US work authorized</div>
-      <h1>Electrician who wires the job and builds the controls around it.</h1>
-      <p class="lede">Five-plus years in residential, commercial, and foundry electrical work, with hands-on PLC install and troubleshooting. Studying toward NEC certification. Public code lives under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a> (display name Beau).</p>
-      <div class="row">
-        <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
-        <a class="btn ghost" href="tel:+16087177602">608-717-7602</a>
-        <a class="btn ghost" href="#labs">Try the labs</a>
-      </div>
-    </section>
-    <section id="work">
-      <h2>Work</h2>
-      <p class="sub">From the resume. Numbers below are the ones already on that document.</p>
-      <article class="job">
-        <h3>Industrial electrician · Grede Foundries, Reedsburg, WI</h3>
-        <p class="meta">October 2021 – March 2024</p>
-        <ul>
-          <li>Assisted installation and programming of PLC systems for automated processes.</li>
-          <li>Worked with engineering on electrical faults — resume cites over 50 issues a month.</li>
-          <li>Monthly inspections and maintenance held to a 100% safety-compliance rate.</li>
-        </ul>
-      </article>
-      <article class="job">
-        <h3>Electrician · AC Electric, Hayward, WI</h3>
-        <p class="meta">September 2018 – October 2021</p>
-        <ul>
-          <li>New construction, remodels, and service calls.</li>
-          <li>Observed PLC installs and kept service work moving for clients.</li>
-        </ul>
-      </article>
-      <article class="job">
-        <h3>Electrician, laborer / apprentice · Greenfield Electric, Greenfield, WI</h3>
-        <p class="meta">July 2016 – September 2018</p>
-        <ul>
-          <li>Assisted journeyman and master electricians on installs and basic programming tasks.</li>
-        </ul>
-      </article>
-      <article class="job">
-        <h3>Quality control inspector · CompX, Grayslake, IL</h3>
-        <p class="meta">April 2013 – December 2015</p>
-        <ul>
-          <li>CNC process oversight and inspections, plus support for machinists on programming and electronics integration.</li>
-        </ul>
-      </article>
-      <p class="note">Education: freeCodeCamp computer science, March 2023–present. Associate’s in liberal arts and sciences, Cardinal Stritch University, 2010–2012. High school diploma, Round Lake Senior High, 2006. Resume also lists responsive web design, HAZWOPER, first aid / CPR / AED, aerial and scissor lift, and other licenses — confirm issuer and dates before a formal application.</p>
-    </section>
-    <section id="projects">
-      <h2>Best of GitHub</h2>
-      <p class="sub">Public originals. Coursework is labeled as foundation. Private repos are left off.</p>
-      <div class="grid">
-        <article class="card">
-          <h3>Loki</h3>
-          <p>Embedded dragon companion for Linux single-board computers. Hardware layer for GPIO, SPI, I2C, UART, and PWM; TFT, SD, flash, and EEPROM drivers; Flipper Zero UART; local config UI. MIT.</p>
-          <div class="tags"><span class="tag">C</span><span class="tag">Orange Pi / Pi</span><span class="tag">embedded</span></div>
-          <a href="https://github.com/Fomorianshifter/Loki">Source</a>
-        </article>
-        <article class="card">
-          <h3>Solar System</h3>
-          <p>Early planet-orbit sketches (SolarSystem and Mynewproject-SolarSystem). The orbit lab on this page is a cleaned-up version of that idea.</p>
-          <div class="tags"><span class="tag">JavaScript</span><span class="tag">canvas</span></div>
-          <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> ·
-          <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit study</a>
-        </article>
-        <article class="card">
-          <h3>One</h3>
-          <p>First public import of web coursework — HTML, CSS, and JavaScript. Foundation, not a shipped product. Matches the freeCodeCamp track and the responsive web design certificate on the resume.</p>
-          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
-          <a href="https://github.com/Fomorianshifter/One">Source</a>
-        </article>
-      </div>
-    </section>
-    <section id="labs">
-      <h2>Labs on this site</h2>
-      <p class="sub">Small tools made for the portfolio so a LinkedIn visitor can click something. Planning aids, not a code stamp or a running PLC.</p>
-      <div class="lab" id="vd">
-        <h3>Voltage drop</h3>
-        <p class="note">Copper approximate DC resistance, K = 12.9. Single-phase uses 2 × KIL/cmil; three-phase uses 1.732 × KIL/cmil.</p>
-        <div class="fields">
-          <div><label>Volts</label><input id="v" type="number" value="480" /></div>
-          <div><label>Amps</label><input id="a" type="number" value="20" /></div>
-          <div><label>One-way feet</label><input id="ft" type="number" value="150" /></div>
-          <div><label>Circular mils</label><input id="cmil" type="number" value="10380" /></div>
-          <div><label>Phase</label><select id="ph"><option value="1">Single</option><option value="3" selected>Three</option></select></div>
-        </div>
-        <p class="out" id="vdout"></p>
-      </div>
-      <div class="lab">
-        <h3>Orbit</h3>
-        <p class="note">From the Solar System repos. Inner five, not to scale.</p>
-        <canvas id="orbit" width="720" height="360"></canvas>
-      </div>
-      <div class="lab">
-        <h3>Motor starter seal-in</h3>
-        <p class="note">Teaching rung: stop and overload must be closed, start or the seal-in contact holds M1. Toggle the contacts.</p>
-        <div id="rungs" class="row"></div>
-        <p class="out" id="coil"></p>
-      </div>
-      <div class="lab">
-        <h3>Shift fault log</h3>
-        <p class="note">Sample foundry calls in the style of the Grede work. Entries stay in the browser only.</p>
-        <div class="fields">
-          <div><label>Area</label><input id="area" placeholder="Pour deck" /></div>
-          <div><label>Symptom</label><input id="symptom" placeholder="VFD fault" /></div>
-        </div>
-        <p><button class="btn" id="addfault" type="button">Add call</button></p>
-        <table>
-          <thead><tr><th>Time</th><th>Area</th><th>Symptom</th><th>Action</th></tr></thead>
-          <tbody id="log"></tbody>
-        </table>
-      </div>
-    </section>
-    <section id="linkedin">
-      <h2>Connect this to LinkedIn</h2>
-      <ol>
-        <li>Profile, Contact info, Website. Label it Portfolio. URL: <a href="https://fomorianshifter.github.io">https://fomorianshifter.github.io</a></li>
-        <li>Add the same URL in Featured, and add the Loki repo as a second feature.</li>
-        <li>Headline: Industrial electrician · PLC install and troubleshooting · Green Bay, WI</li>
-        <li>About section — paste from below.</li>
-      </ol>
-      <pre class="paste">Industrial electrician with 5+ years in residential, commercial, and foundry electrical systems. At Grede Foundries I assisted PLC installation and programming, worked with engineering on electrical faults (50+ a month on the resume), and kept monthly inspections at a 100% safety-compliance rate.
-
-I am building toward NEC certification and shipping small public projects on the side: Loki, an embedded companion for Linux boards (C, drivers, TFT, UART), plus web coursework from freeCodeCamp.
-
-Portfolio: https://fomorianshifter.github.io
-GitHub: https://github.com/Fomorianshifter
-Open to relocate.</pre>
-    </section>
-  </main>
-  <footer>Nicholas Lane · nlane713@gmail.com · Green Bay, WI 54313</footer>
-  <script src="labs.js"></script>
-</body>
-</html>
+<div class="wrap">
+<nav><a class="brand" href="#top">Nicholas Lane</a><div class="nav-links"><a href="#work">Work</a><a href="projects.html">Projects</a><a href="#labs">Labs</a><a href="https://github.com/Fomorianshifter">GitHub</a><a href="mailto:nlane713@gmail.com">Email</a></div></nav>
+<header class="hero" id="top"><div><p class="kicker">Green Bay, WI · willing to relocate · US work authorized</p><h1>Electrician who builds the controls around the job.</h1><p class="lede">Five-plus years in residential, commercial, and foundry electrical work, with hands-on PLC install and troubleshooting. Building toward NEC certification, and shipping small software and embedded projects on the side.</p><div class="actions"><a class="btn" href="projects.html">See the work</a><a class="btn ghost" href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a><a class="btn ghost" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a></div></div><aside class="card"><p class="meta">LinkedIn featured link</p><p><strong>https://fomorianshifter.github.io</strong></p><p>GitHub display name is Beau. Professional name is Nicholas Lane. Phone: +1 608 717 7602.</p><p class="meta">Responsive web design · HAZWOPER · First aid / CPR / AED · Aerial and scissor lift · Driver’s license</p></aside></header>
+<section id="work"><h2>Work</h2><p class="sub">Pulled from the resume. Numbers below are the ones already on that document.</p><div class="grid"><article class="card job"><h3>Industrial electrician · Grede Foundries, Reedsburg, WI</h3><p class="meta">Oct 2021 – Mar 2024</p><p>Assisted PLC installation and programming for automated processes. Worked with engineering on electrical faults — resume cites 50+ issues a month — and monthly inspections held to a 100% safety-compliance rate.</p></article><article class="card job"><h3>Electrician · AC Electric, Hayward, WI</h3><p class="meta">Sep 2018 – Oct 2021</p><p>New construction, remodels, and service calls. Observed PLC installs and kept service work moving for clients.</p></article><article class="card job"><h3>Electrician, laborer / apprentice · Greenfield Electric, Greenfield, WI</h3><p class="meta">Jul 2016 – Sep 2018</p><p>Assisted journeyman and master electricians on installs and basic programming tasks.</p></article><article class="card job"><h3>Quality control inspector · CompX, Grayslake, IL</h3><p class="meta">Apr 2013 – Dec 2015</p><p>CNC process oversight and inspections, plus support for machinists on programming and electronics integration.</p></article></div></section>
+<section id="projects"><h2>Best of GitHub</h2><p class="sub">Public work under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>. Private repos are left off this page. <a href="projects.html">Full project list</a>.</p><div class="grid"><article class="card project"><h3>Loki</h3><p>Embedded dragon companion for Linux single-board computers. HAL for GPIO, SPI, I2C, UART, and PWM; TFT, SD, flash, and EEPROM drivers; Flipper Zero UART; local config UI.</p><div class="tags"><span class="tag">C</span><span class="tag">embedded</span><span class="tag">Orange Pi / Pi</span></div><p><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="projects/loki-life.html">life-cycle lab</a></p></article><article class="card project"><h3>GhostGPS</h3><p>Small public GPS-related repo with an MIT license. Included as a field-tool sketch next to the industrial work, not as a shipped product.</p><div class="tags"><span class="tag">MIT</span></div><p><a href="https://github.com/Fomorianshifter/GhostGPS">Source</a></p></article><article class="card project"><h3>Solar System</h3><p>Early planets-in-orbit study. The lab on this page is a cleaned-up version of that idea.</p><div class="tags"><span class="tag">JavaScript</span></div><p><a href="https://github.com/Fomorianshifter/SolarSystem">Source</a> · <a href="projects/orbit.html">orbit lab</a></p></article><article class="card project"><h3>One</h3><p>First public web import: HTML, CSS, and JavaScript coursework. Foundation work, labeled as such.</p><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div><p><a href="https://github.com/Fomorianshifter/One">Source</a></p></article></div></section>
+<section id="labs"><h2>Labs on this site</h2><p class="sub">Small tools made for the portfolio so a LinkedIn visitor can click something, not just read a list. More on the <a href="projects.html">projects page</a>.</p><div class="grid"><article class="card"><h3>Voltage drop</h3><p>Copper approximate DC resistance, single or three phase. Planning aid, not a code stamp.</p><form id="vform"><label>Load amps <input id="amps" type="number" value="20" min="1"></label><label>One-way feet <input id="feet" type="number" value="150" min="1"></label><label>System volts <input id="volts" type="number" value="120" min="1"></label><label>AWG <select id="awg"><option>14</option><option selected>12</option><option>10</option><option>8</option><option>6</option><option>4</option><option>2</option></select></label><label>Phase <select id="phase"><option value="1">Single</option><option value="3">Three</option></select></label></form><p class="out" id="vdrop"></p></article><article class="card"><h3>Orbit</h3><p>From the Solar System repos. Inner five, not to scale.</p><canvas id="orbit" width="520" height="320"></canvas><p><button class="btn ghost" id="orbitToggle" type="button">Pause / play</button></p></article><article class="card" id="loki"><h3>Loki life cycle</h3><p>Same stage thresholds as the Loki repo: egg, 50, 200, 500 growth points.</p><p class="meta" id="lokiStage"></p><div class="bars"><div>Hunger <div class="bar"><span id="hunger"></span></div></div><div>Happiness <div class="bar"><span id="happy"></span></div></div><div>Energy <div class="bar"><span id="energy"></span></div></div></div><div class="actions"><button class="btn" type="button" data-feed="basic">Basic feed</button><button class="btn ghost" type="button" data-feed="tasty">Tasty</button><button class="btn ghost" type="button" data-feed="special">Special</button></div></article><article class="card"><h3>Shift fault log</h3><p>Browser-only log for the kind of call notes from foundry maintenance. Nothing is uploaded.</p><form id="logForm"><label>Area <input id="area" required placeholder="Mold line 2"></label><label>Note <textarea id="note" required rows="3" placeholder="VFD fault, reset, checked motor leads"></textarea></label><button class="btn" type="submit">Add to shift log</button></form><div id="log"></div></article></div></section>
+<section><h2>Study path</h2><div class="grid-3"><article class="card"><h3>Now</h3><p>freeCodeCamp computer science, Mar 2023–present. Algorithms, data structures, and web fundamentals.</p></article><article class="card"><h3>Earlier</h3><p>Associate’s, Liberal Arts & Sciences, Cardinal Stritch University, 2010–2012. High school diploma, Round Lake Senior High, 2006.</p></article><article class="card"><h3>Next</h3><p>NEC certification. Controls work stays the through-line from the foundry floor to the repos.</p></article></div></section>
+<footer><p>Nicholas Lane · Green Bay, WI 54313 · <a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a> · <a href="https://github.com/Fomorianshifter">GitHub</a></p><p>Use this URL in the LinkedIn featured section and contact website field: https://fomorianshifter.github.io</p></footer>
+</div><script src="app.js"></script></body></html>
