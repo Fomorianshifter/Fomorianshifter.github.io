@@ -1,100 +1,64 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Locus — function grapher</title>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
-  <style>
-    canvas { width:100%; background:#070b10; border:1px solid var(--line); border-radius:12px; display:block; cursor:crosshair }
-    .row { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 }
-    input, button { font:inherit; background:#0d141a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px }
-    button { cursor:pointer }
-  </style>
-</head>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Locus grapher</title><link rel="stylesheet" href="../styles.css"></head>
 <body>
-  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
-  <nav><a href="../index.html">Home</a><a class="active" href="../projects.html">Projects</a></nav></div></header>
-  <main class="wrap">
-    <p class="kicker">JavaScript · math · basic project</p>
-    <h1>Locus function grapher</h1>
-    <p class="lede">Type a function of x. Scroll to zoom, drag to pan. Allowed: numbers, x, + - * / ^, parentheses, sin cos tan sqrt abs.</p>
-    <div class="row">
-      <input id="expr" value="sin(x)*x" size="28" />
-      <button id="plot">Plot</button>
-      <span class="muted" id="status"></span>
-    </div>
-    <canvas id="g" width="900" height="480"></canvas>
-  </main>
-  <script>
-    const expr = document.getElementById("expr");
-    const status = document.getElementById("status");
-    const canvas = document.getElementById("g");
-    const ctx = canvas.getContext("2d");
-    let scale = 40, ox = 450, oy = 240, drag = null;
-    function compile(src) {
-      const safe = src.replace(/\s+/g,"").replace(/\^/g,"**");
-      if (!/^[0-9x+\-*/().,a-z]+$/i.test(safe)) throw new Error("unsupported characters");
-      const fn = new Function("x", "const {sin,cos,tan,sqrt,abs,PI,E}=Math; return (" + safe + ");");
-      fn(1);
-      return fn;
-    }
-    let f = compile(expr.value);
-    function draw() {
-      const w = canvas.width, h = canvas.height;
-      ctx.fillStyle = "#070b10";
-      ctx.fillRect(0,0,w,h);
-      ctx.strokeStyle = "#1c2833";
-      ctx.lineWidth = 1;
-      for (let x = ((ox % scale) + scale) % scale; x < w; x += scale) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
-      for (let y = ((oy % scale) + scale) % scale; y < h; y += scale) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
-      ctx.strokeStyle = "#9aacbd";
-      ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, h); ctx.stroke();
-      ctx.strokeStyle = "#7bd4c4";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      let started = false;
-      for (let px = 0; px < w; px++) {
-        const x = (px - ox) / scale;
-        let y;
-        try { y = f(x); } catch (e) { started = false; continue; }
-        if (!Number.isFinite(y)) { started = false; continue; }
-        const py = oy - y * scale;
-        if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
-    }
-    function plot() {
-      try { f = compile(expr.value); status.textContent = "ok"; draw(); }
-      catch (e) { status.textContent = "check the expression"; }
-    }
-    document.getElementById("plot").onclick = plot;
-    expr.addEventListener("keydown", e => { if (e.key === "Enter") plot(); });
-    canvas.addEventListener("wheel", e => {
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const my = (e.clientY - rect.top) * (canvas.height / rect.height);
-      const gx = (mx - ox) / scale, gy = (oy - my) / scale;
-      scale *= e.deltaY < 0 ? 1.1 : 0.9;
-      scale = Math.max(8, Math.min(200, scale));
-      ox = mx - gx * scale; oy = my + gy * scale;
-      draw();
-    }, { passive:false });
-    canvas.addEventListener("pointerdown", e => { drag = { x:e.clientX, y:e.clientY, ox, oy }; });
-    window.addEventListener("pointerup", () => drag = null);
-    window.addEventListener("pointermove", e => {
-      if (!drag) return;
-      const rect = canvas.getBoundingClientRect();
-      const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
-      ox = drag.ox + (e.clientX - drag.x) * sx;
-      oy = drag.oy + (e.clientY - drag.y) * sy;
-      draw();
-    });
-    plot();
-  </script>
-</body>
-</html>
+<header><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#work">Work</a></nav></header>
+<main>
+<p class="kicker">Browser lab</p>
+<h1>Locus</h1>
+<p class="lede">Type a function of x. Scroll to zoom. Allowed: numbers, x, + - * / ^, parentheses, sin cos tan sqrt abs pi.</p>
+<div class="panel">
+<label>f(x)<input id="expr" value="sin(x)*x"></label>
+<p id="read">x = — · y = —</p>
+<canvas id="c" width="900" height="420" style="width:100%;background:#10130e;border-radius:8px"></canvas>
+</div>
+</main>
+<script>
+var c = document.getElementById('c');
+var ctx = c.getContext('2d');
+var scale = 40, ox = 450, oy = 210;
+function compile(src) {
+  if (!/^[0-9xX+\-*/^().,\s]+$/.test(src.replace(/sin|cos|tan|sqrt|abs|pi/gi, ''))) throw new Error('bad');
+  var body = src.replace(/\^/g, '**').replace(/pi/gi, 'Math.PI').replace(/sin/gi, 'Math.sin').replace(/cos/gi, 'Math.cos').replace(/tan/gi, 'Math.tan').replace(/sqrt/gi, 'Math.sqrt').replace(/abs/gi, 'Math.abs');
+  return new Function('x', 'return (' + body + ');');
+}
+function draw() {
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.strokeStyle = '#34382e';
+  var x, y;
+  for (x = ox % scale; x < c.width; x += scale) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, c.height); ctx.stroke(); }
+  for (y = oy % scale; y < c.height; y += scale) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); }
+  ctx.strokeStyle = '#e0a15f';
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(c.width, oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, c.height); ctx.stroke();
+  var fn;
+  try { fn = compile(expr.value); } catch (e) { return; }
+  ctx.strokeStyle = '#8fbf6a';
+  ctx.beginPath();
+  var started = false;
+  for (var px = 0; px < c.width; px++) {
+    var xv = (px - ox) / scale;
+    var yv;
+    try { yv = fn(xv); } catch (e2) { yv = NaN; }
+    if (!Number.isFinite(yv)) { started = false; continue; }
+    var py = oy - yv * scale;
+    if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+}
+expr.addEventListener('input', draw);
+c.addEventListener('wheel', function (e) {
+  e.preventDefault();
+  scale = Math.min(160, Math.max(12, scale * (e.deltaY < 0 ? 1.1 : 0.9)));
+  draw();
+}, { passive: false });
+c.addEventListener('mousemove', function (e) {
+  var r = c.getBoundingClientRect();
+  var px = (e.clientX - r.left) * (c.width / r.width);
+  var xv = (px - ox) / scale;
+  var yv = NaN;
+  try { yv = compile(expr.value)(xv); } catch (err) {}
+  read.textContent = 'x = ' + xv.toFixed(2) + ' · y = ' + (Number.isFinite(yv) ? yv.toFixed(3) : '—');
+});
+draw();
+</script>
+</body></html>
