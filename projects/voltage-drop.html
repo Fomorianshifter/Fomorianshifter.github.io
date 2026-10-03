@@ -1,25 +1,53 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voltage drop aid — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header class="site"><div class="wrap"><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html">Home</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Project · electrical</p><h1>Single-phase voltage drop</h1>
-<p class="lede">Estimate using VD = 2 x K x I x D / CM, with K = 12.9 for copper. Circular mils are approximate. Not a substitute for the NEC or a stamped design.</p>
-<div class="card">
-<label>Voltage</label><input id="v" type="number" value="240">
-<label>Load amps</label><input id="i" type="number" value="20">
-<label>One-way length, feet</label><input id="d" type="number" value="100">
-<label>Copper conductor</label>
-<select id="awg"><option value="10380">14 AWG</option><option value="16510" selected>12 AWG</option><option value="26240">10 AWG</option><option value="41740">8 AWG</option><option value="66360">6 AWG</option></select>
-<p class="out" id="out"></p>
-</div></section></main>
-<script>
-function calc(){
-  const v = +document.getElementById("v").value, i = +document.getElementById("i").value, d = +document.getElementById("d").value, cm = +document.getElementById("awg").value;
-  const vd = (2 * 12.9 * i * d) / cm, pct = v ? (vd / v) * 100 : 0;
-  const el = document.getElementById("out");
-  el.textContent = vd.toFixed(2) + " V drop (" + pct.toFixed(2) + "%). Receiving about " + (v - vd).toFixed(1) + " V.";
-  el.className = pct > 3 ? "out warn" : "out ok";
-}
-document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", calc));
-calc();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voltage drop — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header><a href="../index.html">Nicholas Lane</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+  <main>
+    <p class="kicker">Lab</p>
+    <h1>Voltage drop</h1>
+    <p class="lede">Approximate copper drop using DC resistance. Single phase uses 2 × length; three phase uses √3 × length. Not a substitute for NEC Chapter 9 tables or a stamped calc.</p>
+    <form class="panel" id="vform">
+      <label>Load amps <input id="amps" type="number" value="16" min="0.1" step="0.1"></label>
+      <label>One-way feet <input id="feet" type="number" value="80" min="1"></label>
+      <label>System volts <input id="volts" type="number" value="120"></label>
+      <label>AWG
+        <select id="awg">
+          <option>14</option><option selected>12</option><option>10</option><option>8</option><option>6</option><option>4</option><option>2</option>
+        </select>
+      </label>
+      <label>Phase
+        <select id="phase"><option value="1">Single</option><option value="3">Three</option></select>
+      </label>
+    </form>
+    <p class="out" id="vdrop"></p>
+    <p class="meta" id="vnote"></p>
+  </main>
+  <script>
+    const ohmPerKft = {14: 3.14, 12: 1.98, 10: 1.24, 8: 0.778, 6: 0.491, 4: 0.308, 2: 0.194};
+    const form = document.getElementById("vform");
+    function calc() {
+      const amps = Number(document.getElementById("amps").value);
+      const feet = Number(document.getElementById("feet").value);
+      const volts = Number(document.getElementById("volts").value);
+      const awg = document.getElementById("awg").value;
+      const phase = document.getElementById("phase").value;
+      const r = ohmPerKft[awg] * (feet / 1000);
+      const factor = phase === "3" ? Math.sqrt(3) : 2;
+      const drop = factor * amps * r;
+      const pct = volts ? (drop / volts) * 100 : 0;
+      document.getElementById("vdrop").textContent = drop.toFixed(2) + " V  (" + pct.toFixed(2) + "%)";
+      document.getElementById("vnote").textContent = pct > 3
+        ? "Over a common 3% branch planning target. Check size or length."
+        : "Under a common 3% branch planning target.";
+    }
+    form.addEventListener("input", calc);
+    calc();
+  </script>
+</body>
+</html>

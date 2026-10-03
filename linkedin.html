@@ -8,28 +8,36 @@
 </head>
 <body>
   <header>
-    <a class="brand" href="index.html">Nicholas Lane</a>
+    <a href="index.html">Nicholas Lane</a>
     <nav><a href="index.html">Portfolio</a></nav>
   </header>
-  <main class="hero">
+  <main>
     <p class="kicker">Paste into LinkedIn</p>
-    <h1>Featured link and About text.</h1>
-    <article class="card">
-      <h3>Featured → Link</h3>
-      <p>URL: <a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
-      <p>Title: Nicholas Lane — electrician, controls, and project labs</p>
-      <p>Description: Industrial electrical work plus live labs (voltage drop, shift log, Loki life cycle) and the public GitHub repos behind them.</p>
-    </article>
-    <article class="card">
-      <h3>About</h3>
-      <p>Industrial electrician based in Green Bay, WI, open to relocate. I spent 2021–2024 at Grede Foundries in Reedsburg supporting PLC installs and electrical troubleshooting, after construction and service work with AC Electric and an apprenticeship at Greenfield Electric. Earlier I inspected CNC work at CompX.</p>
-      <p>I am pursuing NEC certification and freeCodeCamp computer science coursework. Public code is at github.com/Fomorianshifter — the main build is Loki, an embedded companion for single-board computers. Portfolio: https://fomorianshifter.github.io/</p>
-    </article>
-    <article class="card">
-      <h3>Headline options</h3>
-      <p>Industrial electrician · PLC troubleshooting · building controls and embedded projects</p>
-      <p>Electrician moving into controls | Green Bay, WI | open to relocate</p>
-    </article>
+    <h1>Connect this site as Featured.</h1>
+    <p class="lede">LinkedIn → profile → Featured → Add a link. Use the URL below. Headline and About are ready to paste.</p>
+    <p><strong>Featured URL</strong></p>
+    <p><a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
+    <label>Headline
+      <textarea class="copy" id="headline" readonly>Industrial electrician | PLC install and troubleshooting | Controls projects</textarea>
+    </label>
+    <label>About
+      <textarea class="copy" id="about" readonly>Industrial electrician based in Green Bay, WI, open to relocate. Five-plus years across residential, commercial, and foundry work: Grede Foundries (PLC install support, electrical troubleshooting, monthly inspections), AC Electric, and Greenfield Electric. Earlier quality-control work at CompX on CNC processes.
+
+I am building toward NEC certification and keep a public portfolio of small controls and web labs, plus Loki, an embedded project for Linux single-board computers.
+
+Portfolio: https://fomorianshifter.github.io/
+GitHub: https://github.com/Fomorianshifter
+Email: nlane713@gmail.com</textarea>
+    </label>
+    <p class="meta">Website field on the contact card: https://fomorianshifter.github.io/</p>
+    <button class="primary" type="button" id="copy">Copy About</button>
+    <p id="copied" class="meta"></p>
   </main>
+  <script>
+    document.getElementById("copy").onclick = async () => {
+      await navigator.clipboard.writeText(document.getElementById("about").value);
+      document.getElementById("copied").textContent = "About copied.";
+    };
+  </script>
 </body>
 </html>

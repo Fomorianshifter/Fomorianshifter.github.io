@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wire aid — Nicholas Lane</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wire size helper — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="../index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="../projects.html">Projects</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Copper wire aid</h1>
-      <p class="sub">A memory sheet for common 75°C copper ampacities used in study. Always use the NEC tables, terminal ratings, and bundling rules on a real job.</p>
-      <div class="card">
-        <label>Continuous load (A)</label>
-        <input id="load" type="number" value="24" min="0">
-        <p><button class="btn" type="button" id="go">Suggest</button></p>
-        <p class="out" id="out"></p>
-        <table>
-          <thead><tr><th>AWG</th><th>Study ampacity</th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-      </div>
-    </section>
+  <header><a href="../index.html">Nicholas Lane</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+  <main>
+    <p class="kicker">Lab</p>
+    <h1>Wire size helper</h1>
+    <p class="lede">Ballpark copper ampacity for 60°C, 75°C, and 90°C columns, drawn from common THHN/THWN memory values. Real installs use the NEC ampacity table, terminal ratings, bundling, and ambient correction.</p>
+    <form class="panel">
+      <label>Continuous load amps <input id="amps" type="number" value="24" min="1"></label>
+    </form>
+    <p class="out" id="pick"></p>
+    <div id="table"></div>
   </main>
   <script>
-    const table = [[14,15],[12,20],[10,30],[8,50],[6,65],[4,85],[3,100],[2,115],[1,130]];
-    rows.innerHTML = table.map(([a,b]) => `<tr><td>${a}</td><td>${b} A</td></tr>`).join("");
-    document.getElementById("go").onclick = () => {
-      const need = Number(load.value) * 1.25;
-      const hit = table.find(([,amp]) => amp >= need);
-      out.textContent = hit
-        ? `125% of load is ${need.toFixed(1)} A. Smallest study size at or above that: ${hit[0]} AWG (${hit[1]} A).`
-        : "Above this sheet. Look up larger conductors.";
-    };
+    const rows = [
+      ["14", 15, 20, 25],
+      ["12", 20, 25, 30],
+      ["10", 30, 35, 40],
+      ["8", 40, 50, 55],
+      ["6", 55, 65, 75],
+      ["4", 70, 85, 95],
+      ["2", 95, 115, 130]
+    ];
+    const body = document.getElementById("table");
+    function render() {
+      const need = Number(document.getElementById("amps").value) * 1.25;
+      body.innerHTML = "<table><tr><th>AWG</th><th>60°C</th><th>75°C</th><th>90°C</th></tr>" +
+        rows.map(r => "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" + r[3] + "</td></tr>").join("") +
+        "</table>";
+      const fit = rows.find(r => r[2] >= need);
+      document.getElementById("pick").textContent = fit
+        ? "125% of load is " + need.toFixed(1) + " A. Smallest listed size at 75°C is " + fit[0] + " AWG."
+        : "Above the sizes in this helper.";
+    }
+    document.getElementById("amps").addEventListener("input", render);
+    render();
   </script>
 </body>
 </html>
