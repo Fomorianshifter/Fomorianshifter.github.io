@@ -1,27 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projects — Nicholas Lane</title>
-  <link rel="icon" href="favicon.svg">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicholas Lane — Projects</title>
+<meta name="description" content="Projects and labs from Nicholas Lane: GitHub work and browser tools for controls and electrical planning.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg">
 </head>
 <body>
-  <header class="site"><div class="wrap nav"><a class="brand" href="index.html"><span class="mark">NL</span> Nicholas Lane</a><ul><li><a href="index.html">Home</a></li><li><a href="resume.html">Resume</a></li><li><a href="linkedin.html">LinkedIn copy</a></li></ul></div></header>
-  <main class="wrap">
-    <section>
-      <h1>Projects</h1>
-      <p class="sub">Live demos live on this site. GitHub links point at the original repositories.</p>
-      <div class="grid">
-        <article class="card"><h3>Loki status board</h3><p>Mood, stage, and hardware summary inspired by the Loki embedded companion.</p><p><a href="projects/loki.html">Demo</a> · <a href="https://github.com/Fomorianshifter/Loki">GitHub</a></p></article>
-        <article class="card"><h3>Motor starter ladder</h3><p>Start, stop, seal-in, and overload on one rung.</p><p><a href="projects/ladder.html">Demo</a></p></article>
-        <article class="card"><h3>Voltage drop</h3><p>Single-phase copper drop from load, length, and wire size.</p><p><a href="projects/voltage-drop.html">Demo</a></p></article>
-        <article class="card"><h3>Wire aid</h3><p>Rough copper ampacity reminder for study. Not a code lookup.</p><p><a href="projects/wire-calc.html">Demo</a></p></article>
-        <article class="card"><h3>Shift fault log</h3><p>Local maintenance notes for a shift.</p><p><a href="projects/shift-log.html">Demo</a></p></article>
-        <article class="card"><h3>Orbit sketch</h3><p>Canvas version of the SolarSystem repository idea.</p><p><a href="projects/orbit.html">Demo</a> · <a href="https://github.com/Fomorianshifter/SolarSystem">GitHub</a></p></article>
-      </div>
-    </section>
-  </main>
+<div class="wrap">
+<nav>
+  <a class="brand" href="index.html">Nicholas Lane</a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="projects.html">Projects</a>
+    <a href="index.html#labs">Labs</a>
+    <a href="https://github.com/Fomorianshifter">GitHub</a>
+    <a href="mailto:nlane713@gmail.com">Email</a>
+  </div>
+</nav>
+<header class="hero">
+  <div>
+    <p class="kicker">Clickable labs · source linked on each GitHub card</p>
+    <h1>Projects</h1>
+    <p class="lede">Best public repos, plus small tools on this site so a LinkedIn visitor can try something without cloning.</p>
+  </div>
+</header>
+<section>
+  <h2>From GitHub</h2>
+  <div class="grid">
+    <article class="card project">
+      <h3>Loki</h3>
+      <p>Embedded companion for Linux boards. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, and EEPROM. Flipper Zero UART and a local config UI.</p>
+      <div class="tags"><span class="tag">C</span><span class="tag">embedded</span></div>
+      <p><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="projects/loki-life.html">Life-cycle lab</a></p>
+    </article>
+    <article class="card project">
+      <h3>Solar System</h3>
+      <p>Early canvas study of planets in orbit. Cleaned up here as a small interactive demo.</p>
+      <div class="tags"><span class="tag">JavaScript</span></div>
+      <p><a href="https://github.com/Fomorianshifter/SolarSystem">Source</a> · <a href="projects/orbit.html">Open lab</a></p>
+    </article>
+    <article class="card project">
+      <h3>GhostGPS</h3>
+      <p>Small MIT-licensed GPS sketch. Listed as a field-tool experiment, not a shipped product.</p>
+      <div class="tags"><span class="tag">MIT</span></div>
+      <p><a href="https://github.com/Fomorianshifter/GhostGPS">Source</a></p>
+    </article>
+    <article class="card project">
+      <h3>One</h3>
+      <p>First public web import. HTML, CSS, and JavaScript coursework that the later labs sit on.</p>
+      <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+      <p><a href="https://github.com/Fomorianshifter/One">Source</a></p>
+    </article>
+  </div>
+</section>
+<section>
+  <h2>Basic projects on this site</h2>
+  <p class="sub">These run in the browser. Nothing is uploaded.</p>
+  <div class="grid">
+    <article class="card"><h3>Three-wire starter</h3><p>Stop, start, seal-in, and overload on one rung.</p><p><a href="projects/ladder.html">Open</a></p></article>
+    <article class="card"><h3>Voltage drop</h3><p>Copper run estimate, single or three phase. Planning aid, not a code stamp.</p><p><a href="projects/voltage-drop.html">Open</a></p></article>
+    <article class="card"><h3>Wire size helper</h3><p>Quick AWG lookup against a load and distance.</p><p><a href="projects/wire-calc.html">Open</a></p></article>
+    <article class="card"><h3>Motor nameplate</h3><p>FLA ballpark from horsepower, volts, and phase.</p><p><a href="projects/motor.html">Open</a></p></article>
+    <article class="card"><h3>Panel schedule</h3><p>Add breakers and see a running load total.</p><p><a href="projects/panel.html">Open</a></p></article>
+    <article class="card"><h3>Shift fault log</h3><p>Foundry-style call notes kept in the browser.</p><p><a href="projects/fault-log.html">Open</a></p></article>
+    <article class="card"><h3>LOTO checklist</h3><p>Lockout steps you can tick before a mock job.</p><p><a href="projects/loto.html">Open</a></p></article>
+    <article class="card"><h3>Orbit</h3><p>Inner planets from the Solar System repos.</p><p><a href="projects/orbit.html">Open</a></p></article>
+  </div>
+</section>
+<footer>
+  <p>Nicholas Lane · Green Bay, WI · <a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a></p>
+  <p>LinkedIn website field: https://fomorianshifter.github.io</p>
+</footer>
+</div>
 </body>
 </html>
