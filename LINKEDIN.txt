@@ -1,0 +1,10 @@
+LinkedIn website field
+https://fomorianshifter.github.io
+
+Featured section
+Title: Nicholas Lane — electrician and controls portfolio
+URL: https://fomorianshifter.github.io
+Description: Foundry and commercial electrical work, PLC troubleshooting, and public projects (Loki embedded companion, Solar System, small field tools).
+
+About (paste)
+Industrial electrician based in Green Bay, Wisconsin, open to relocate. Five-plus years across residential, commercial, and foundry electrical work, including PLC installation support and troubleshooting at Grede Foundries in Reedsburg. I keep a public portfolio of the controls and software side of that path: https://fomorianshifter.github.io — GitHub @Fomorianshifter. Studying toward NEC certification and freeCodeCamp computer science. Email nlane713@gmail.com.
