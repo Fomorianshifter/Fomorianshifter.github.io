@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LinkedIn paste sheet · Nicholas Lane</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn paste sheet · Nicholas Lane</title>
+<link rel="icon" href="favicon.svg">
+<style>
+  :root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
+  a { color: var(--amber); }
+  header { padding:14px 7vw; border-bottom:1px solid var(--line); }
+  main { max-width:760px; margin:0 auto; padding:40px 7vw 80px; }
+  .kicker { font-family: ui-monospace, monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); font-size:.78rem; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  code, .url { font-family: ui-monospace, monospace; }
+</style>
 </head>
 <body>
-  <header class="top"><div class="wrap nav"><a class="brand" href="index.html">Nicholas Lane</a><nav><a class="item" href="index.html">Portfolio</a></nav></div></header>
-  <main class="wrap">
-    <p class="kicker">LinkedIn</p>
-    <h1>Paste this, then add the site.</h1>
-    <p class="lede">Profile → Contact info → Website. Label it Portfolio. Pin the lab links under Featured.</p>
-    <div class="panel lab">
-      <p><strong>Website</strong><br>https://fomorianshifter.github.io</p>
-      <p><strong>GitHub</strong><br>https://github.com/Fomorianshifter</p>
-      <p><strong>Headline</strong><br>Industrial Electrician | PLC support | Controls and web labs</p>
-      <p><strong>About</strong><br>Industrial electrician based in Green Bay, WI, open to relocate in the US. More than five years on electrical install and service, including PLC installation and troubleshooting support at Grede Foundries in Reedsburg. Before that, new construction and service calls with AC Electric, and an apprenticeship at Greenfield Electric. Earlier, CNC quality inspection at Comp X.</p>
-      <p>Building the controls and software side in public: freeCodeCamp coursework, an embedded companion called Loki, and browser labs for a three-wire motor starter, a shift fault log, a copper voltage-drop estimate, and an orbit sketch.</p>
-      <p><strong>Featured</strong><br>
-        https://fomorianshifter.github.io<br>
-        https://fomorianshifter.github.io/projects/starter.html<br>
-        https://fomorianshifter.github.io/projects/voltage.html<br>
-        https://fomorianshifter.github.io/projects/fault-log.html<br>
-        https://github.com/Fomorianshifter/Loki
-      </p>
-    </div>
-  </main>
+<header><a href="index.html">Nicholas Lane</a></header>
+<main>
+  <p class="kicker">LinkedIn</p>
+  <h1>Paste this, then add the site.</h1>
+  <p>Profile → Contact info → Website. Label it Portfolio. Pin the lab links under Featured.</p>
+  <div class="panel">
+    <p><strong>Website</strong><br><span class="url">https://fomorianshifter.github.io</span></p>
+    <p><strong>GitHub</strong><br><span class="url">https://github.com/Fomorianshifter</span></p>
+    <p><strong>Headline</strong><br>Industrial Electrician | PLC support | Controls and web labs</p>
+    <p><strong>About</strong><br>Industrial electrician based in Green Bay, WI, open to relocate in the US. More than five years on electrical install and service, including PLC installation and troubleshooting support at Grede Foundries in Reedsburg. Before that, new construction and service calls with AC Electric, and an apprenticeship at Greenfield Electric. Earlier, CNC quality inspection at Comp X.</p>
+    <p>Building the controls and software side in public: freeCodeCamp coursework, an embedded companion called Loki, and browser labs for a three-wire motor starter, a shift fault log, a copper voltage-drop estimate, and an orbit sketch.</p>
+    <p><strong>Featured</strong><br>
+      <a href="https://fomorianshifter.github.io">https://fomorianshifter.github.io</a><br>
+      <a href="https://fomorianshifter.github.io/projects/starter.html">https://fomorianshifter.github.io/projects/starter.html</a><br>
+      <a href="https://fomorianshifter.github.io/projects/voltage-drop.html">https://fomorianshifter.github.io/projects/voltage-drop.html</a><br>
+      <a href="https://fomorianshifter.github.io/projects/shift-log.html">https://fomorianshifter.github.io/projects/shift-log.html</a><br>
+      <a href="https://github.com/Fomorianshifter/Loki">https://github.com/Fomorianshifter/Loki</a>
+    </p>
+  </div>
+</main>
 </body>
 </html>
