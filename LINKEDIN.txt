@@ -1,17 +1,12 @@
-Portfolio URL (LinkedIn website + Featured):
-https://fomorianshifter.github.io
+LinkedIn kit — Nicholas Lane
 
-GitHub:
-https://github.com/Fomorianshifter
+Featured → Link
+URL: https://fomorianshifter.github.io/
+Title: Nicholas Lane — electrician, controls, and project labs
+Description: Industrial electrical work plus live labs (voltage drop, starter seal-in, orbit, shift log) and the public GitHub repos behind them.
 
-Headline:
-Industrial electrician · PLC install and troubleshooting · Green Bay, WI
+Headline
+Industrial electrician · PLC troubleshooting · Green Bay, WI · open to relocate
 
-About:
-Industrial electrician with 5+ years in residential, commercial, and foundry electrical systems. At Grede Foundries I assisted PLC installation and programming, worked with engineering on electrical faults (50+ a month on the resume), and kept monthly inspections at a 100% safety-compliance rate.
-
-I am building toward NEC certification and shipping small public projects on the side: Loki, an embedded companion for Linux boards (C, drivers, TFT, UART), plus web coursework from freeCodeCamp.
-
-Portfolio: https://fomorianshifter.github.io
-GitHub: https://github.com/Fomorianshifter
-Open to relocate.
+About
+Industrial electrician based in Green Bay, WI, open to relocate. I spent 2021–2024 at Grede Foundries in Reedsburg supporting PLC installs and electrical troubleshooting, after construction and service work with AC Electric and an apprenticeship at Greenfield Electric. Earlier I inspected CNC work at CompX. I am pursuing NEC certification and freeCodeCamp computer science coursework. Public code is at github.com/Fomorianshifter — the main build is Loki, an embedded companion for single-board computers. Portfolio: https://fomorianshifter.github.io/
