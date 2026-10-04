@@ -1,54 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Motor starter lab — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motor FLA ballpark — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL<span>/</span>controls</a>
-  <nav><a href="../projects.html">Projects</a></nav></div></header>
-  <div class="lab-wrap">
-    <p class="kicker">Interactive lab</p>
-    <h1>3-wire motor starter</h1>
-    <p class="muted">Start / Stop seal-in with overload and e-stop. Teaching demo only.</p>
-    <div class="panel" style="padding:1rem">
-      <label><input type="checkbox" id="estop" checked /> E-stop healthy (NC)</label>
-      <label><input type="checkbox" id="ol" checked /> Overload healthy (NC)</label>
-      <p class="actions">
-        <button class="btn primary" id="start" type="button">Start (NO)</button>
-        <button class="btn" id="stop" type="button">Stop (NC)</button>
-      </p>
-      <p>Seal-in: <strong id="aux">OPEN</strong></p>
-      <p>Motor: <strong id="motor">OFF</strong></p>
-      <p class="muted" id="why">Press Start with a healthy circuit.</p>
-    </div>
-  </div>
-  <script>
-    const estop = document.getElementById('estop');
-    const ol = document.getElementById('ol');
-    const aux = document.getElementById('aux');
-    const motor = document.getElementById('motor');
-    const why = document.getElementById('why');
-    let sealed = false;
-    let startPulse = false;
-    function evalRung() {
-      const healthy = estop.checked && ol.checked;
-      if (!healthy) sealed = false;
-      sealed = healthy && (startPulse || sealed);
-      aux.textContent = sealed ? 'CLOSED' : 'OPEN';
-      motor.textContent = sealed ? 'RUN' : 'OFF';
-      motor.style.color = sealed ? '#7ad0a5' : '#e08b6f';
-      if (!estop.checked) why.textContent = 'E-stop dropped the circuit.';
-      else if (!ol.checked) why.textContent = 'Overload opened the circuit.';
-      else if (sealed) why.textContent = 'Seal-in holding the coil after Start.';
-      else why.textContent = 'Circuit healthy. Waiting for Start.';
-    }
-    document.getElementById('start').onclick = () => { startPulse = true; evalRung(); startPulse = false; };
-    document.getElementById('stop').onclick = () => { sealed = false; evalRung(); };
-    estop.onchange = ol.onchange = evalRung;
-    evalRung();
-  </script>
-</body>
-</html>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>Motor FLA ballpark</h1>
+<p class="lede">Assumes 85% efficiency and 0.85 power factor. A nameplate or NEC 430.248 / 430.250 table wins on a real motor.</p>
+<div class="card">
+  <label>Horsepower <input id="hp" type="number" value="5" min="0.25" step="0.25"></label>
+  <label>Volts <input id="mvolts" type="number" value="480"></label>
+  <label>Phase <select id="phase"><option value="3">3</option><option value="1">1</option></select></label>
+  <p class="stat" id="fla"></p>
+</div>
+<script>
+function fla() {
+  const hp = +document.getElementById("hp").value;
+  const v = +document.getElementById("mvolts").value;
+  const ph = +document.getElementById("phase").value;
+  const watts = hp * 746 / 0.85 / 0.85;
+  const amps = ph === 3 ? watts / (v * Math.sqrt(3)) : watts / v;
+  document.getElementById("fla").textContent = "About " + amps.toFixed(1) + " A (not a nameplate)";
+}
+["hp","mvolts","phase"].forEach(id => document.getElementById(id).addEventListener("input", fla));
+fla();
+</script>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>

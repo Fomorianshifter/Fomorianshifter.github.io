@@ -1,58 +1,42 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Three-wire motor starter — Nicholas Lane</title><style>
-:root { --ink:#e8e2d6; --muted:#a79d8d; --line:#3a342c; --bg:#14110e; --panel:#1c1814; --amber:#e2a04a; --ok:#7dba6a; --bad:#d4654f; }
-* { box-sizing: border-box; }
-body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, serif; line-height:1.5; }
-a { color: var(--amber); }
-header, main, footer { padding-left:7vw; padding-right:7vw; }
-header { display:flex; justify-content:space-between; gap:16px; padding-top:14px; padding-bottom:14px; border-bottom:1px solid var(--line); font-family: system-ui, sans-serif; }
-.brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
-main { max-width:900px; padding-top:36px; padding-bottom:64px; }
-.kicker { font-family: ui-monospace, monospace; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
-h1 { font-size: clamp(2rem, 4vw, 3rem); line-height:1.05; }
-.lede, .sub { color: var(--muted); }
-.card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; margin-top:16px; }
-button { background:#241f1a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px 10px; cursor:pointer; font-family: system-ui, sans-serif; }
-button.on { border-color: var(--ok); color: var(--ok); }
-.ladder, .result { font-family: ui-monospace, monospace; font-size:.9rem; }
-.ladder, .sky { background:#100e0c; border-radius:8px; padding:12px; margin-top:12px; }
-.run { color: var(--ok); } .stop { color: var(--bad); }
-input, select, textarea { background:#100e0c; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:8px; width:100%; }
-label { display:block; font-size:.82rem; color:var(--muted); margin:8px 0 4px; font-family: system-ui, sans-serif; }
-.sky { height:280px; position:relative; overflow:hidden; }
-.sun { position:absolute; width:28px; height:28px; border-radius:50%; background:#e2a04a; left:50%; top:50%; transform:translate(-50%,-50%); }
-.orbit { position:absolute; left:50%; top:50%; border:1px solid #3a342c; border-radius:50%; transform:translate(-50%,-50%); }
-.planet { position:absolute; width:12px; height:12px; border-radius:50%; background:#7dba6a; }
-footer { border-top:1px solid var(--line); color:var(--muted); padding-top:20px; padding-bottom:28px; }
-textarea { min-height: 280px; }
-</style></head><body>
-<header><a class="brand" href="../index.html">NICHOLAS LANE</a><a href="../index.html#labs">All labs</a></header><main>
-<p class="kicker">Controls lab</p>
-<h1>Three-wire motor starter</h1>
-<p class="lede">Stop, overload, and E-stop are normally closed. Start is momentary and is held by a seal-in contact. Open any series contact and the coil drops out.</p>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three-wire starter — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>Three-wire starter</h1>
+<p class="lede">Stop is normally closed. Start is momentary. The auxiliary contact seals in. Overload drops the coil. This is a browser model, not a wired panel.</p>
 <div class="card">
-<button id="start" type="button">Start</button>
-<button class="on" id="stop" type="button">Stop (NC)</button>
-<button class="on" id="ol" type="button">OL (NC)</button>
-<button class="on" id="estop" type="button">E-stop (NC)</button>
-<div class="ladder" id="ladder"></div>
-<p class="sub" id="why"></p>
+  <div class="row">
+    <button class="btn primary" id="start">Start</button>
+    <button class="btn" id="stop">Stop</button>
+    <button class="btn" id="ol">Trip overload</button>
+  </div>
+  <div class="ladder" id="ladder"></div>
+  <p class="stat" id="motor">Motor: off</p>
 </div>
-<p><a href="../index.html">Back to portfolio</a></p></main><footer>Nicholas Lane · lab for LinkedIn</footer>
 <script>
-const state = { start:false, stop:true, ol:true, estop:true, seal:false };
-function scan() {
-  const hold = state.stop && state.ol && state.estop;
-  state.seal = hold && (state.start || state.seal);
-  if (!hold) state.seal = false;
-  const run = state.seal;
-  document.getElementById("ladder").innerHTML = "Rung 1  [ Start " + (state.start ? "ON" : "off") + " ]--[ Stop " + (state.stop ? "NC" : "OPEN") + " ]--[ OL " + (state.ol ? "NC" : "OPEN") + " ]--[ E-stop " + (state.estop ? "NC" : "OPEN") + " ]--( M " + (run ? "ON" : "OFF") + " )<br>Seal-in " + (state.seal ? "closed" : "open") + " &nbsp; Motor <span class='" + (run ? "run" : "stop") + "'>" + (run ? "RUNNING" : "STOPPED") + "</span>";
-  document.getElementById("why").textContent = run ? "Coil is sealed in. Open Stop, OL, or E-stop to drop it out." : "Coil is out. Close the NC contacts, then press Start.";
+let running = false, ol = false;
+function draw() {
+  document.getElementById("ladder").textContent =
+"|--[ stop NC ]--[ start ]--+--( M " + (running ? "ON " : "OFF") + " )--|   OL: " + (ol ? "TRIP" : "ok") + "\n                         |\n                         +----[ M " + (running ? "X" : " ") + " ]----------+";
+  document.getElementById("motor").textContent = "Motor: " + (running ? "running" : "off");
 }
-function wire(id, key) {
-  const el = document.getElementById(id);
-  el.addEventListener("click", () => { state[key] = !state[key]; el.classList.toggle("on", state[key]); scan(); });
-}
-wire("start","start"); wire("stop","stop"); wire("ol","ol"); wire("estop","estop"); scan();
-</script></body></html>
+document.getElementById("start").onclick = () => { if (!ol) running = true; draw(); };
+document.getElementById("stop").onclick = () => { running = false; draw(); };
+document.getElementById("ol").onclick = () => { ol = !ol; if (ol) running = false; draw(); };
+draw();
+</script>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>

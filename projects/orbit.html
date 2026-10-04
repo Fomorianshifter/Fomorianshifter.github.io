@@ -1,52 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Orbit — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit lab — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header><a href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></nav></header>
-  <main>
-    <p class="kicker">From the Solar System repos</p>
-    <h1>Inner five</h1>
-    <p class="lede">Not to scale. Mercury through Mars, plus Earth.</p>
-    <canvas id="orbit" width="700" height="360"></canvas>
-  </main>
-  <script>
-    const c = document.getElementById("orbit");
-    const ctx = c.getContext("2d");
-    const bodies = [
-      { name: "Mercury", r: 40, size: 3, color: "#c4b7a6", a: 0 },
-      { name: "Venus", r: 62, size: 5, color: "#e0c07a", a: 1 },
-      { name: "Earth", r: 88, size: 5, color: "#7eb6d6", a: 2 },
-      { name: "Mars", r: 116, size: 4, color: "#d07a5a", a: 3.2 }
-    ];
-    function frame() {
-      const w = c.width, h = c.height;
-      ctx.fillStyle = "#0b0f0a";
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = "#d6a34a";
-      ctx.beginPath();
-      ctx.arc(w / 2, h / 2, 12, 0, Math.PI * 2);
-      ctx.fill();
-      bodies.forEach(b => {
-        b.a += 0.004 + 40 / b.r / 80;
-        ctx.strokeStyle = "#31402c";
-        ctx.beginPath();
-        ctx.ellipse(w / 2, h / 2, b.r, b.r * 0.62, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        const x = w / 2 + Math.cos(b.a) * b.r;
-        const y = h / 2 + Math.sin(b.a) * b.r * 0.62;
-        ctx.fillStyle = b.color;
-        ctx.beginPath();
-        ctx.arc(x, y, b.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(frame);
-    }
-    frame();
-  </script>
-</body>
-</html>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>Orbit lab</h1>
+<p class="lede">Rebuilt from the public SolarSystem and Mynewproject-SolarSystem sketches. Three bodies, one sun, no physics library.</p>
+<div class="card"><canvas id="sky" width="720" height="420"></canvas></div>
+<p class="meta">Sources: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a></p>
+<script>
+const sky = document.getElementById("sky");
+const ctx = sky.getContext("2d");
+let tick = 0;
+function orbit() {
+  const w = sky.width, h = sky.height;
+  ctx.fillStyle = "#0e0d0a";
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#e0a04a";
+  ctx.beginPath(); ctx.arc(w/2, h/2, 18, 0, 7); ctx.fill();
+  [[90, 5, "#c4784a"], [145, 7, "#8fbf72"], [200, 8, "#8eb4e8"]].forEach(([r, rad, color], i) => {
+    const a = tick * (0.018 - i * 0.004);
+    ctx.strokeStyle = "#3a3428"; ctx.beginPath(); ctx.arc(w/2, h/2, r, 0, 7); ctx.stroke();
+    ctx.fillStyle = color; ctx.beginPath();
+    ctx.arc(w/2 + Math.cos(a)*r, h/2 + Math.sin(a)*r*0.55, rad, 0, 7); ctx.fill();
+  });
+  tick += 1; requestAnimationFrame(orbit);
+}
+orbit();
+</script>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>

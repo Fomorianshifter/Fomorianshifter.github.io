@@ -5,74 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nicholas Lane — electrician, controls, projects</title>
 <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC troubleshooting, electrical work, and public projects including Loki.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root { --bg:#10140f; --panel:#1a2118; --line:#2c3828; --ink:#e7eedf; --muted:#a3b09a; --amber:#e2a23a; --green:#7dba6a; }
-* { box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body { margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",sans-serif; line-height:1.5; }
-a { color:var(--amber); }
-header { display:flex; justify-content:space-between; align-items:center; padding:18px 7vw; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(16,20,15,.92); backdrop-filter:blur(8px); z-index:2; }
-nav a { color:var(--muted); text-decoration:none; margin-left:18px; font-size:14px; }
-nav a:hover { color:var(--ink); }
-.wrap { width:min(980px,86vw); margin:0 auto; }
-.hero { padding:64px 0 28px; }
-.kicker { color:var(--amber); letter-spacing:.12em; text-transform:uppercase; font-size:12px; font-weight:600; }
-h1 { font-size:clamp(32px,5vw,52px); line-height:1.1; margin:10px 0 14px; font-weight:600; }
-.lede { font-size:18px; color:var(--muted); max-width:68ch; }
-.row { display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
-.btn, button.btn { border:1px solid var(--line); background:var(--panel); color:var(--ink); padding:10px 14px; border-radius:8px; text-decoration:none; font:inherit; cursor:pointer; }
-.btn.primary { background:var(--amber); color:#1a1408; border-color:var(--amber); font-weight:600; }
-section { padding:28px 0 10px; }
-h2 { font-size:22px; margin-bottom:6px; }
-.sub { color:var(--muted); margin-top:0; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
-.card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
-.card h3 { margin:0 0 6px; font-size:17px; }
-.meta { color:var(--muted); font-size:13px; font-family:"IBM Plex Mono",monospace; }
-.tags span { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:2px 8px; margin:6px 6px 0 0; font-size:12px; color:var(--green); }
-.ladder { font-family:"IBM Plex Mono",monospace; background:#0c100b; border-radius:8px; padding:12px; white-space:pre; overflow:auto; color:var(--green); font-size:13px; }
-label { display:block; font-size:13px; color:var(--muted); margin:8px 0 4px; }
-input, select, textarea { width:100%; background:#0c100b; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px; font:inherit; }
-.stat { font-family:"IBM Plex Mono",monospace; color:var(--amber); font-size:18px; margin:8px 0; }
-canvas { width:100%; height:220px; background:#0c100b; border-radius:8px; display:block; }
-footer { padding:36px 0 48px; color:var(--muted); font-size:14px; }
-.check { display:flex; gap:8px; align-items:flex-start; margin:6px 0; }
-.check input { width:auto; margin-top:4px; }
-#toast { position:fixed; bottom:16px; right:16px; background:var(--green); color:#10200c; padding:10px 14px; border-radius:8px; display:none; }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
-  <strong>Nicholas Lane</strong>
+  <div class="brand">Nicholas Lane <span>Green Bay</span></div>
   <nav>
     <a href="#work">Work</a>
     <a href="#github">GitHub</a>
-    <a href="#labs">Labs</a>
+    <a href="#labs">Projects</a>
     <a href="#linkedin">LinkedIn</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <div class="kicker">Green Bay, WI · open to relocate · US work authorized</div>
-    <h1>Electrician who wires the job and builds the controls around it.</h1>
-    <p class="lede">Five-plus years in residential, commercial, and foundry electrical work, with hands-on PLC install and troubleshooting at Grede Foundries. Studying toward NEC certification and freeCodeCamp computer science. Public code is under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+    <div class="kicker">Industrial electrician · controls · open to relocate</div>
+    <h1>Wire the job. Then make the controls make sense.</h1>
+    <p class="lede">Nicholas Lane, Green Bay, WI. Five-plus years in residential, commercial, and foundry electrical work, including PLC install and troubleshooting support at Grede Foundries. Studying toward NEC certification and freeCodeCamp computer science. Public code is under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
     <div class="row">
       <a class="btn primary" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
+      <a class="btn" href="tel:+16087177602">608-717-7602</a>
       <a class="btn" href="https://github.com/Fomorianshifter">GitHub</a>
-      <a class="btn" href="#linkedin">LinkedIn paste</a>
+      <a class="btn" href="#linkedin">LinkedIn text</a>
     </div>
   </div>
   <section id="work">
     <h2>Work</h2>
-    <p class="sub">From the resume. Figures below are the ones already on that document.</p>
+    <p class="sub">Taken from the resume. The monthly fault figure and compliance rate are the ones already written there.</p>
     <div class="grid">
       <article class="card">
         <h3>Industrial electrician</h3>
         <p class="meta">Grede Foundries · Reedsburg, WI · Oct 2021 – Mar 2024</p>
-        <p>Assisted PLC installation and programming for automated processes. Worked with engineering on electrical faults — resume cites over 50 issues a month — and monthly inspections held to a 100% safety-compliance rate.</p>
+        <p>Assisted PLC installation and programming for automated processes. Worked with engineering on electrical faults — the resume cites over 50 issues a month — and monthly inspections held to a 100% safety-compliance rate.</p>
       </article>
       <article class="card">
         <h3>Electrician</h3>
@@ -93,20 +59,21 @@ footer { padding:36px 0 48px; color:var(--muted); font-size:14px; }
   </section>
   <section id="github">
     <h2>Best of GitHub</h2>
-    <p class="sub">Public repos only. Loki is the one with real hardware scope. Private repos are left off.</p>
+    <p class="sub">Public repos only. Loki is the project with real hardware scope. Private repos stay off this page.</p>
     <div class="grid">
       <article class="card">
+        <span class="pill">Featured</span>
         <h3>Loki</h3>
-        <p class="meta">C · embedded · MIT · Raspberry Pi / Orange Pi</p>
-        <p>Embedded companion for Linux boards. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, and EEPROM. Flipper Zero UART and a local config UI.</p>
-        <div class="tags"><span>C</span><span>UART</span><span>TFT</span></div>
-        <p><a href="https://github.com/Fomorianshifter/Loki">Source</a></p>
+        <p class="meta">C and Python · MIT · Raspberry Pi / Orange Pi</p>
+        <p>Embedded companion for Linux boards. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, and EEPROM. Flipper Zero UART, a local config UI, and a life-cycle loop from egg to adult.</p>
+        <div class="tags"><span>C</span><span>UART</span><span>TFT</span><span>embedded</span></div>
+        <p><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="projects/loki.html">Case study</a> · <a href="projects/loki-life.html">Life-cycle demo</a></p>
       </article>
       <article class="card">
         <h3>Solar System</h3>
-        <p class="meta">JavaScript · canvas study</p>
-        <p>Early orbit sketch. A small version runs in the labs so a visitor can try it without cloning.</p>
-        <p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a></p>
+        <p class="meta">JavaScript · canvas study · Jan 2024</p>
+        <p>Early orbit sketches. A cleaned-up version runs on this site so a visitor can try it without cloning.</p>
+        <p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">orbit variant</a> · <a href="projects/orbit.html">Open lab</a></p>
       </article>
       <article class="card">
         <h3>One</h3>
@@ -117,71 +84,19 @@ footer { padding:36px 0 48px; color:var(--muted); font-size:14px; }
     </div>
   </section>
   <section id="labs">
-    <h2>Basic projects on this site</h2>
-    <p class="sub">Built so a LinkedIn visitor can try something. Planning aids, not a code stamp.</p>
+    <h2>Projects on this site</h2>
+    <p class="sub">Small tools a LinkedIn visitor can open. Planning aids and demos, not a code stamp or a site procedure.</p>
     <div class="grid">
-      <article class="card">
-        <h3>Three-wire starter</h3>
-        <p>Stop, start, seal-in, and overload on one rung.</p>
-        <div class="row">
-          <button class="btn" id="start">Start</button>
-          <button class="btn" id="stop">Stop</button>
-          <button class="btn" id="ol">Trip OL</button>
-        </div>
-        <div class="ladder" id="ladder"></div>
-        <p class="stat" id="motor">Motor: off</p>
-      </article>
-      <article class="card">
-        <h3>Voltage drop</h3>
-        <p>Copper estimate. Confirm with NEC tables before you pull wire.</p>
-        <label>Load amps <input id="amps" type="number" value="20" min="1"></label>
-        <label>One-way feet <input id="feet" type="number" value="100" min="1"></label>
-        <label>AWG
-          <select id="awg">
-            <option value="12">12</option>
-            <option value="10">10</option>
-            <option value="8">8</option>
-            <option value="6">6</option>
-          </select>
-        </label>
-        <label>Volts <input id="volts" type="number" value="240" min="1"></label>
-        <p class="stat" id="vd">—</p>
-      </article>
-      <article class="card">
-        <h3>Motor FLA ballpark</h3>
-        <p>Rule of thumb. Use the nameplate.</p>
-        <label>Horsepower <input id="hp" type="number" value="5" min="0.25" step="0.25"></label>
-        <label>Volts <input id="mvolts" type="number" value="480"></label>
-        <label>Phase
-          <select id="phase"><option value="3">3</option><option value="1">1</option></select>
-        </label>
-        <p class="stat" id="fla">—</p>
-      </article>
-      <article class="card">
-        <h3>Shift fault log</h3>
-        <p>Notes stay in this browser only.</p>
-        <label>Note <textarea id="note" rows="2" placeholder="Bay 3 conveyor VFD fault, reset, running"></textarea></label>
-        <button class="btn" id="addnote">Add note</button>
-        <ul id="notes"></ul>
-      </article>
-      <article class="card">
-        <h3>Orbit lab</h3>
-        <canvas id="sky" width="640" height="360"></canvas>
-      </article>
-      <article class="card">
-        <h3>LOTO checklist</h3>
-        <p>Mock job only. Not a site procedure.</p>
-        <div class="check"><input type="checkbox" class="loto"><span>Notify affected people</span></div>
-        <div class="check"><input type="checkbox" class="loto"><span>Shut down with normal stop</span></div>
-        <div class="check"><input type="checkbox" class="loto"><span>Isolate energy sources</span></div>
-        <div class="check"><input type="checkbox" class="loto"><span>Lock and tag</span></div>
-        <div class="check"><input type="checkbox" class="loto"><span>Verify zero energy</span></div>
-        <p class="stat" id="loto">0 / 5</p>
-      </article>
+      <article class="card"><h3>Three-wire starter</h3><p>Stop, start, seal-in, and overload. Same idea as a motor control rung.</p><p><a href="projects/starter.html">Open project</a></p></article>
+      <article class="card"><h3>Voltage drop</h3><p>Copper estimate from amps, feet, and AWG. Confirm with NEC tables before you pull wire.</p><p><a href="projects/voltage-drop.html">Open project</a></p></article>
+      <article class="card"><h3>Motor FLA ballpark</h3><p>Rule of thumb from horsepower, volts, and phase. Use the nameplate on a real job.</p><p><a href="projects/motor.html">Open project</a></p></article>
+      <article class="card"><h3>Shift fault log</h3><p>Timestamped notes that stay in this browser only.</p><p><a href="projects/shift-log.html">Open project</a></p></article>
+      <article class="card"><h3>Orbit lab</h3><p>Canvas orbit rebuilt from the Solar System repos.</p><p><a href="projects/orbit.html">Open project</a></p></article>
+      <article class="card"><h3>LOTO checklist</h3><p>Mock job only. Not a plant procedure.</p><p><a href="projects/loto.html">Open project</a></p></article>
     </div>
   </section>
   <section id="linkedin">
-    <h2>Paste into LinkedIn</h2>
+    <h2>Connect this to LinkedIn</h2>
     <p class="sub">Featured link: <a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
     <article class="card">
       <h3>About</h3>
@@ -189,85 +104,15 @@ footer { padding:36px 0 48px; color:var(--muted); font-size:14px; }
 
 I am pursuing NEC certification and freeCodeCamp computer science coursework. Public code is at github.com/Fomorianshifter — the main build is Loki, an embedded companion for single-board computers. Portfolio with live labs: https://fomorianshifter.github.io/</p>
       <button class="btn" id="copy">Copy About</button>
-      <p class="meta">Headline: Industrial electrician · PLC troubleshooting · building controls and embedded projects</p>
+      <p class="meta">Headline: Industrial electrician · PLC troubleshooting · controls and embedded projects</p>
       <p class="meta">Featured title: Nicholas Lane — electrician, controls, and project labs</p>
+      <p class="meta">Website field: https://fomorianshifter.github.io/</p>
     </article>
   </section>
-  <footer>
-    Nicholas Lane · nlane713@gmail.com · 608-717-7602 · English. Safety certs on the resume include HAZWOPER, first aid, CPR, AED, aerial lift, and scissor lift. NEC certification is in progress.
-  </footer>
+  <footer>Nicholas Lane · nlane713@gmail.com · 608-717-7602 · English · US work authorized. Resume lists HAZWOPER, first aid, CPR, AED, aerial lift, and scissor lift. NEC certification is in progress. GitHub profile name is Beau; this site uses the name on the resume.</footer>
 </main>
 <div id="toast">Copied</div>
 <script>
-const ohms = {12: 1.98, 10: 1.24, 8: 0.778, 6: 0.491};
-let running = false, ol = false;
-function drawLadder() {
-  const m = running ? "on " : "off";
-  document.getElementById("ladder").textContent =
-"|--[ stop ]--[ start ]--+--( M " + m + ")--|   OL: " + (ol ? "TRIP" : "ok") + "\n                       |\n                       +----[ M " + (running ? "X" : " ") + " ]---------+";
-  document.getElementById("motor").textContent = "Motor: " + (running ? "running" : "off");
-}
-document.getElementById("start").onclick = () => { if (!ol) running = true; drawLadder(); };
-document.getElementById("stop").onclick = () => { running = false; drawLadder(); };
-document.getElementById("ol").onclick = () => { ol = !ol; if (ol) running = false; drawLadder(); };
-drawLadder();
-function vd() {
-  const a = +document.getElementById("amps").value;
-  const ft = +document.getElementById("feet").value;
-  const v = +document.getElementById("volts").value;
-  const r = ohms[document.getElementById("awg").value];
-  const drop = 2 * a * r * ft / 1000;
-  const pct = v ? (drop / v) * 100 : 0;
-  document.getElementById("vd").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + v + " V";
-}
-["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", vd));
-vd();
-function fla() {
-  const hp = +document.getElementById("hp").value;
-  const v = +document.getElementById("mvolts").value;
-  const ph = +document.getElementById("phase").value;
-  const watts = hp * 746 / 0.85 / 0.85;
-  const amps = ph === 3 ? watts / (v * Math.sqrt(3)) : watts / v;
-  document.getElementById("fla").textContent = "About " + amps.toFixed(1) + " A (assumed efficiency and power factor, not a nameplate)";
-}
-["hp","mvolts","phase"].forEach(id => document.getElementById(id).addEventListener("input", fla));
-fla();
-const notes = document.getElementById("notes");
-function renderNotes() {
-  const items = JSON.parse(localStorage.getItem("faults") || "[]");
-  notes.innerHTML = items.map(n => "<li>" + n.replace(/[&<>]/g, c => ({"&":"&","<":"<",">":">"}[c])) + "</li>").join("") || "<li>No notes yet.</li>";
-}
-document.getElementById("addnote").onclick = () => {
-  const t = document.getElementById("note").value.trim();
-  if (!t) return;
-  const items = JSON.parse(localStorage.getItem("faults") || "[]");
-  items.unshift(new Date().toLocaleString() + " — " + t);
-  localStorage.setItem("faults", JSON.stringify(items.slice(0, 12)));
-  document.getElementById("note").value = "";
-  renderNotes();
-};
-renderNotes();
-document.querySelectorAll(".loto").forEach(el => el.onchange = () => {
-  document.getElementById("loto").textContent = document.querySelectorAll(".loto:checked").length + " / 5";
-});
-const sky = document.getElementById("sky");
-const ctx = sky.getContext("2d");
-let tick = 0;
-function orbit() {
-  const w = sky.width, h = sky.height;
-  ctx.fillStyle = "#0c100b";
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "#e2a23a";
-  ctx.beginPath(); ctx.arc(w/2, h/2, 16, 0, 7); ctx.fill();
-  [[70, 4, "#c4784a"], [110, 6, "#7dba6a"], [150, 7, "#8eb4e8"]].forEach(([r, rad, color], i) => {
-    const a = tick * (0.02 - i * 0.004);
-    ctx.strokeStyle = "#2c3828"; ctx.beginPath(); ctx.arc(w/2, h/2, r, 0, 7); ctx.stroke();
-    ctx.fillStyle = color; ctx.beginPath();
-    ctx.arc(w/2 + Math.cos(a)*r, h/2 + Math.sin(a)*r*0.55, rad, 0, 7); ctx.fill();
-  });
-  tick += 1; requestAnimationFrame(orbit);
-}
-orbit();
 document.getElementById("copy").onclick = async () => {
   await navigator.clipboard.writeText(document.getElementById("about").innerText);
   const toast = document.getElementById("toast");

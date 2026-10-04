@@ -1,20 +1,34 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>LOTO checklist — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"/><link rel="icon" href="../favicon.svg"/></head>
-<body><header class="nav"><div class="wrap"><a class="brand" href="../index.html">NL <span>//</span> LANE</a><nav><a href="../index.html#labs">Labs</a></nav></div></header>
-<main class="wrap"><section class="hero"><p class="kicker">Training only · not a plant procedure</p><h1>Lockout / tagout checklist</h1><p class="lede">A memory aid for the order of steps before imaginary work. Real lockout follows the equipment procedure, energy sources, and your employer’s program.</p></section>
-<section class="lab" id="list"></section><p class="out" id="status">0 of 7 complete — not clear to work</p></main>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOTO checklist — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>LOTO checklist</h1>
+<p class="lede">A mock sequence for practice. Follow the site procedure and OSHA 1910.147 on a real lockout.</p>
+<div class="card">
+  <div class="check"><input type="checkbox" class="loto"><span>Notify affected people</span></div>
+  <div class="check"><input type="checkbox" class="loto"><span>Shut down with the normal stop</span></div>
+  <div class="check"><input type="checkbox" class="loto"><span>Isolate energy sources</span></div>
+  <div class="check"><input type="checkbox" class="loto"><span>Apply lock and tag</span></div>
+  <div class="check"><input type="checkbox" class="loto"><span>Verify zero energy</span></div>
+  <p class="stat" id="loto">0 / 5</p>
+</div>
 <script>
-var steps=["Notify affected people","Identify every energy source","Shut down with normal controls","Isolate each energy source","Apply your lock and tag","Release stored energy","Verify zero energy before work"];
-var done=steps.map(function(){return false;});
-var list=document.getElementById("list");
-steps.forEach(function(s,i){
-  var b=document.createElement("button"); b.className="ctrl"; b.textContent=(i+1)+". "+s;
-  b.onclick=function(){ done[i]=!done[i]; render(); };
-  b.id="s"+i; list.appendChild(b);
+document.querySelectorAll(".loto").forEach(el => el.onchange = () => {
+  document.getElementById("loto").textContent = document.querySelectorAll(".loto:checked").length + " / 5";
 });
-function render(){
-  var n=done.filter(Boolean).length;
-  steps.forEach(function(s,i){ var b=document.getElementById("s"+i); b.className="ctrl"+(done[i]?" on":""); b.textContent=(done[i]?"Done — ":"")+(i+1)+". "+s; });
-  document.getElementById("status").textContent = n+" of 7 complete — "+(n===7?"training checklist complete":"not clear to work");
-}
-</script></body></html>
+</script>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>

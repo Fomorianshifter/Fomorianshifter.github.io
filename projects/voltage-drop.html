@@ -1,53 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voltage drop — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header><a href="../index.html">Nicholas Lane</a><nav><a href="../index.html#labs">Labs</a></nav></header>
-  <main>
-    <p class="kicker">Lab</p>
-    <h1>Voltage drop</h1>
-    <p class="lede">Approximate copper drop using DC resistance. Single phase uses 2 × length; three phase uses √3 × length. Not a substitute for NEC Chapter 9 tables or a stamped calc.</p>
-    <form class="panel" id="vform">
-      <label>Load amps <input id="amps" type="number" value="16" min="0.1" step="0.1"></label>
-      <label>One-way feet <input id="feet" type="number" value="80" min="1"></label>
-      <label>System volts <input id="volts" type="number" value="120"></label>
-      <label>AWG
-        <select id="awg">
-          <option>14</option><option selected>12</option><option>10</option><option>8</option><option>6</option><option>4</option><option>2</option>
-        </select>
-      </label>
-      <label>Phase
-        <select id="phase"><option value="1">Single</option><option value="3">Three</option></select>
-      </label>
-    </form>
-    <p class="out" id="vdrop"></p>
-    <p class="meta" id="vnote"></p>
-  </main>
-  <script>
-    const ohmPerKft = {14: 3.14, 12: 1.98, 10: 1.24, 8: 0.778, 6: 0.491, 4: 0.308, 2: 0.194};
-    const form = document.getElementById("vform");
-    function calc() {
-      const amps = Number(document.getElementById("amps").value);
-      const feet = Number(document.getElementById("feet").value);
-      const volts = Number(document.getElementById("volts").value);
-      const awg = document.getElementById("awg").value;
-      const phase = document.getElementById("phase").value;
-      const r = ohmPerKft[awg] * (feet / 1000);
-      const factor = phase === "3" ? Math.sqrt(3) : 2;
-      const drop = factor * amps * r;
-      const pct = volts ? (drop / volts) * 100 : 0;
-      document.getElementById("vdrop").textContent = drop.toFixed(2) + " V  (" + pct.toFixed(2) + "%)";
-      document.getElementById("vnote").textContent = pct > 3
-        ? "Over a common 3% branch planning target. Check size or length."
-        : "Under a common 3% branch planning target.";
-    }
-    form.addEventListener("input", calc);
-    calc();
-  </script>
-</body>
-</html>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>Voltage drop</h1>
+<p class="lede">Single-phase copper estimate: drop = 2 × amps × ohms-per-kft × feet / 1000. Check NEC Chapter 9 tables before you buy wire.</p>
+<div class="card">
+  <label>Load amps <input id="amps" type="number" value="20" min="1"></label>
+  <label>One-way feet <input id="feet" type="number" value="100" min="1"></label>
+  <label>AWG <select id="awg"><option value="12">12</option><option value="10">10</option><option value="8">8</option><option value="6">6</option></select></label>
+  <label>Volts <input id="volts" type="number" value="240" min="1"></label>
+  <p class="stat" id="vd"></p>
+</div>
+<script>
+const ohms = {12: 1.98, 10: 1.24, 8: 0.778, 6: 0.491};
+function vd() {
+  const a = +amps.value, ft = +feet.value, v = +volts.value, r = ohms[awg.value];
+  const drop = 2 * a * r * ft / 1000;
+  const pct = v ? drop / v * 100 : 0;
+  document.getElementById("vd").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + v + " V";
+}
+["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", vd));
+vd();
+</script>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>

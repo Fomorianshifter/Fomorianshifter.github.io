@@ -1,7 +1,7 @@
 # Nicholas Lane portfolio
 
-Static site for GitHub Pages: https://fomorianshifter.github.io/
+Live site: https://fomorianshifter.github.io/
 
-Featured public work: Loki, Solar System, One.
-Labs on the page: voltage drop, motor starter seal-in, orbit canvas, shift fault log.
-LinkedIn paste text: LINKEDIN.txt
+Static portfolio for LinkedIn. Featured public work is Loki, Solar System, and One. Small electrical and canvas labs live under `projects/`.
+
+Contact: nlane713@gmail.com

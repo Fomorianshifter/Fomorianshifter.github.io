@@ -1,69 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loki life cycle — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loki case study — Nicholas Lane</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header><a href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/Loki">Loki source</a></nav></header>
-  <main>
-    <p class="kicker">From the Loki repo</p>
-    <h1>Life cycle</h1>
-    <p class="lede">Stage thresholds match the public README: egg, hatchling at 50, young at 200, adult at 500 growth points. Feeding when hunger is under 40 halves the effect.</p>
-    <div class="panel">
-      <p id="status"></p>
-      <div class="bars" aria-hidden="true">
-        <span><i id="hunger"></i></span>
-        <span><i id="happy"></i></span>
-        <span><i id="energy"></i></span>
-      </div>
-      <p class="meta">Bars: hunger, happiness, energy.</p>
-      <button type="button" data-feed="basic">Basic feed</button>
-      <button type="button" data-feed="tasty">Tasty</button>
-      <button type="button" data-feed="special">Special</button>
-      <button type="button" id="tick">Tick</button>
-    </div>
-  </main>
-  <script>
-    const food = { basic: [20, 5, 5], tasty: [40, 10, 15], special: [60, 20, 25] };
-    const pet = { hunger: 55, happy: 40, energy: 70, gp: 0 };
-    function stage() {
-      if (pet.gp >= 500) return "adult";
-      if (pet.gp >= 200) return "young";
-      if (pet.gp >= 50) return "hatchling";
-      return "egg";
-    }
-    function mood() {
-      if (pet.hunger >= 70) return "hungry";
-      if (pet.energy <= 20) return "sleepy";
-      if (pet.happy <= 30 || pet.hunger >= 50) return "grumpy";
-      if (pet.happy >= 70) return "happy";
-      if (pet.happy >= 50 && pet.energy >= 60) return "playful";
-      return "neutral";
-    }
-    function paint() {
-      document.getElementById("status").textContent = stage() + " · " + mood() + " · " + pet.gp + " gp";
-      document.getElementById("hunger").style.width = pet.hunger + "%";
-      document.getElementById("happy").style.width = pet.happy + "%";
-      document.getElementById("energy").style.width = pet.energy + "%";
-    }
-    document.querySelectorAll("[data-feed]").forEach(btn => btn.onclick = () => {
-      const [h, g, p] = food[btn.dataset.feed];
-      const scale = pet.hunger < 40 ? 0.5 : 1;
-      pet.hunger = Math.max(0, pet.hunger - h * scale);
-      pet.gp += Math.round(g * scale);
-      pet.happy = Math.min(100, pet.happy + p * scale);
-      paint();
-    });
-    document.getElementById("tick").onclick = () => {
-      if (mood() === "sleepy") pet.energy = Math.min(100, pet.energy + 15);
-      else pet.energy = Math.max(0, pet.energy - 8);
-      pet.hunger = Math.min(100, pet.hunger + 6);
-      paint();
-    };
-    paint();
-  </script>
-</body>
-</html>
+<header>
+  <div class="brand">Nicholas Lane <span>projects</span></div>
+  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
+</header>
+<main class="wrap">
+<p><a class="back" href="../">← portfolio</a></p>
+
+<h1>Loki</h1>
+<p class="lede">Public embedded project for a Linux single-board computer. Dragon-themed companion with hardware drivers and a local configuration UI.</p>
+<div class="card">
+  <p class="meta">github.com/Fomorianshifter/Loki · MIT · C and Python</p>
+  <ul class="clean">
+    <li>HAL modules for GPIO, SPI, I2C, UART, and PWM.</li>
+    <li>Drivers for TFT, SD card, flash, and EEPROM.</li>
+    <li>Flipper Zero UART command path.</li>
+    <li>Life-cycle state machine: egg, hatchling, young, adult, with hunger, mood, and animation states.</li>
+    <li>Local web config UI intended for the USB network address 10.0.0.2.</li>
+  </ul>
+  <p><a href="https://github.com/Fomorianshifter/Loki">Open the repo</a> · <a href="loki-life.html">Try the life-cycle rules</a></p>
+</div>
+</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
