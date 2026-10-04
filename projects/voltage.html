@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop lab — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
+<div class="hero"><p class="kicker">Study lab · not a code calculation stamp</p><h1>Voltage drop</h1>
+<p class="lede">Single-phase copper approximation: VD = 2 x K x I x D / CM. K is 12.9 for copper. Use this while studying NEC voltage-drop recommendations (often 3% branch, 5% total). Verify with the adopted code on a real job.</p></div></header>
+<main><section class="card">
+<label>Load current (A)</label><input id="amps" type="number" value="20" min="0" step="0.1">
+<label>One-way length (ft)</label><input id="feet" type="number" value="120" min="0" step="1">
+<label>Source voltage</label><select id="volts"><option>120</option><option>208</option><option selected>240</option><option>277</option><option>480</option></select>
+<label>Copper conductor</label><select id="awg">
+<option value="4110">14 AWG</option><option value="6530" selected>12 AWG</option><option value="10380">10 AWG</option>
+<option value="16510">8 AWG</option><option value="26240">6 AWG</option><option value="41740">4 AWG</option>
+<option value="66360">2 AWG</option><option value="105600">1/0</option><option value="133100">2/0</option>
+<option value="167800">3/0</option><option value="211600">4/0</option></select>
+<p class="out" id="drop">—</p><p id="note" class="meta"></p></section></main>
+<script>
+const K = 12.9;
+function calc() {
+  const I = Number(document.getElementById("amps").value);
+  const D = Number(document.getElementById("feet").value);
+  const V = Number(document.getElementById("volts").value);
+  const CM = Number(document.getElementById("awg").value);
+  const vd = (2 * K * I * D) / CM;
+  const pct = V ? (vd / V) * 100 : 0;
+  document.getElementById("drop").textContent = vd.toFixed(2) + " V  ·  " + pct.toFixed(2) + "%";
+  const note = document.getElementById("note");
+  note.className = pct > 3 ? "warn" : "ok";
+  note.textContent = pct > 5 ? "Above a common 5% feeder+branch study target." : pct > 3 ? "Above a common 3% branch-circuit study target." : "Inside a common 3% branch study target.";
+}
+document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", calc));
+calc();
+</script></body></html>

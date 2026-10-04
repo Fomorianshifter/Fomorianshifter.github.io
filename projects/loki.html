@@ -1,32 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loki case study — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
-<h1>Loki</h1>
-<p class="lede">Public embedded project for a Linux single-board computer. Dragon-themed companion with hardware drivers and a local configuration UI.</p>
-<div class="card">
-  <p class="meta">github.com/Fomorianshifter/Loki · MIT · C and Python</p>
-  <ul class="clean">
-    <li>HAL modules for GPIO, SPI, I2C, UART, and PWM.</li>
-    <li>Drivers for TFT, SD card, flash, and EEPROM.</li>
-    <li>Flipper Zero UART command path.</li>
-    <li>Life-cycle state machine: egg, hatchling, young, adult, with hunger, mood, and animation states.</li>
-    <li>Local web config UI intended for the USB network address 10.0.0.2.</li>
-  </ul>
-  <p><a href="https://github.com/Fomorianshifter/Loki">Open the repo</a> · <a href="loki-life.html">Try the life-cycle rules</a></p>
-</div>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loki life cycle — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
+<div class="hero"><p class="kicker">From Fomorianshifter/Loki</p><h1>Loki life cycle</h1>
+<p class="lede">Browser stand-in for the life-cycle in the embedded repo: egg, hatchling at 50 growth, young at 200, adult at 500. Food points match the README. The real project is C and Python on a single-board computer with a TFT and Flipper UART.</p></div></header>
+<main><section class="card"><p class="dragon" id="face">egg</p><p class="out" id="stage">Egg · 0 gp</p><p id="mood">Mood: neutral</p>
+<div class="row"><button class="btn" data-food="basic">Feed basic</button><button class="btn" data-food="tasty">Feed tasty</button><button class="btn" data-food="special">Feed special</button><button class="btn ghost" id="play">Interact</button><button class="btn ghost" id="tick">Tick 30s</button></div>
+<p class="meta"><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a> — MIT. Topics: embedded-systems, flipper-zero, orange-pi, raspberry-pi, tft-display.</p></section></main>
+<script>
+const s = { gp: 0, hunger: 20, happy: 50, energy: 80, stage: "Egg" };
+const food = { basic: [20, 5, 5], tasty: [40, 10, 15], special: [60, 20, 25] };
+function stage() { s.stage = s.gp >= 500 ? "Adult" : s.gp >= 200 ? "Young" : s.gp >= 50 ? "Hatchling" : "Egg"; }
+function mood() {
+  if (s.hunger >= 70) return "hungry";
+  if (s.energy <= 20) return "sleepy";
+  if (s.happy <= 30 || s.hunger >= 50) return "grumpy";
+  if (s.happy >= 70) return "happy";
+  if (s.happy >= 50 && s.energy >= 60) return "playful";
+  return "neutral";
+}
+function render() {
+  stage(); const m = mood();
+  document.getElementById("face").textContent = s.stage === "Egg" ? "egg" : m;
+  document.getElementById("stage").textContent = s.stage + " · " + s.gp + " gp";
+  document.getElementById("mood").textContent = "Mood: " + m + " · hunger " + s.hunger + " · happy " + s.happy + " · energy " + s.energy;
+}
+function clamp(n) { return Math.max(0, Math.min(100, n)); }
+document.querySelectorAll("[data-food]").forEach(btn => btn.addEventListener("click", () => {
+  const pair = food[btn.dataset.food];
+  const half = s.hunger < 25;
+  s.hunger = clamp(s.hunger - (half ? pair[0] / 2 : pair[0]));
+  s.gp += half ? pair[1] / 2 : pair[1];
+  s.happy = clamp(s.happy + (half ? pair[2] / 2 : pair[2]));
+  render();
+}));
+document.getElementById("play").addEventListener("click", () => { s.happy = clamp(s.happy + 12); s.energy = clamp(s.energy - 8); s.gp += 4; render(); });
+document.getElementById("tick").addEventListener("click", () => {
+  if (mood() === "sleepy") s.energy = clamp(s.energy + 15); else s.energy = clamp(s.energy - 6);
+  s.hunger = clamp(s.hunger + 8); s.happy = clamp(s.happy - 3); render();
+});
+render();
+</script></body></html>

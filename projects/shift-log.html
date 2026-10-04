@@ -1,44 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shift fault log — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
-<h1>Shift fault log</h1>
-<p class="lede">Notes stay in this browser. Nothing is sent to a server.</p>
-<div class="card">
-  <label>Note <textarea id="note" rows="3" placeholder="Bay 3 conveyor VFD fault, reset, running"></textarea></label>
-  <button class="btn" id="addnote">Add note</button>
-  <ul class="clean" id="notes"></ul>
-</div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shift fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
+<div class="hero"><p class="kicker">Browser lab · not a plant CMMS</p><h1>Shift fault log</h1>
+<p class="lede">Log an electrical fault, area, and what cleared it. Entries stay in this browser only.</p></div></header>
+<main><section class="card">
+<label>Area</label><input id="area" placeholder="Mold line / melt deck / MCC-2">
+<label>Fault</label><input id="fault" placeholder="Starter chatter, sensor, overload">
+<label>Action</label><input id="action" placeholder="What was checked and what fixed it">
+<div class="row"><button class="btn" id="add">Add entry</button><button class="btn ghost" id="clear">Clear log</button></div>
+<table><thead><tr><th>When</th><th>Area</th><th>Fault</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table>
+</section></main>
 <script>
-const notes = document.getElementById("notes");
-function esc(s) { return s.replace(/[&<>]/g, c => ({"&":"&","<":"<",">":">"}[c])); }
-function render() {
-  const items = JSON.parse(localStorage.getItem("faults") || "[]");
-  notes.innerHTML = items.map(n => "<li>" + esc(n) + "</li>").join("") || "<li>No notes yet.</li>";
+const key = "nl-shift-log";
+function load() { return JSON.parse(localStorage.getItem(key) || "[]"); }
+function save(rows) { localStorage.setItem(key, JSON.stringify(rows)); }
+function draw() {
+  const body = document.getElementById("rows"); body.innerHTML = "";
+  load().forEach(r => {
+    const tr = document.createElement("tr");
+    [r.when, r.area, r.fault, r.action].forEach(v => { const td = document.createElement("td"); td.textContent = v; tr.appendChild(td); });
+    body.appendChild(tr);
+  });
 }
-document.getElementById("addnote").onclick = () => {
-  const t = document.getElementById("note").value.trim();
-  if (!t) return;
-  const items = JSON.parse(localStorage.getItem("faults") || "[]");
-  items.unshift(new Date().toLocaleString() + " — " + t);
-  localStorage.setItem("faults", JSON.stringify(items.slice(0, 12)));
-  document.getElementById("note").value = "";
-  render();
-};
-render();
-</script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+document.getElementById("add").addEventListener("click", () => {
+  const area = document.getElementById("area").value.trim();
+  const fault = document.getElementById("fault").value.trim();
+  const action = document.getElementById("action").value.trim();
+  if (!area || !fault) return;
+  const rows = load();
+  rows.unshift({ when: new Date().toLocaleString(), area, fault, action });
+  save(rows); draw();
+});
+document.getElementById("clear").addEventListener("click", () => { save([]); draw(); });
+draw();
+</script></body></html>

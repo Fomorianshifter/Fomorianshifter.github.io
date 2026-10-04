@@ -1,43 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Starter ladder — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header><a href="../index.html">Nicholas Lane</a><nav><a href="../index.html#labs">Labs</a></nav></header>
-  <main>
-    <p class="kicker">Lab · PLC path</p>
-    <h1>Three-wire starter</h1>
-    <p class="lede">Stop is normally closed. Start is normally open. The seal-in contact holds the coil after start is released. Overload opens the rung.</p>
-    <div class="panel">
-      <p>Stop <button type="button" id="stop">closed</button>
-         Start <button type="button" id="start">open</button>
-         Overload <button type="button" id="ol">closed</button></p>
-      <pre id="rung"></pre>
-      <p class="out" id="coil">Coil: off</p>
-    </div>
-  </main>
-  <script>
-    const state = { stop: true, start: false, ol: true, seal: false };
-    const labels = { stop: ["open", "closed"], start: ["open", "closed"], ol: ["tripped", "closed"] };
-    function draw() {
-      const coil = state.stop && state.ol && (state.start || state.seal);
-      state.seal = coil;
-      document.getElementById("stop").textContent = labels.stop[state.stop ? 1 : 0];
-      document.getElementById("start").textContent = labels.start[state.start ? 1 : 0];
-      document.getElementById("ol").textContent = labels.ol[state.ol ? 1 : 0];
-      document.getElementById("rung").textContent =
-        "L1 --[ " + (state.stop ? "STOP" : "stop") + " ]--[ " + (state.start ? "START" : "start") + " ]--+--( M )-- L2\n" +
-        "                     [ " + (state.seal ? "M" : "m") + " seal ]--------+--[ " + (state.ol ? "OL" : "ol") + " ]--";
-      document.getElementById("coil").textContent = "Coil: " + (coil ? "on" : "off");
-    }
-    document.getElementById("stop").onclick = () => { state.stop = !state.stop; draw(); };
-    document.getElementById("start").onclick = () => { state.start = !state.start; draw(); };
-    document.getElementById("ol").onclick = () => { state.ol = !state.ol; draw(); };
-    draw();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motor starter ladder — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
+<div class="hero"><p class="kicker">Demo logic · not a wired starter</p><h1>Three-wire motor starter</h1>
+<p class="lede">Stop is normally closed. Start is normally open and momentary. The seal-in contact keeps the coil in after start is released, unless stop opens or the overload trips.</p></div></header>
+<main><section class="card"><div class="row">
+<button class="btn" id="start">Press start</button>
+<button class="btn ghost" id="stop">Open stop</button>
+<button class="btn ghost" id="ol">Trip overload</button>
+<button class="btn ghost" id="reset">Reset overload</button></div>
+<div class="ladder">
+<div class="rung"><div class="contact" id="cStop">STOP NC</div><div class="contact" id="cStart">START NO</div><div class="coil" id="coil">M coil</div></div>
+<div class="rung"><div class="contact" id="cStop2">STOP NC</div><div class="contact" id="cSeal">M seal</div><div class="contact" id="cOl">OL NC</div></div>
+</div><p class="out" id="state">Motor off</p>
+<p class="meta">Releasing stop with a healthy overload does not restart the motor. That is the point of three-wire control.</p></section></main>
+<script>
+let startHeld = false, stopOpen = false, olTrip = false, running = false;
+function render() {
+  running = !stopOpen && !olTrip && (startHeld || running);
+  document.getElementById("cStop").className = "contact" + (stopOpen ? "" : " on");
+  document.getElementById("cStop2").className = "contact" + (stopOpen ? "" : " on");
+  document.getElementById("cStart").className = "contact" + (startHeld ? " on" : "");
+  document.getElementById("cSeal").className = "contact" + (running ? " on" : "");
+  document.getElementById("cOl").className = "contact" + (olTrip ? "" : " on");
+  document.getElementById("coil").className = "coil" + (running ? " on" : "");
+  document.getElementById("state").textContent = running ? "Motor running — seal-in held" : (olTrip ? "Motor off — overload open" : "Motor off");
+}
+document.getElementById("start").addEventListener("mousedown", () => { startHeld = true; render(); });
+document.getElementById("start").addEventListener("mouseup", () => { startHeld = false; render(); });
+document.getElementById("start").addEventListener("mouseleave", () => { startHeld = false; render(); });
+document.getElementById("stop").addEventListener("click", () => { stopOpen = !stopOpen; document.getElementById("stop").textContent = stopOpen ? "Close stop" : "Open stop"; render(); });
+document.getElementById("ol").addEventListener("click", () => { olTrip = true; render(); });
+document.getElementById("reset").addEventListener("click", () => { olTrip = false; render(); });
+render();
+</script></body></html>

@@ -1,43 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orbit lab — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
-<h1>Orbit lab</h1>
-<p class="lede">Rebuilt from the public SolarSystem and Mynewproject-SolarSystem sketches. Three bodies, one sun, no physics library.</p>
-<div class="card"><canvas id="sky" width="720" height="420"></canvas></div>
-<p class="meta">Sources: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a></p>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
+<div class="hero"><p class="kicker">From SolarSystem / Mynewproject-SolarSystem</p><h1>Planets in orbit</h1>
+<p class="lede">A small canvas rewrite of the public planet repos. Distances and sizes are illustrative, not to scale.</p></div></header>
+<main><section class="card"><canvas id="sky" width="960" height="420"></canvas>
+<p class="meta"><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a></p></section></main>
 <script>
-const sky = document.getElementById("sky");
-const ctx = sky.getContext("2d");
-let tick = 0;
-function orbit() {
-  const w = sky.width, h = sky.height;
-  ctx.fillStyle = "#0e0d0a";
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "#e0a04a";
-  ctx.beginPath(); ctx.arc(w/2, h/2, 18, 0, 7); ctx.fill();
-  [[90, 5, "#c4784a"], [145, 7, "#8fbf72"], [200, 8, "#8eb4e8"]].forEach(([r, rad, color], i) => {
-    const a = tick * (0.018 - i * 0.004);
-    ctx.strokeStyle = "#3a3428"; ctx.beginPath(); ctx.arc(w/2, h/2, r, 0, 7); ctx.stroke();
-    ctx.fillStyle = color; ctx.beginPath();
-    ctx.arc(w/2 + Math.cos(a)*r, h/2 + Math.sin(a)*r*0.55, rad, 0, 7); ctx.fill();
+const c = document.getElementById("sky"); const ctx = c.getContext("2d");
+const planets = [
+  { r: 46, s: 3, hue: 28, w: 0.04 }, { r: 70, s: 5, hue: 42, w: 0.028 },
+  { r: 96, s: 5, hue: 200, w: 0.022 }, { r: 122, s: 4, hue: 12, w: 0.018 },
+  { r: 160, s: 11, hue: 32, w: 0.01 }, { r: 198, s: 9, hue: 45, w: 0.007 }
+];
+let t = 0;
+function frame() {
+  const w = c.width, h = c.height, cx = w / 2, cy = h / 2;
+  ctx.fillStyle = "#0b0d09"; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#e2a23a"; ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI * 2); ctx.fill();
+  planets.forEach(p => {
+    ctx.strokeStyle = "#3a382c"; ctx.beginPath(); ctx.ellipse(cx, cy, p.r, p.r * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
+    const a = t * p.w, x = cx + Math.cos(a) * p.r, y = cy + Math.sin(a) * p.r * 0.42;
+    ctx.fillStyle = "hsl(" + p.hue + " 60% 55%)"; ctx.beginPath(); ctx.arc(x, y, p.s, 0, Math.PI * 2); ctx.fill();
   });
-  tick += 1; requestAnimationFrame(orbit);
+  t += 1; requestAnimationFrame(frame);
 }
-orbit();
-</script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+frame();
+</script></body></html>
