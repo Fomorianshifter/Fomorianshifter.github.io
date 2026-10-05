@@ -1,0 +1,8 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Orbit lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Orbit</strong> <a href="https://github.com/Fomorianshifter/SolarSystem">Repo</a></nav></header><main>
+<h1>Planets in orbit</h1><p class="meta">Cleaned-up version of the public SolarSystem sketch.</p>
+<canvas id="c" width="640" height="420" style="width:100%;max-width:640px;background:#0e130c;border-radius:12px"></canvas></main>
+<script>
+var c=document.getElementById("c"),x=c.getContext("2d"),t=0,bodies=[{r:0,size:18,color:"#e6c15a",speed:0},{r:70,size:5,color:"#d08a45",speed:0.03},{r:110,size:8,color:"#8fbf6a",speed:0.02},{r:160,size:7,color:"#7eb6d6",speed:0.012},{r:210,size:11,color:"#efe7d6",speed:0.008}];
+function frame(){t+=1;x.clearRect(0,0,640,420);bodies.forEach(function(b){var a=t*b.speed,px=320+Math.cos(a)*b.r,py=210+Math.sin(a)*b.r*0.62;if(b.r){x.strokeStyle="#3a4430";x.beginPath();x.ellipse(320,210,b.r,b.r*0.62,0,0,7);x.stroke()}x.fillStyle=b.color;x.beginPath();x.arc(px,py,b.size,0,7);x.fill()});requestAnimationFrame(frame)}frame();
+</script></body></html>

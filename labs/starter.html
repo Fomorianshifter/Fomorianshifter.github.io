@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Motor starter lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Motor starter</strong></nav></header><main>
+<h1>Three-wire start / stop</h1>
+<p class="meta">Stop is normally closed. Start is normally open. Aux contact seals the start button. Overload must be closed.</p>
+<div class="card" style="max-width:640px">
+<label><input type="checkbox" id="stop" checked> Stop closed (NC held)</label>
+<label><input type="checkbox" id="start"> Start pressed</label>
+<label><input type="checkbox" id="ol" checked> Overload closed</label>
+<pre class="ladder" id="rung"></pre><p id="state"></p></div></main>
+<script>
+var coil=false;function tick(){var stop=document.getElementById("stop").checked,start=document.getElementById("start").checked,ol=document.getElementById("ol").checked;coil=stop&&ol&&(start||coil);var on=coil?"ENERGIZED":"off";document.getElementById("rung").textContent="L1 --[ "+(stop?"STOP":"stop")+" ]--[ "+(ol?"OL":"ol")+" ]--+--[ "+(start?"START":"start")+" ]--+--( "+on+" )\n                                         +--[ "+(coil?"M":"m")+" aux ]----+";document.getElementById("state").textContent=coil?"Motor contactor sealed in.":"Contactor dropped out.";}
+["stop","start","ol"].forEach(function(id){document.getElementById(id).addEventListener("change",tick);});tick();
+</script></body></html>

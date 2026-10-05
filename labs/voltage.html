@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Voltage drop lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Voltage drop</strong></nav></header><main>
+<h1>Voltage drop estimate</h1>
+<p class="meta">Single phase uses 2 × K × I × D / CM. Three phase uses 1.732 × K × I × D / CM. K is 12.9 for copper and 21.2 for aluminum. One-way length. Study aid only.</p>
+<div class="card" style="max-width:520px">
+<label>System <select id="ph"><option value="1">Single phase</option><option value="3">Three phase</option></select></label>
+<label>Metal <select id="metal"><option value="12.9">Copper</option><option value="21.2">Aluminum</option></select></label>
+<label>Load amps <input id="amps" type="number" value="20" min="0"></label>
+<label>One-way feet <input id="feet" type="number" value="100" min="0"></label>
+<label>Conductor <select id="awg"><option value="4110">14 AWG</option><option value="6530" selected>12 AWG</option><option value="10380">10 AWG</option><option value="16510">8 AWG</option><option value="26240">6 AWG</option><option value="41740">4 AWG</option><option value="66360">2 AWG</option><option value="105600">1/0</option></select></label>
+<label>Source volts <input id="volts" type="number" value="120"></label>
+<button class="btn" id="go" type="button">Calculate</button><div class="out" id="out">Enter values.</div></div></main>
+<script>
+document.getElementById("go").onclick=function(){var k=+document.getElementById("metal").value,i=+document.getElementById("amps").value,d=+document.getElementById("feet").value,cm=+document.getElementById("awg").value,v=+document.getElementById("volts").value,factor=document.getElementById("ph").value==="3"?1.732:2,drop=(factor*k*i*d)/cm,pct=v?(drop/v)*100:0,note=pct>5?"Above a common 5% branch rule of thumb.":"Within a common 5% branch rule of thumb.";document.getElementById("out").innerHTML="<strong>"+drop.toFixed(2)+" V</strong> ("+pct.toFixed(2)+"%). "+note;};
+</script></body></html>
