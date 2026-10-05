@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wire size lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Wire size</strong></nav></header><main>
+<h1>Rough copper ampacity check</h1>
+<p class="meta">Study aid only. Not a code calculation and not a substitute for the NEC, a licensed electrician, or the equipment nameplate. 75°C copper column, no ambient or bundling correction.</p>
+<div class="card" style="max-width:560px">
+<label>Load amps<input id="amps" type="number" value="28" min="0" step="0.1"></label>
+<label>Continuous load <input id="cont" type="checkbox"> (multiply by 1.25)</label>
+<p class="out" id="out"></p>
+</div></main>
+<script>
+var table=[[14,15],[12,20],[10,30],[8,40],[6,55],[4,70],[3,85],[2,95],[1,110]];
+function run(){var a=+document.getElementById('amps').value||0; if(document.getElementById('cont').checked)a*=1.25; var pick=table.find(function(r){return r[1]>=a;}); document.getElementById('out').textContent=pick?('Design current '+a.toFixed(1)+' A. Smallest listed size at or above that is '+pick[0]+' AWG ('+pick[1]+' A column).'):('Design current '+a.toFixed(1)+' A is above this table. Look up larger conductors.');}
+document.getElementById('amps').addEventListener('input',run); document.getElementById('cont').addEventListener('change',run); run();
+</script></body></html>
