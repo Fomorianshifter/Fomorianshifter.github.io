@@ -1,13 +1,112 @@
-const AWG={14:2.525,12:1.588,10:0.9989,8:0.6282,6:0.3951,4:0.2485,2:0.1563};
-function voltageDrop(){const amps=+document.querySelector('#amps').value,feet=+document.querySelector('#feet').value,volts=+document.querySelector('#volts').value,awg=document.querySelector('#awg').value,phase=document.querySelector('#phase').value;const drop=(phase==='3'?1.732:2)*(AWG[awg]*feet/1000)*amps;const pct=drop/volts*100;document.querySelector('#vdrop').innerHTML='<strong>'+drop.toFixed(2)+' V</strong> · '+pct.toFixed(2)+'% of '+volts+' V<br><span class="'+(pct>3?'warn':'ok')+'">'+(pct>3?'Above a common 3% branch-circuit planning target. Upsize the wire or shorten the run.':'Inside a common 3% branch-circuit planning target.')+'</span><br>Copper approximate DC resistance only. Not a code calculation or stamp.';}
-const planets=[{a:46,speed:.017,color:'#c9b7a2'},{a:72,speed:.012,color:'#e0c07a'},{a:98,speed:.01,color:'#6f9e78'},{a:128,speed:.008,color:'#c4654a'},{a:168,speed:.0044,color:'#d7b48a'}];
-let orbitOn=true;function drawOrbit(t){const c=document.querySelector('#orbit');if(!c)return;const ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.fillStyle='#16130f';ctx.fillRect(0,0,w,h);ctx.beginPath();ctx.arc(w/2,h/2,10,0,6.28);ctx.fillStyle='#f0c56e';ctx.fill();planets.forEach((p,i)=>{ctx.beginPath();ctx.strokeStyle='rgba(243,234,223,.18)';ctx.arc(w/2,h/2,p.a,0,6.28);ctx.stroke();const ang=t*p.speed+i,x=w/2+Math.cos(ang)*p.a,y=h/2+Math.sin(ang)*p.a*.62;ctx.beginPath();ctx.fillStyle=p.color;ctx.arc(x,y,i===4?9:5,0,6.28);ctx.fill();});if(orbitOn)requestAnimationFrame(drawOrbit);}
-requestAnimationFrame(drawOrbit);
-document.querySelector('#orbitToggle').addEventListener('click',()=>{orbitOn=!orbitOn;if(orbitOn)requestAnimationFrame(drawOrbit);});
-const loki={gp:0,hunger:40,happy:55,energy:70};function stage(gp){return gp>=500?'Adult':gp>=200?'Juvenile':gp>=50?'Hatchling':'Egg';}
-function renderLoki(){document.querySelector('#lokiStage').textContent=stage(loki.gp)+' · '+loki.gp+' gp';document.querySelector('#hunger').style.width=loki.hunger+'%';document.querySelector('#happy').style.width=loki.happy+'%';document.querySelector('#energy').style.width=loki.energy+'%';}
-function feed(kind){const gain=kind==='special'?25:kind==='tasty'?12:6;loki.gp+=gain;loki.hunger=Math.max(0,loki.hunger-gain);loki.happy=Math.min(100,loki.happy+8);loki.energy=Math.max(10,loki.energy-4);renderLoki();}
-document.querySelectorAll('[data-feed]').forEach(b=>b.addEventListener('click',()=>feed(b.dataset.feed)));renderLoki();
-const KEY='nlane-shift-log';function loadLog(){const items=JSON.parse(localStorage.getItem(KEY)||'[]');document.querySelector('#log').innerHTML=items.length?items.map(i=>'<div class="log-item"><strong>'+i.area+'</strong> · '+i.when+'<br>'+i.note+'</div>').join(''):'<div class="log-item">No calls yet. Notes stay in this browser only.</div>';}
-document.querySelector('#logForm').addEventListener('submit',e=>{e.preventDefault();const items=JSON.parse(localStorage.getItem(KEY)||'[]');items.unshift({area:document.querySelector('#area').value,note:document.querySelector('#note').value,when:new Date().toLocaleString()});localStorage.setItem(KEY,JSON.stringify(items.slice(0,12)));e.target.reset();loadLog();});loadLog();
-document.querySelector('#vform').addEventListener('input',voltageDrop);voltageDrop();
+const stopBtn = document.getElementById("btn-stop");
+const startBtn = document.getElementById("btn-start");
+const olBtn = document.getElementById("btn-ol");
+const ladder = document.getElementById("ladder");
+const motorState = document.getElementById("motor-state");
+let stopClosed = true;
+let startHeld = false;
+let sealed = false;
+let olOk = true;
+function renderStarter() {
+  const on = stopClosed && olOk && (startHeld || sealed);
+  if (on && startHeld) sealed = true;
+  if (!on) sealed = false;
+  const running = stopClosed && olOk && (startHeld || sealed);
+  ladder.textContent =
+    "|--[ " + (stopClosed ? "stop" : "STOP") + " ]--[ " + (startHeld ? "START" : "start") + " ]--+--( M " + (running ? "ON " : "off") + ")--|   OL: " + (olOk ? "ok" : "TRIP") + "\n" +
+    "                       |\n" +
+    "                       +----[ " + (sealed ? "M" : "m") + "   ]---------+";
+  motorState.textContent = "Motor: " + (running ? "running" : "off");
+  stopBtn.textContent = stopClosed ? "Stop closed" : "Stop open";
+  stopBtn.classList.toggle("held", stopClosed);
+  olBtn.textContent = olOk ? "Trip overload" : "Reset overload";
+}
+stopBtn.addEventListener("click", () => { stopClosed = !stopClosed; if (!stopClosed) sealed = false; renderStarter(); });
+startBtn.addEventListener("mousedown", () => { startHeld = true; renderStarter(); });
+startBtn.addEventListener("mouseup", () => { startHeld = false; renderStarter(); });
+startBtn.addEventListener("mouseleave", () => { if (startHeld) { startHeld = false; renderStarter(); } });
+startBtn.addEventListener("touchstart", (e) => { e.preventDefault(); startHeld = true; renderStarter(); }, { passive: false });
+startBtn.addEventListener("touchend", () => { startHeld = false; renderStarter(); });
+olBtn.addEventListener("click", () => { olOk = !olOk; if (!olOk) sealed = false; renderStarter(); });
+renderStarter();
+const cm = { 14: 4110, 12: 6530, 10: 10380, 8: 16510, 6: 26240, 4: 41740, 2: 66360 };
+function renderDrop() {
+  const amps = Number(document.getElementById("vd-amps").value) || 0;
+  const feet = Number(document.getElementById("vd-feet").value) || 0;
+  const volts = Number(document.getElementById("vd-volts").value) || 1;
+  const circular = cm[document.getElementById("vd-awg").value];
+  const drop = (2 * 12.9 * amps * feet) / circular;
+  const pct = (drop / volts) * 100;
+  document.getElementById("vd-out").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + volts + " V";
+}
+document.getElementById("vd-form").addEventListener("input", renderDrop);
+renderDrop();
+const KEY = "nl-faults";
+const faultList = document.getElementById("fault-list");
+function loadFaults() {
+  const items = JSON.parse(localStorage.getItem(KEY) || "[]");
+  faultList.innerHTML = "";
+  if (!items.length) { faultList.innerHTML = "<li>No notes yet.</li>"; return; }
+  items.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item.when + " — " + item.area + ": " + item.note;
+    faultList.appendChild(li);
+  });
+}
+document.getElementById("fault-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const items = JSON.parse(localStorage.getItem(KEY) || "[]");
+  items.unshift({
+    when: new Date().toLocaleString(),
+    area: document.getElementById("fault-area").value.trim(),
+    note: document.getElementById("fault-note").value.trim()
+  });
+  localStorage.setItem(KEY, JSON.stringify(items.slice(0, 20)));
+  e.target.reset();
+  loadFaults();
+});
+loadFaults();
+const canvas = document.getElementById("sky");
+const ctx = canvas.getContext("2d");
+const bodies = [
+  { a: 46, color: "#c4b6a6", r: 3, w: 0.02 },
+  { a: 70, color: "#e0c48a", r: 5, w: 0.012 },
+  { a: 96, color: "#7eb0d4", r: 5, w: 0.01 },
+  { a: 124, color: "#c46b4a", r: 4, w: 0.008 },
+  { a: 168, color: "#d7b48a", r: 10, w: 0.004 }
+];
+let t = 0;
+function draw() {
+  const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = "#07080d";
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#f2e2b0";
+  ctx.beginPath();
+  ctx.arc(w / 2, h / 2, 16, 0, Math.PI * 2);
+  ctx.fill();
+  bodies.forEach((b) => {
+    const ang = t * b.w;
+    const x = w / 2 + Math.cos(ang) * b.a;
+    const y = h / 2 + Math.sin(ang) * b.a * 0.42;
+    ctx.strokeStyle = "#2c3344";
+    ctx.beginPath();
+    ctx.ellipse(w / 2, h / 2, b.a, b.a * 0.42, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = b.color;
+    ctx.beginPath();
+    ctx.arc(x, y, b.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  t += 1;
+  requestAnimationFrame(draw);
+}
+draw();
+document.getElementById("copy-about").addEventListener("click", async () => {
+  const text = document.getElementById("about").value;
+  try {
+    await navigator.clipboard.writeText(text);
+    document.getElementById("copy-about").textContent = "Copied";
+  } catch (err) {
+    document.getElementById("about").select();
+  }
+});
