@@ -1,26 +1,78 @@
-:root { color-scheme: dark; --bg:#12140f; --ink:#efe7d2; --muted:#b7ad96; --line:#3a382c; --accent:#e2b15a; }
+:root {
+  --bg: #16130f;
+  --ink: #f3eadc;
+  --muted: #c9bba6;
+  --line: #3a3228;
+  --copper: #d08a45;
+  --card: #221c16;
+}
 * { box-sizing: border-box; }
-body { margin:0; font: 17px/1.5 Georgia, "Iowan Old Style", serif; background:var(--bg); color:var(--ink); }
-a { color: var(--accent); }
-header.top, main, footer { max-width: 880px; margin: 0 auto; padding: 1rem 1.25rem; }
-header.top { display:flex; gap:1rem; align-items:center; border-bottom:1px solid var(--line); }
-header.top nav { display:flex; gap:.9rem; flex:1; }
-.mark { font-weight:700; text-decoration:none; letter-spacing:.08em; }
-.mail { font-size:.9rem; }
-h1 { font-size: 2.1rem; line-height:1.15; font-weight:600; }
-h2 { margin-top: 2.4rem; border-top:1px solid var(--line); padding-top:1.2rem; }
-.kicker, .meta, .note, .tag { color: var(--muted); }
-.lede { font-size: 1.08rem; }
-.row { display:flex; gap:.6rem; flex-wrap:wrap; }
-.btn { display:inline-block; padding:.45rem .8rem; background:var(--accent); color:#1b160c; text-decoration:none; border-radius:4px; }
-.btn.ghost { background:transparent; color:var(--accent); border:1px solid var(--accent); }
-.cards { display:grid; gap:.8rem; }
-.card { border:1px solid var(--line); padding:.9rem 1rem; border-radius:6px; }
-pre { white-space:pre-wrap; background:#1c1f16; padding:1rem; border-radius:6px; }
-button { font: inherit; background:var(--accent); color:#1b160c; border:0; padding:.4rem .8rem; border-radius:4px; cursor:pointer; }
-.lab { border:1px solid var(--line); padding:1rem; border-radius:6px; margin:1rem 0; }
-.out { font-family: ui-monospace, monospace; }
-canvas { background:#0c0e0a; width:100%; max-width:520px; border-radius:6px; }
-label { display:block; margin:.4rem 0; }
-input, select, textarea { font: inherit; width:100%; max-width:320px; background:#1c1f16; color:var(--ink); border:1px solid var(--line); padding:.35rem; }
-@media (min-width:720px) { .cards { grid-template-columns: 1fr 1fr; } }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font: 17px/1.5 "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--copper); }
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 6vw;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: rgba(22, 19, 15, 0.92);
+}
+.mark {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+nav a { margin-left: 1rem; text-decoration: none; }
+main { padding: 2rem 6vw 4rem; max-width: 980px; }
+.eyebrow, .note, .meta, .tag { color: var(--muted); }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; margin: 0.2rem 0 0.8rem; }
+.lede { font-size: 1.15rem; max-width: 42rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.2rem 0; }
+.btn, button {
+  background: var(--copper);
+  color: #1a120c;
+  border: 0;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  font-weight: 650;
+  cursor: pointer;
+}
+.btn.ghost, button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+button.held { outline: 2px solid var(--copper); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; padding: 0; list-style: none; }
+.stats li, article, .lab {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1rem;
+  margin: 0.8rem 0;
+}
+.stats strong { display: block; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.8rem; }
+.tag { letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.75rem; }
+.row, .grid, .stack { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
+.grid label, .stack input { display: grid; gap: 0.25rem; }
+input, select, textarea {
+  background: #100e0c;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.45rem;
+  font: inherit;
+  width: 100%;
+}
+textarea { margin-top: 0.4rem; }
+.ladder { background: #0c0b09; overflow: auto; padding: 0.8rem; }
+.status { font-weight: 650; }
+canvas { width: 100%; height: auto; background: #0b1020; border: 1px solid var(--line); }
+footer { padding: 1.5rem 6vw 2.5rem; color: var(--muted); border-top: 1px solid var(--line); }
+@media (max-width: 700px) {
+  nav { display: none; }
+}
