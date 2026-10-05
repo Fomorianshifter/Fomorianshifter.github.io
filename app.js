@@ -1,107 +1,147 @@
+
+const cm = { 14: 4110, 12: 6530, 10: 10380, 8: 16510, 6: 26240, 4: 41740, 2: 66360 };
 const stopBtn = document.getElementById("btn-stop");
 const startBtn = document.getElementById("btn-start");
 const olBtn = document.getElementById("btn-ol");
-const ladder = document.getElementById("ladder");
-const motorState = document.getElementById("motor-state");
-let stopClosed = true;
-let startHeld = false;
-let sealed = false;
-let olOk = true;
-function renderStarter() {
-  const on = stopClosed && olOk && (startHeld || sealed);
-  if (on && startHeld) sealed = true;
-  if (!on) sealed = false;
-  const running = stopClosed && olOk && (startHeld || sealed);
-  ladder.textContent =
-    "|--[ " + (stopClosed ? "stop" : "STOP") + " ]--[ " + (startHeld ? "START" : "start") + " ]--+--( M " + (running ? "ON " : "off") + ")--|   OL: " + (olOk ? "ok" : "TRIP") + "\n" +
-    "                       |\n" +
-    "                       +----[ " + (sealed ? "M" : "m") + "   ]---------+";
-  motorState.textContent = "Motor: " + (running ? "running" : "off");
+let stopClosed = true, startHeld = false, olOk = true, seal = false;
+function motorOn() { return stopClosed && olOk && (startHeld || seal); }
+function drawLadder() {
+  const on = motorOn();
+  seal = on;
+  const bar = (closed) => (closed ? "====" : " /  ");
+  document.getElementById("ladder").textContent =
+    "L1 " + bar(stopClosed) + " STOP " + bar(olOk) + " OL " +
+    (startHeld ? "==== START " : " /  START ") +
+    (seal ? "==== M " : " /  M ") + " coil " + (on ? "[ON]" : "[off]") + " L2";
+  const state = document.getElementById("motor-state");
+  state.textContent = on ? "Motor: running (seal-in held)" : "Motor: off";
+  state.className = "status " + (on ? "on" : "off");
+}
+stopBtn.addEventListener("click", () => {
+  stopClosed = !stopClosed;
   stopBtn.textContent = stopClosed ? "Stop closed" : "Stop open";
   stopBtn.classList.toggle("held", stopClosed);
+  drawLadder();
+});
+startBtn.addEventListener("mousedown", () => { startHeld = true; drawLadder(); });
+startBtn.addEventListener("mouseup", () => { startHeld = false; drawLadder(); });
+startBtn.addEventListener("mouseleave", () => { if (startHeld) { startHeld = false; drawLadder(); } });
+startBtn.addEventListener("touchstart", (e) => { e.preventDefault(); startHeld = true; drawLadder(); });
+startBtn.addEventListener("touchend", () => { startHeld = false; drawLadder(); });
+olBtn.addEventListener("click", () => {
+  olOk = !olOk;
   olBtn.textContent = olOk ? "Trip overload" : "Reset overload";
+  drawLadder();
+});
+drawLadder();
+
+const stages = [[500, "Adult"], [200, "Young"], [50, "Hatchling"], [0, "Egg"]];
+const loki = { hunger: 40, happy: 50, energy: 70, gp: 0 };
+function mood() {
+  if (loki.hunger >= 70) return "HUNGRY";
+  if (loki.energy <= 20) return "SLEEPY";
+  if (loki.happy <= 30 || loki.hunger >= 50) return "GRUMPY";
+  if (loki.happy >= 70) return "HAPPY";
+  if (loki.happy >= 50 && loki.energy >= 60) return "PLAYFUL";
+  return "NEUTRAL";
 }
-stopBtn.addEventListener("click", () => { stopClosed = !stopClosed; if (!stopClosed) sealed = false; renderStarter(); });
-startBtn.addEventListener("mousedown", () => { startHeld = true; renderStarter(); });
-startBtn.addEventListener("mouseup", () => { startHeld = false; renderStarter(); });
-startBtn.addEventListener("mouseleave", () => { if (startHeld) { startHeld = false; renderStarter(); } });
-startBtn.addEventListener("touchstart", (e) => { e.preventDefault(); startHeld = true; renderStarter(); }, { passive: false });
-startBtn.addEventListener("touchend", () => { startHeld = false; renderStarter(); });
-olBtn.addEventListener("click", () => { olOk = !olOk; if (!olOk) sealed = false; renderStarter(); });
-renderStarter();
-const cm = { 14: 4110, 12: 6530, 10: 10380, 8: 16510, 6: 26240, 4: 41740, 2: 66360 };
-function renderDrop() {
-  const amps = Number(document.getElementById("vd-amps").value) || 0;
-  const feet = Number(document.getElementById("vd-feet").value) || 0;
-  const volts = Number(document.getElementById("vd-volts").value) || 1;
-  const circular = cm[document.getElementById("vd-awg").value];
-  const drop = (2 * 12.9 * amps * feet) / circular;
-  const pct = (drop / volts) * 100;
-  document.getElementById("vd-out").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + volts + " V";
+function stage() { return stages.find((s) => loki.gp >= s[0])[1]; }
+function paintLoki() {
+  document.getElementById("loki-state").textContent =
+    stage() + " · " + mood() + " · hunger " + loki.hunger + " · happy " + loki.happy +
+    " · energy " + loki.energy + " · gp " + loki.gp;
 }
-document.getElementById("vd-form").addEventListener("input", renderDrop);
-renderDrop();
+function clamp(n) { return Math.max(0, Math.min(100, n)); }
+function feed(cut, gp, joy) {
+  const penalty = loki.hunger < 30 ? 0.5 : 1;
+  loki.hunger = clamp(loki.hunger - cut * penalty);
+  loki.happy = clamp(loki.happy + joy * penalty);
+  loki.gp += Math.round(gp * penalty);
+  paintLoki();
+}
+document.getElementById("feed-basic").onclick = () => feed(20, 5, 5);
+document.getElementById("feed-tasty").onclick = () => feed(40, 10, 15);
+document.getElementById("pet").onclick = () => {
+  loki.happy = clamp(loki.happy + 12);
+  loki.energy = clamp(loki.energy - 6);
+  loki.gp += 4;
+  paintLoki();
+};
+document.getElementById("tick").onclick = () => {
+  if (mood() === "SLEEPY") loki.energy = clamp(loki.energy + 15);
+  else loki.energy = clamp(loki.energy - 8);
+  loki.hunger = clamp(loki.hunger + 6);
+  paintLoki();
+};
+paintLoki();
+
+function voltageDrop() {
+  const amps = Number(document.getElementById("vd-amps").value);
+  const feet = Number(document.getElementById("vd-feet").value);
+  const awg = document.getElementById("vd-awg").value;
+  const volts = Number(document.getElementById("vd-volts").value);
+  const vd = (2 * 12.9 * amps * feet) / cm[awg];
+  const pct = volts ? (vd / volts) * 100 : 0;
+  document.getElementById("vd-out").textContent =
+    vd.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + volts + " V · " + awg + " AWG copper";
+}
+document.getElementById("vd-form").addEventListener("input", voltageDrop);
+voltageDrop();
+
 const KEY = "nl-faults";
-const faultList = document.getElementById("fault-list");
 function loadFaults() {
-  const items = JSON.parse(localStorage.getItem(KEY) || "[]");
-  faultList.innerHTML = "";
-  if (!items.length) { faultList.innerHTML = "<li>No notes yet.</li>"; return; }
-  items.forEach((item) => {
+  const list = document.getElementById("fault-list");
+  list.innerHTML = "";
+  JSON.parse(localStorage.getItem(KEY) || "[]").forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = item.when + " — " + item.area + ": " + item.note;
-    faultList.appendChild(li);
+    li.textContent = item.area + " — " + item.note;
+    list.appendChild(li);
   });
 }
 document.getElementById("fault-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const items = JSON.parse(localStorage.getItem(KEY) || "[]");
   items.unshift({
-    when: new Date().toLocaleString(),
-    area: document.getElementById("fault-area").value.trim(),
-    note: document.getElementById("fault-note").value.trim()
+    area: document.getElementById("fault-area").value,
+    note: document.getElementById("fault-note").value
   });
-  localStorage.setItem(KEY, JSON.stringify(items.slice(0, 20)));
+  localStorage.setItem(KEY, JSON.stringify(items.slice(0, 12)));
   e.target.reset();
   loadFaults();
 });
 loadFaults();
-const canvas = document.getElementById("sky");
-const ctx = canvas.getContext("2d");
+
+const sky = document.getElementById("sky");
+const ctx = sky.getContext("2d");
 const bodies = [
-  { a: 46, color: "#c4b6a6", r: 3, w: 0.02 },
-  { a: 70, color: "#e0c48a", r: 5, w: 0.012 },
-  { a: 96, color: "#7eb0d4", r: 5, w: 0.01 },
-  { a: 124, color: "#c46b4a", r: 4, w: 0.008 },
-  { a: 168, color: "#d7b48a", r: 10, w: 0.004 }
+  { r: 0, color: "#e2a23a", size: 16, a: 0, w: 0 },
+  { r: 46, color: "#c9c3b8", size: 4, a: 0.4, w: 0.02 },
+  { r: 72, color: "#d7a15a", size: 6, a: 1.2, w: 0.014 },
+  { r: 104, color: "#6aa8d8", size: 7, a: 2.1, w: 0.01 },
+  { r: 140, color: "#c46a3a", size: 5, a: 0.8, w: 0.007 }
 ];
-let t = 0;
-function draw() {
-  const w = canvas.width, h = canvas.height;
-  ctx.fillStyle = "#07080d";
+function frame() {
+  const w = sky.width, h = sky.height;
+  ctx.fillStyle = "#0c0e14";
   ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "#f2e2b0";
-  ctx.beginPath();
-  ctx.arc(w / 2, h / 2, 16, 0, Math.PI * 2);
-  ctx.fill();
   bodies.forEach((b) => {
-    const ang = t * b.w;
-    const x = w / 2 + Math.cos(ang) * b.a;
-    const y = h / 2 + Math.sin(ang) * b.a * 0.42;
-    ctx.strokeStyle = "#2c3344";
+    b.a += b.w;
+    const x = w / 2 + Math.cos(b.a) * b.r;
+    const y = h / 2 + Math.sin(b.a) * b.r * 0.55;
     ctx.beginPath();
-    ctx.ellipse(w / 2, h / 2, b.a, b.a * 0.42, 0, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.strokeStyle = "#2a3142";
+    ctx.ellipse(w / 2, h / 2, b.r, b.r * 0.55, 0, 0, Math.PI * 2);
+    if (b.r) ctx.stroke();
+    ctx.beginPath();
     ctx.fillStyle = b.color;
-    ctx.beginPath();
-    ctx.arc(x, y, b.r, 0, Math.PI * 2);
+    ctx.arc(x, y, b.size, 0, Math.PI * 2);
     ctx.fill();
   });
-  t += 1;
-  requestAnimationFrame(draw);
+  requestAnimationFrame(frame);
 }
-draw();
-document.getElementById("copy-about").addEventListener("click", async () => {
+frame();
+
+document.getElementById("copy-about").onclick = async () => {
   const text = document.getElementById("about").value;
   try {
     await navigator.clipboard.writeText(text);
@@ -109,4 +149,4 @@ document.getElementById("copy-about").addEventListener("click", async () => {
   } catch (err) {
     document.getElementById("about").select();
   }
-});
+};

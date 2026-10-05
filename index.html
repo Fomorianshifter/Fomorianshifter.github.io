@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nicholas Lane — electrician, controls, projects</title>
-  <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC troubleshooting, electrical maintenance, and public projects including Loki." />
+  <title>Nicholas Lane — industrial electrician and controls</title>
+  <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC troubleshooting, Loki embedded project, and live controls labs." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -22,17 +22,22 @@
   <main id="top">
     <section class="hero">
       <p class="eyebrow">Green Bay, WI · open to relocate · authorized to work in the US</p>
-      <h1>Wire the job. Then make the controls make sense.</h1>
-      <p class="lede">Nicholas Lane. Five-plus years in residential, commercial, and foundry electrical work, including PLC install and troubleshooting support at Grede Foundries. Studying toward NEC certification and freeCodeCamp computer science. Public code is under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+      <h1>Field electrician who can also open the panel and the repo.</h1>
+      <p class="lede">Nicholas Lane. Five-plus years on residential, commercial, and foundry electrical work, including PLC install and troubleshooting support at Grede Foundries. Studying toward NEC certification and freeCodeCamp computer science. Public code lives under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
       <div class="actions">
         <a class="btn" href="#labs">Try the labs</a>
         <a class="btn ghost" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
         <a class="btn ghost" href="https://github.com/Fomorianshifter">GitHub</a>
       </div>
+      <ul class="stats">
+        <li><strong>2021–2024</strong><br />Grede Foundries, industrial electrician</li>
+        <li><strong>Loki</strong><br />C / Python embedded companion, MIT</li>
+        <li><strong>Labs</strong><br />starter, life loop, voltage drop, fault log, orbit</li>
+      </ul>
     </section>
     <section id="work">
       <h2>Work</h2>
-      <p class="note">From the resume. Numbers below are the ones already on that document.</p>
+      <p class="note">Taken from the resume. The 50-issues and 100% figures are the numbers already written there.</p>
       <article>
         <h3>Industrial electrician</h3>
         <p class="meta">Grede Foundries · Reedsburg, WI · October 2021 – March 2024</p>
@@ -56,37 +61,31 @@
     </section>
     <section id="github">
       <h2>Best of GitHub</h2>
-      <p class="note">Public repos only. Loki is the one with real hardware scope. Private repos are left off.</p>
+      <p class="note">Public repos only. Loki is the one with real hardware scope. Private repos stay off this page.</p>
       <div class="cards">
-        <article class="card">
-          <p class="tag">C · embedded · MIT</p>
+        <article>
+          <p class="tag">C · Python · embedded · MIT</p>
           <h3>Loki</h3>
-          <p>Dragon companion for Linux single-board computers. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, and EEPROM. Flipper Zero UART, a local config UI, and a life-cycle loop that feeds a display.</p>
-          <p><a href="https://github.com/Fomorianshifter/Loki">Source</a></p>
+          <p>Dragon companion for Linux single-board computers. HAL for GPIO, SPI, I2C, UART, and PWM. Drivers for TFT, SD, flash, and EEPROM. Flipper Zero UART, a local config UI, and a life-cycle loop that feeds a display. The lab below uses the same stage and mood rules from the repo.</p>
+          <p><a href="https://github.com/Fomorianshifter/Loki">Source</a> · <a href="#loki">Open life lab</a></p>
         </article>
-        <article class="card">
+        <article>
           <p class="tag">JavaScript · canvas</p>
           <h3>Solar System</h3>
-          <p>Early orbit sketches, <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> and <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a>. A cleaned-up version runs in the labs so a visitor can try it without cloning.</p>
+          <p>Early orbit sketches: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> and <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a>. A cleaned-up version runs here so a visitor does not have to clone anything.</p>
           <p><a href="#orbit">Open orbit lab</a></p>
         </article>
-        <article class="card">
+        <article>
           <p class="tag">JavaScript · Jan 2024</p>
           <h3>One</h3>
           <p>First public web import. HTML, CSS, and JavaScript coursework the later labs sit on.</p>
           <p><a href="https://github.com/Fomorianshifter/One">Source</a></p>
         </article>
-        <article class="card">
-          <p class="tag">MIT · March 2026</p>
-          <h3>GhostGPS</h3>
-          <p>Smaller public repo. Included so the portfolio matches what is actually on the profile, not a private list.</p>
-          <p><a href="https://github.com/Fomorianshifter/GhostGPS">Source</a></p>
-        </article>
       </div>
     </section>
     <section id="labs">
       <h2>Basic projects on this site</h2>
-      <p class="note">Built so a LinkedIn visitor can click something. Planning aids, not a code stamp or a plant procedure.</p>
+      <p class="note">Built so a LinkedIn visitor can click something. Planning aids and demos, not a code stamp or a plant procedure.</p>
       <article class="lab" id="starter">
         <h3>Three-wire motor starter</h3>
         <p>Stop, start, seal-in, and overload on one rung. Hold start, release it, then hit stop or trip the overload.</p>
@@ -97,6 +96,17 @@
         </div>
         <pre id="ladder" class="ladder"></pre>
         <p id="motor-state" class="status">Motor: off</p>
+      </article>
+      <article class="lab" id="loki">
+        <h3>Loki life loop</h3>
+        <p>Browser stand-in for loki_life.c. Egg at 0, hatchling at 50, young at 200, adult at 500 growth points. Hungry at 70, sleepy at energy 20 or below.</p>
+        <div class="row">
+          <button type="button" id="feed-basic">Feed basic</button>
+          <button type="button" id="feed-tasty">Feed tasty</button>
+          <button type="button" id="pet">Interact</button>
+          <button type="button" id="tick">Advance 10s</button>
+        </div>
+        <p id="loki-state" class="status"></p>
       </article>
       <article class="lab" id="vdrop">
         <h3>Voltage drop</h3>
@@ -138,14 +148,14 @@
     <section id="linkedin">
       <h2>Paste into LinkedIn</h2>
       <p>Featured link: <a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
-      <p>Profile, Add profile section, Recommended, Add featured, Link. Use that URL. Headline suggestion: Industrial electrician · PLC troubleshooting · building controls and embedded projects.</p>
+      <p>Profile, Add profile section, Recommended, Add featured, Link. Headline suggestion: Industrial electrician · PLC troubleshooting · controls and embedded projects.</p>
       <label>About
         <textarea id="about" rows="8" readonly>Industrial electrician based in Green Bay, WI, open to relocate. I spent 2021–2024 at Grede Foundries in Reedsburg supporting PLC installs and electrical troubleshooting, after construction and service work with AC Electric and an apprenticeship at Greenfield Electric. Earlier I inspected CNC work at CompX.
 
 I am pursuing NEC certification and freeCodeCamp computer science coursework. Public code is at github.com/Fomorianshifter — the main build is Loki, an embedded companion for single-board computers. Portfolio with live labs: https://fomorianshifter.github.io/</textarea>
       </label>
       <button type="button" id="copy-about">Copy About</button>
-      <p class="note">Only list certifications you can show a card for. The resume page includes driver’s license, HAZWOPER, first aid / CPR / AED, and lift cards. Leave Engineer-in-Training and NDT off LinkedIn unless you have the issuing body and number.</p>
+      <p class="note">Only list certifications you can show a card for. Safe to mention driver’s license, HAZWOPER, first aid / CPR / AED, and lift cards if those cards are current. Leave Engineer-in-Training, Fundamentals of Engineering, and NDT off LinkedIn unless you have the issuing body and number.</p>
     </section>
   </main>
   <footer>
