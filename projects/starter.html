@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Three-wire starter — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
+<main>
+<p><a href="../index.html">← Portfolio</a></p>
 <h1>Three-wire starter</h1>
-<p class="lede">Stop is normally closed. Start is momentary. The auxiliary contact seals in. Overload drops the coil. This is a browser model, not a wired panel.</p>
-<div class="card">
-  <div class="row">
-    <button class="btn primary" id="start">Start</button>
-    <button class="btn" id="stop">Stop</button>
-    <button class="btn" id="ol">Trip overload</button>
-  </div>
-  <div class="ladder" id="ladder"></div>
-  <p class="stat" id="motor">Motor: off</p>
+<p class="note">Stop, start, seal-in contact, and overload. Study model, not a panel drawing.</p>
+<div class="lab">
+  <button type="button" id="start">Start</button>
+  <button type="button" id="stop">Stop</button>
+  <button type="button" id="ol">Trip overload</button>
+  <pre class="out" id="rung"></pre>
+  <p id="motor"></p>
 </div>
 <script>
-let running = false, ol = false;
+var run = false, ol = false;
 function draw() {
-  document.getElementById("ladder").textContent =
-"|--[ stop NC ]--[ start ]--+--( M " + (running ? "ON " : "OFF") + " )--|   OL: " + (ol ? "TRIP" : "ok") + "\n                         |\n                         +----[ M " + (running ? "X" : " ") + " ]----------+";
-  document.getElementById("motor").textContent = "Motor: " + (running ? "running" : "off");
+  var seal = run ? "M closed" : "M open";
+  var coil = run ? "M ON" : "M off";
+  document.getElementById("rung").textContent =
+    "|--[ stop ]--[ start ]--+--( " + coil + " )--|   OL: " + (ol ? "TRIP" : "ok") + "\n" +
+    "                       |\n" +
+    "                       +----[ " + seal + " ]----+";
+  document.getElementById("motor").textContent = "Motor: " + (run ? "running" : "off");
 }
-document.getElementById("start").onclick = () => { if (!ol) running = true; draw(); };
-document.getElementById("stop").onclick = () => { running = false; draw(); };
-document.getElementById("ol").onclick = () => { ol = !ol; if (ol) running = false; draw(); };
+document.getElementById("start").onclick = function () { if (!ol) run = true; draw(); };
+document.getElementById("stop").onclick = function () { run = false; draw(); };
+document.getElementById("ol").onclick = function () { ol = !ol; if (ol) run = false; draw(); };
 draw();
 </script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+</main>
+</body>
+</html>

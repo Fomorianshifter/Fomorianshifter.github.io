@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LOTO checklist — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
+<main>
+<p><a href="../index.html">← Portfolio</a></p>
 <h1>LOTO checklist</h1>
-<p class="lede">A mock sequence for practice. Follow the site procedure and OSHA 1910.147 on a real lockout.</p>
-<div class="card">
-  <div class="check"><input type="checkbox" class="loto"><span>Notify affected people</span></div>
-  <div class="check"><input type="checkbox" class="loto"><span>Shut down with the normal stop</span></div>
-  <div class="check"><input type="checkbox" class="loto"><span>Isolate energy sources</span></div>
-  <div class="check"><input type="checkbox" class="loto"><span>Apply lock and tag</span></div>
-  <div class="check"><input type="checkbox" class="loto"><span>Verify zero energy</span></div>
-  <p class="stat" id="loto">0 / 5</p>
-</div>
+<p class="note">Mock job only. Not a plant procedure. Follow the site energy-control program.</p>
+<div class="lab" id="box"></div>
+<p id="count"></p>
 <script>
-document.querySelectorAll(".loto").forEach(el => el.onchange = () => {
-  document.getElementById("loto").textContent = document.querySelectorAll(".loto:checked").length + " / 5";
+var steps = ["Notify affected people","Shut down with the normal stop","Isolate energy sources","Lock and tag","Verify zero energy"];
+var box = document.getElementById("box");
+steps.forEach(function (s) {
+  var lab = document.createElement("label");
+  lab.innerHTML = "<input type='checkbox'> " + s;
+  box.appendChild(lab);
 });
+function count() {
+  var n = box.querySelectorAll("input:checked").length;
+  document.getElementById("count").textContent = n + " / " + steps.length;
+}
+box.addEventListener("change", count);
+count();
 </script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+</main>
+</body>
+</html>

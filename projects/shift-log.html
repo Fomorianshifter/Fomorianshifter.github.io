@@ -1,37 +1,48 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shift fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
-<div class="hero"><p class="kicker">Browser lab · not a plant CMMS</p><h1>Shift fault log</h1>
-<p class="lede">Log an electrical fault, area, and what cleared it. Entries stay in this browser only.</p></div></header>
-<main><section class="card">
-<label>Area</label><input id="area" placeholder="Mold line / melt deck / MCC-2">
-<label>Fault</label><input id="fault" placeholder="Starter chatter, sensor, overload">
-<label>Action</label><input id="action" placeholder="What was checked and what fixed it">
-<div class="row"><button class="btn" id="add">Add entry</button><button class="btn ghost" id="clear">Clear log</button></div>
-<table><thead><tr><th>When</th><th>Area</th><th>Fault</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table>
-</section></main>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shift fault log — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<main>
+<p><a href="../index.html">← Portfolio</a></p>
+<h1>Shift fault log</h1>
+<p class="note">Notes stay in this browser only. Nothing is uploaded.</p>
+<div class="lab">
+  <label>Asset <input id="asset" placeholder="Melt deck conveyor"></label>
+  <label>Note <textarea id="note" rows="3" placeholder="Overload tripped after restart"></textarea></label>
+  <button type="button" id="add">Add note</button>
+  <ul id="list"></ul>
+</div>
 <script>
-const key = "nl-shift-log";
-function load() { return JSON.parse(localStorage.getItem(key) || "[]"); }
+var key = "nl-fault-log";
+function load() { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch (e) { return []; } }
 function save(rows) { localStorage.setItem(key, JSON.stringify(rows)); }
-function draw() {
-  const body = document.getElementById("rows"); body.innerHTML = "";
-  load().forEach(r => {
-    const tr = document.createElement("tr");
-    [r.when, r.area, r.fault, r.action].forEach(v => { const td = document.createElement("td"); td.textContent = v; tr.appendChild(td); });
-    body.appendChild(tr);
+function render() {
+  var rows = load();
+  var ul = document.getElementById("list");
+  ul.innerHTML = "";
+  if (!rows.length) { ul.innerHTML = "<li>No notes yet.</li>"; return; }
+  rows.forEach(function (r) {
+    var li = document.createElement("li");
+    li.textContent = r.when + " · " + r.asset + " — " + r.note;
+    ul.appendChild(li);
   });
 }
-document.getElementById("add").addEventListener("click", () => {
-  const area = document.getElementById("area").value.trim();
-  const fault = document.getElementById("fault").value.trim();
-  const action = document.getElementById("action").value.trim();
-  if (!area || !fault) return;
-  const rows = load();
-  rows.unshift({ when: new Date().toLocaleString(), area, fault, action });
-  save(rows); draw();
-});
-document.getElementById("clear").addEventListener("click", () => { save([]); draw(); });
-draw();
-</script></body></html>
+document.getElementById("add").onclick = function () {
+  var asset = document.getElementById("asset").value.trim() || "unspecified";
+  var note = document.getElementById("note").value.trim();
+  if (!note) return;
+  var rows = load();
+  rows.unshift({ when: new Date().toLocaleString(), asset: asset, note: note });
+  save(rows.slice(0, 30));
+  document.getElementById("note").value = "";
+  render();
+};
+render();
+</script>
+</main>
+</body>
+</html>

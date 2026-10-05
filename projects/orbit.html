@@ -1,29 +1,43 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orbit — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
-<div class="hero"><p class="kicker">From SolarSystem / Mynewproject-SolarSystem</p><h1>Planets in orbit</h1>
-<p class="lede">A small canvas rewrite of the public planet repos. Distances and sizes are illustrative, not to scale.</p></div></header>
-<main><section class="card"><canvas id="sky" width="960" height="420"></canvas>
-<p class="meta"><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Mynewproject-SolarSystem</a></p></section></main>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit lab — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<main>
+<p><a href="../index.html">← Portfolio</a> · <a href="https://github.com/Fomorianshifter/SolarSystem">Solar System repo</a></p>
+<h1>Orbit lab</h1>
+<p class="note">Small canvas version of the public Solar System sketches. Not to scale.</p>
+<canvas id="c" width="520" height="360"></canvas>
 <script>
-const c = document.getElementById("sky"); const ctx = c.getContext("2d");
-const planets = [
-  { r: 46, s: 3, hue: 28, w: 0.04 }, { r: 70, s: 5, hue: 42, w: 0.028 },
-  { r: 96, s: 5, hue: 200, w: 0.022 }, { r: 122, s: 4, hue: 12, w: 0.018 },
-  { r: 160, s: 11, hue: 32, w: 0.01 }, { r: 198, s: 9, hue: 45, w: 0.007 }
+var c = document.getElementById("c");
+var x = c.getContext("2d");
+var planets = [
+  { n:"Mercury", r:46, s:0.021, col:"#c4b7a6" },
+  { n:"Venus", r:70, s:0.015, col:"#e2c48a" },
+  { n:"Earth", r:96, s:0.012, col:"#7eb0d4" },
+  { n:"Mars", r:124, s:0.009, col:"#c4714a" }
 ];
-let t = 0;
+var t = 0;
 function frame() {
-  const w = c.width, h = c.height, cx = w / 2, cy = h / 2;
-  ctx.fillStyle = "#0b0d09"; ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = "#e2a23a"; ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI * 2); ctx.fill();
-  planets.forEach(p => {
-    ctx.strokeStyle = "#3a382c"; ctx.beginPath(); ctx.ellipse(cx, cy, p.r, p.r * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
-    const a = t * p.w, x = cx + Math.cos(a) * p.r, y = cy + Math.sin(a) * p.r * 0.42;
-    ctx.fillStyle = "hsl(" + p.hue + " 60% 55%)"; ctx.beginPath(); ctx.arc(x, y, p.s, 0, Math.PI * 2); ctx.fill();
+  x.clearRect(0,0,520,360);
+  x.fillStyle = "#0c0e0a";
+  x.fillRect(0,0,520,360);
+  x.beginPath(); x.arc(260,180,16,0,6.3); x.fillStyle = "#e2b15a"; x.fill();
+  planets.forEach(function (p) {
+    x.beginPath(); x.arc(260,180,p.r,0,6.3); x.strokeStyle = "#3a382c"; x.stroke();
+    var a = t * p.s;
+    var px = 260 + Math.cos(a) * p.r;
+    var py = 180 + Math.sin(a) * p.r * 0.62;
+    x.beginPath(); x.arc(px, py, 5, 0, 6.3); x.fillStyle = p.col; x.fill();
   });
-  t += 1; requestAnimationFrame(frame);
+  t += 1;
+  requestAnimationFrame(frame);
 }
 frame();
-</script></body></html>
+</script>
+</main>
+</body>
+</html>

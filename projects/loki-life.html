@@ -1,67 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Loki life cycle — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
-<h1>Loki life-cycle demo</h1>
-<p class="lede">Browser version of the rules in loki_life.c. Feed and interact to earn growth points. Stages: egg, hatchling at 50, young at 200, adult at 500.</p>
-<div class="card">
-  <div class="row">
-    <button class="btn" id="basic">Feed basic</button>
-    <button class="btn" id="tasty">Feed tasty</button>
-    <button class="btn" id="special">Feed special</button>
-    <button class="btn" id="play">Interact</button>
-    <button class="btn" id="tick">Tick 30s</button>
-  </div>
-  <p class="stat" id="status"></p>
-  <p class="meta" id="anim"></p>
+<main>
+<p><a href="../index.html">← Portfolio</a> · <a href="https://github.com/Fomorianshifter/Loki">Loki source</a></p>
+<h1>Loki life cycle</h1>
+<p class="note">Browser stand-in for the growth rules in loki_life.c. Egg 0, hatchling 50, young 200, adult 500 growth points.</p>
+<div class="lab">
+  <button type="button" data-food="basic">Feed basic</button>
+  <button type="button" data-food="tasty">Feed tasty</button>
+  <button type="button" data-food="special">Feed special</button>
+  <button type="button" id="play">Interact</button>
+  <p class="out" id="status"></p>
 </div>
 <script>
-const food = { basic: [20,5,5], tasty: [40,10,15], special: [60,20,25] };
-let s = { hunger: 40, happy: 50, energy: 60, gp: 0, stage: "egg" };
-function stage() { s.stage = s.gp >= 500 ? "adult" : s.gp >= 200 ? "young" : s.gp >= 50 ? "hatchling" : "egg"; }
+var gp = 0, hunger = 40, happy = 50, energy = 70;
+var foods = { basic:[20,5,5], tasty:[40,10,15], special:[60,20,25] };
+function stage() {
+  if (gp >= 500) return "adult";
+  if (gp >= 200) return "young";
+  if (gp >= 50) return "hatchling";
+  return "egg";
+}
 function mood() {
-  if (s.hunger >= 70) return "hungry";
-  if (s.energy <= 20) return "sleepy";
-  if (s.happy <= 30 || s.hunger >= 50) return "grumpy";
-  if (s.happy >= 70) return "happy";
-  if (s.happy >= 50 && s.energy >= 60) return "playful";
+  if (hunger >= 70) return "hungry";
+  if (energy <= 20) return "sleepy";
+  if (happy <= 30 || hunger >= 50) return "grumpy";
+  if (happy >= 70) return "happy";
+  if (happy >= 50 && energy >= 60) return "playful";
   return "neutral";
 }
-function clamp(n) { return Math.max(0, Math.min(100, n)); }
-function render() {
-  stage();
-  document.getElementById("status").textContent = s.stage + " · " + mood() + " · gp " + s.gp + " · hunger " + s.hunger + " · happy " + s.happy + " · energy " + s.energy;
-  document.getElementById("anim").textContent = "Animation would follow mood and stage, same idea as loki_get_animation_state().";
+function show() {
+  document.getElementById("status").textContent =
+    "Stage: " + stage() + " · gp " + gp + " · hunger " + hunger + " · happy " + happy + " · energy " + energy + " · mood " + mood();
 }
-function feed(kind) {
-  let [h, g, p] = food[kind];
-  if (s.hunger < 30) { h = Math.floor(h/2); g = Math.floor(g/2); p = Math.floor(p/2); }
-  s.hunger = clamp(s.hunger - h); s.gp += g; s.happy = clamp(s.happy + p); render();
-}
-document.getElementById("basic").onclick = () => feed("basic");
-document.getElementById("tasty").onclick = () => feed("tasty");
-document.getElementById("special").onclick = () => feed("special");
-document.getElementById("play").onclick = () => { s.happy = clamp(s.happy + 10); s.energy = clamp(s.energy - 8); s.gp += 3; render(); };
-document.getElementById("tick").onclick = () => {
-  if (mood() === "sleepy") s.energy = clamp(s.energy + 15);
-  else s.energy = clamp(s.energy - 5);
-  s.hunger = clamp(s.hunger + 4);
-  render();
+document.querySelectorAll("[data-food]").forEach(function (b) {
+  b.onclick = function () {
+    var f = foods[b.getAttribute("data-food")];
+    var pen = hunger < 20 ? 0.5 : 1;
+    hunger = Math.max(0, hunger - Math.round(f[0] * pen));
+    gp += Math.round(f[1] * pen);
+    happy = Math.min(100, happy + Math.round(f[2] * pen));
+    show();
+  };
+});
+document.getElementById("play").onclick = function () {
+  happy = Math.min(100, happy + 8);
+  energy = Math.max(0, energy - 6);
+  gp += 4;
+  hunger = Math.min(100, hunger + 4);
+  show();
 };
-render();
+show();
 </script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+</main>
+</body>
+</html>
