@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki life-cycle lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Loki</strong> <a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav></header><main>
+<h1>Loki life cycle</h1><p class="meta">Same thresholds as the Loki README: egg, hatchling at 50 gp, young at 200, adult at 500. Overeating halves the effect.</p>
+<div class="card" style="max-width:560px"><p id="face" style="font-size:32px;margin:0">egg</p><p id="stat"></p>
+<div class="row"><button class="btn" data-food="basic" type="button">Basic</button><button class="btn" data-food="tasty" type="button">Tasty</button><button class="btn" data-food="special" type="button">Special</button><button class="btn ghost" id="play" type="button">Interact</button><button class="btn ghost" id="tick" type="button">Tick</button></div></div></main>
+<script>
+var s={gp:0,hunger:40,happy:50,energy:70,stage:"Egg"};var food={basic:[20,5,5],tasty:[40,10,15],special:[60,20,25]};
+function stage(){s.stage=s.gp>=500?"Adult":s.gp>=200?"Young":s.gp>=50?"Hatchling":"Egg"}
+function mood(){if(s.hunger>=70)return"Hungry";if(s.energy<=20)return"Sleepy";if(s.happy<=30||s.hunger>=50)return"Grumpy";if(s.happy>=70)return"Happy";if(s.happy>=50&&s.energy>=60)return"Playful";return"Neutral"}
+function clamp(){["hunger","happy","energy"].forEach(function(k){s[k]=Math.max(0,Math.min(100,s[k]))});stage()}
+function draw(){document.getElementById("face").textContent=s.stage+" · "+mood();document.getElementById("stat").textContent="gp "+s.gp+" · hunger "+s.hunger+" · happy "+s.happy+" · energy "+s.energy}
+document.querySelectorAll("[data-food]").forEach(function(b){b.onclick=function(){var f=food[b.getAttribute("data-food")],half=s.hunger<20?0.5:1;s.hunger-=f[0]*half;s.gp+=Math.round(f[1]*half);s.happy+=f[2]*half;clamp();draw()}});
+document.getElementById("play").onclick=function(){s.happy+=12;s.energy-=8;s.gp+=4;clamp();draw()};
+document.getElementById("tick").onclick=function(){if(mood()==="Sleepy")s.energy+=15;else s.energy-=6;s.hunger+=8;s.happy-=2;clamp();draw()};draw();
+</script></body></html>

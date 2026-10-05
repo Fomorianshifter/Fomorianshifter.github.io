@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shift fault log</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a><strong>Shift log</strong></nav></header><main>
+<h1>Shift fault log</h1><p class="meta">Saved in this browser only. Not a CMMS.</p>
+<div class="card" style="max-width:640px">
+<label>Area <input id="area" placeholder="Mold line 2"></label>
+<label>Symptom <input id="sym" placeholder="Starter chatter on conveyor 4"></label>
+<label>What you did <textarea id="fix" rows="3"></textarea></label>
+<button class="btn" id="add" type="button">Add entry</button>
+<button class="btn ghost" id="clear" type="button">Clear log</button><div id="list"></div></div></main>
+<script>
+var key="nlane-fault-log";function load(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return[]}}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&"+"amp;","<":"&"+"lt;",">":"&"+"gt;"}[c]})}
+function render(){var rows=load();document.getElementById("list").innerHTML=rows.map(function(r){return "<article class='out'><strong>"+esc(r.area)+"</strong> · "+esc(r.when)+"<br>"+esc(r.sym)+"<br>"+esc(r.fix)+"</article>"}).join("")||"<p class='meta'>No entries yet.</p>"}
+document.getElementById("add").onclick=function(){var rows=load();rows.unshift({when:new Date().toLocaleString(),area:document.getElementById("area").value||"Unassigned",sym:document.getElementById("sym").value||"No symptom",fix:document.getElementById("fix").value||"Noted"});localStorage.setItem(key,JSON.stringify(rows.slice(0,40)));render()};
+document.getElementById("clear").onclick=function(){localStorage.removeItem(key);render()};render();
+</script></body></html>
