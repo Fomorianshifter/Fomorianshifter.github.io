@@ -1,5 +1,5 @@
-# Nicholas Lane portfolio
+# Nicholas Lane
 
-Live site: https://fomorianshifter.github.io/
+Portfolio for LinkedIn: https://fomorianshifter.github.io/
 
-Industrial electrician portfolio with public GitHub work (Loki, Solar System, One) and in-browser labs for LinkedIn.
+Public labs for the motor starter, Loki life loop, voltage drop, wire size, fault log, and orbit demo. Source repos stay on GitHub.
