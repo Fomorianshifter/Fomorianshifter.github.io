@@ -1,3 +1,7 @@
-Featured URL: https://fomorianshifter.github.io/
-Title: Nicholas Lane — electrician, controls, and project labs
-Description: Industrial electrical work plus live labs and the public GitHub repos behind them.
+Featured link for LinkedIn:
+https://fomorianshifter.github.io/
+
+GitHub:
+https://github.com/Fomorianshifter
+
+Email: nlane713@gmail.com
