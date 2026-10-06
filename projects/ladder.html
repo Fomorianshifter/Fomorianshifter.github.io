@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Seal-in ladder</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><a href="../index.html">Nicholas Lane</a></header>
-<main class="wrap"><section class="hero"><div class="kicker">PLC-style study rung</div><h1>Start / stop motor seal-in</h1>
-<p class="lede">Stop is normally closed. Start is normally open. The motor contact seals around Start. Browser model, not a live PLC.</p>
-<div class="card">
-<div class="rail"><span>L1</span><div class="wire" id="w1"></div><div class="contact" id="stop">STOP</div><div class="wire" id="w2"></div><div class="contact" id="start">START</div><div class="wire" id="w3"></div><div class="coil" id="coil">M</div><span>L2</span></div>
-<div class="rail"><span>seal</span><div class="wire" id="w4"></div><div class="contact" id="seal">M</div><span class="note">parallel with Start</span></div>
-<p><button class="tap" id="btnStop" type="button">Toggle stop (NC)</button><button class="tap" id="btnStart" type="button">Pulse start</button></p>
-<div class="out" id="out"></div>
-</div></section></main>
-<script>
-var stopClosed = true, startHeld = false, motor = false;
-function render() {
-  motor = stopClosed && (startHeld || motor);
-  document.getElementById("stop").className = "contact" + (stopClosed ? " on" : "");
-  document.getElementById("start").className = "contact" + (startHeld ? " on" : "");
-  document.getElementById("seal").className = "contact" + (motor ? " on" : "");
-  document.getElementById("coil").className = "coil" + (motor ? " on" : "");
-  ["w1","w2","w3","w4"].forEach(function (id) { document.getElementById(id).className = "wire" + (motor ? " hot" : ""); });
-  document.getElementById("out").textContent = motor ? "Motor coil is sealed in. Open Stop to drop it out." : "Motor is off. Close Stop, then pulse Start.";
-}
-document.getElementById("btnStop").onclick = function () { stopClosed = !stopClosed; if (!stopClosed) motor = false; render(); };
-document.getElementById("btnStart").onclick = function () { startHeld = true; render(); setTimeout(function () { startHeld = false; render(); }, 400); };
-render();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start / stop seal-in — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <strong>Start / stop seal-in</strong>
+    <nav><a href="../index.html">Home</a></nav>
+  </header>
+  <main>
+    <section>
+      <p class="note">Stop is normally closed. Start is normally open. The motor contact seals around Start. Overload drops the coil.</p>
+      <div class="card ladder" id="board"></div>
+      <div class="out" id="status">Coil off.</div>
+    </section>
+  </main>
+  <script>
+    const state = { stop: true, start: false, ol: true, motor: false };
+    const board = document.getElementById("board");
+    function render() {
+      state.motor = state.stop && state.ol && (state.start || state.motor);
+      if (!state.stop || !state.ol) state.motor = false;
+      board.innerHTML = `
+        <div class="rung"><span>L1</span><span>Stop NC <button class="action" data-k="stop">${state.stop ? "closed" : "open"}</button></span><span></span></div>
+        <div class="rung"><span></span><span>Start NO <button class="action" data-k="start">${state.start ? "closed" : "open"}</button> in parallel with M seal</span><span class="coil ${state.motor ? "on" : ""}">M</span></div>
+        <div class="rung"><span></span><span>Overload NC <button class="action" data-k="ol">${state.ol ? "closed" : "tripped"}</button></span><span>L2</span></div>`;
+      document.getElementById("status").textContent = state.motor ? "Coil sealed in. Motor contact holding." : "Coil off.";
+    }
+    board.onclick = (e) => {
+      const k = e.target.dataset.k;
+      if (!k) return;
+      state[k] = !state[k];
+      if (k === "start" && !state.start) { /* release does not drop a sealed coil */ }
+      render();
+    };
+    render();
+  </script>
+</body>
+</html>

@@ -1,33 +1,48 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shift fault log</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift fault log — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 <body>
-<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a></nav>
-<h1>Shift fault log</h1>
-<p class="lede">Calls stay in this browser (localStorage). Nothing is uploaded.</p></header>
-<main>
-<label>Asset <input id="asset" placeholder="Mold line 2, conveyor 4"></label>
-<label>Symptom <input id="sym" placeholder="Starter chatters, no seal-in"></label>
-<label>What fixed it <textarea id="fix" rows="3" placeholder="Replaced aux contact"></textarea></label>
-<p><button id="add">Add call</button> <button id="clear">Clear log</button></p>
-<div id="list"></div>
-</main>
-<script>
-const KEY="nlane-fault-log";
-const load=()=>JSON.parse(localStorage.getItem(KEY)||"[]");
-function render(){
-  const rows=load();
-  list.innerHTML=rows.map(r=>`<article class="card"><h3>${r.asset}</h3><p>${r.sym}</p><p class="meta">${r.fix}</p><p class="meta">${r.when}</p></article>`).join("")||"<p class='meta'>No calls yet.</p>";
-}
-add.onclick=()=>{
-  if(!asset.value.trim()) return;
-  const rows=load();
-  rows.unshift({asset:asset.value.trim(),sym:sym.value.trim(),fix:fix.value.trim(),when:new Date().toLocaleString()});
-  asset.value=sym.value=fix.value="";
-  localStorage.setItem(KEY, JSON.stringify(rows));
-  render();
-};
-clear.onclick=()=>{localStorage.removeItem(KEY); render();};
-render();
-</script>
-</body></html>
+  <header>
+    <strong>Shift fault log</strong>
+    <nav><a href="../index.html">Home</a></nav>
+  </header>
+  <main>
+    <section>
+      <p class="note">Stored in this browser only. Nothing is uploaded.</p>
+      <div class="card">
+        <label>Asset</label>
+        <input id="asset" placeholder="Moulder 2, panel MCC-1">
+        <label>What failed</label>
+        <textarea id="note" rows="3" placeholder="E-stop chain open at door switch"></textarea>
+        <p><button class="action" id="add" type="button">Add call</button> <button class="action" id="clear" type="button">Clear</button></p>
+        <table><thead><tr><th>When</th><th>Asset</th><th>Note</th></tr></thead><tbody id="rows"></tbody></table>
+      </div>
+    </section>
+  </main>
+  <script>
+    const key = "lane-fault-log";
+    const load = () => JSON.parse(localStorage.getItem(key) || "[]");
+    const save = (rows) => localStorage.setItem(key, JSON.stringify(rows));
+    function paint() {
+      document.getElementById("rows").innerHTML = load().map(r => `<tr><td>${r.when}</td><td>${r.asset}</td><td>${r.note}</td></tr>`).join("") || `<tr><td colspan="3">No calls yet.</td></tr>`;
+    }
+    document.getElementById("add").onclick = () => {
+      const asset = document.getElementById("asset").value.trim();
+      const note = document.getElementById("note").value.trim();
+      if (!asset || !note) return;
+      const rows = load();
+      rows.unshift({ when: new Date().toLocaleString(), asset, note });
+      save(rows.slice(0, 40));
+      document.getElementById("note").value = "";
+      paint();
+    };
+    document.getElementById("clear").onclick = () => { localStorage.removeItem(key); paint(); };
+    paint();
+  </script>
+</body>
+</html>

@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki life-cycle demo</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><a href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav></header>
-<main class="wrap"><section class="hero"><div class="kicker">Browser model of loki_life.c</div><h1>Loki, without the board</h1>
-<p class="lede">Stages match the public README: egg, hatchling at 50 growth, young at 200, adult at 500. Feeding when hunger is already low halves the gain.</p>
-<div class="card"><div class="out" id="status"></div>
-<p><button class="tap" data-food="basic" type="button">Basic food</button><button class="tap" data-food="tasty" type="button">Tasty</button><button class="tap" data-food="special" type="button">Special</button><button class="tap" id="play" type="button">Interact</button></p>
-</div></section></main>
-<script>
-var state = {hunger:40, happiness:50, energy:70, gp:0};
-var foods = {basic:[20,5,5], tasty:[40,10,15], special:[60,20,25]};
-function stage(gp){ return gp>=500?"Adult":gp>=200?"Young":gp>=50?"Hatchling":"Egg"; }
-function mood(){
-  if (state.hunger>=70) return "Hungry";
-  if (state.energy<=20) return "Sleepy";
-  if (state.happiness<=30 || state.hunger>=50) return "Grumpy";
-  if (state.happiness>=70) return "Happy";
-  if (state.happiness>=50 && state.energy>=60) return "Playful";
-  return "Neutral";
-}
-function paint(){ document.getElementById("status").textContent = stage(state.gp)+" · "+state.gp+" gp · hunger "+state.hunger+" · happiness "+state.happiness+" · energy "+state.energy+" · "+mood(); }
-document.querySelectorAll("[data-food]").forEach(function(btn){
-  btn.onclick = function(){
-    var f = foods[btn.dataset.food], half = state.hunger<20?0.5:1;
-    state.hunger = Math.max(0, state.hunger - f[0]*half);
-    state.gp += Math.round(f[1]*half);
-    state.happiness = Math.min(100, state.happiness + Math.round(f[2]*half));
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loki life cycle — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <strong>Loki life cycle</strong>
+    <nav><a href="../index.html">Home</a> <a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav>
+  </header>
+  <main>
+    <section>
+      <p class="note">Browser stand-in for the egg-to-adult rules in Loki: 50, 200, and 500 growth points. Not the device firmware.</p>
+      <div class="card">
+        <h2 id="stage">Egg</h2>
+        <p id="mood">Mood: neutral · hunger 20 · energy 80 · gp 0</p>
+        <p>
+          <button class="action" data-food="basic">Basic feed</button>
+          <button class="action" data-food="tasty">Tasty feed</button>
+          <button class="action" id="play" type="button">Interact</button>
+          <button class="action" id="tick" type="button">Tick</button>
+        </p>
+      </div>
+    </section>
+  </main>
+  <script>
+    const s = { hunger: 20, happy: 50, energy: 80, gp: 0 };
+    const foods = { basic: [20, 5, 5], tasty: [40, 10, 15] };
+    function stage() {
+      if (s.gp >= 500) return "Adult";
+      if (s.gp >= 200) return "Young";
+      if (s.gp >= 50) return "Hatchling";
+      return "Egg";
+    }
+    function mood() {
+      if (s.hunger >= 70) return "hungry";
+      if (s.energy <= 20) return "sleepy";
+      if (s.happy <= 30 || s.hunger >= 50) return "grumpy";
+      if (s.happy >= 70) return "happy";
+      if (s.happy >= 50 && s.energy >= 60) return "playful";
+      return "neutral";
+    }
+    function paint() {
+      document.getElementById("stage").textContent = stage();
+      document.getElementById("mood").textContent = `Mood: ${mood()} · hunger ${s.hunger} · energy ${s.energy} · happiness ${s.happy} · gp ${s.gp}`;
+    }
+    document.querySelector(".card").onclick = (e) => {
+      const food = e.target.dataset.food;
+      if (food) {
+        const [h, g, p] = foods[food];
+        const half = s.hunger < 25 ? 0.5 : 1;
+        s.hunger = Math.max(0, s.hunger - h * half);
+        s.gp += g * half;
+        s.happy = Math.min(100, s.happy + p * half);
+      }
+      if (e.target.id === "play") {
+        s.happy = Math.min(100, s.happy + 12);
+        s.energy = Math.max(0, s.energy - 8);
+        s.gp += 4;
+      }
+      if (e.target.id === "tick") {
+        if (mood() === "sleepy") s.energy = Math.min(100, s.energy + 15);
+        else s.energy = Math.max(0, s.energy - 6);
+        s.hunger = Math.min(100, s.hunger + 8);
+      }
+      paint();
+    };
     paint();
-  };
-});
-document.getElementById("play").onclick = function(){ state.happiness=Math.min(100,state.happiness+8); state.energy=Math.max(0,state.energy-6); state.gp+=2; paint(); };
-setInterval(function(){ state.hunger=Math.min(100,state.hunger+1); state.energy = state.energy<=20?Math.min(100,state.energy+2):Math.max(0,state.energy-1); paint(); }, 1500);
-paint();
-</script></body></html>
+  </script>
+</body>
+</html>
