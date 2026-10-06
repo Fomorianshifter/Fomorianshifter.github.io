@@ -3,37 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loki life cycle — Nicholas Lane</title>
+  <title>Loki lab — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
   <header>
-    <strong>Loki life cycle</strong>
-    <nav><a href="../index.html">Home</a> <a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav>
+    <a class="brand" href="../index.html">Nicholas Lane</a>
+    <nav>
+      <a href="../projects.html">Projects</a>
+      <a href="https://github.com/Fomorianshifter/Loki">Loki repo</a>
+    </nav>
   </header>
   <main>
-    <section>
-      <p class="note">Browser stand-in for the egg-to-adult rules in Loki: 50, 200, and 500 growth points. Not the device firmware.</p>
-      <div class="card">
-        <h2 id="stage">Egg</h2>
-        <p id="mood">Mood: neutral · hunger 20 · energy 80 · gp 0</p>
-        <p>
-          <button class="action" data-food="basic">Basic feed</button>
-          <button class="action" data-food="tasty">Tasty feed</button>
-          <button class="action" id="play" type="button">Interact</button>
-          <button class="action" id="tick" type="button">Tick</button>
-        </p>
-      </div>
-    </section>
+    <p class="kicker">Browser stand-in for the C life-cycle</p>
+    <h1>Loki</h1>
+    <p class="lead">Public repo: embedded HAL, TFT and bus drivers, a local config UI, and a dragon life-cycle in C. This page only simulates the stage and mood rules described in that README. It does not flash a board.</p>
+    <div class="row">
+      <button class="act" id="basic" type="button">Feed basic</button>
+      <button class="act" id="tasty" type="button">Feed tasty</button>
+      <button class="act" id="play" type="button">Interact</button>
+      <button class="act" id="tick" type="button">Advance tick</button>
+    </div>
+    <p id="status" class="lead"></p>
+    <ul class="clean">
+      <li>Stages in the repo notes: egg, hatchling at 50 growth, young at 200, adult at 500.</li>
+      <li>Hardware side of the repo covers GPIO, SPI, I2C, UART, PWM, and drivers for TFT, SD, flash, EEPROM, and Flipper UART.</li>
+      <li>README still has merge-conflict markers. Treat the life-cycle section and the hardware file list as the durable parts.</li>
+    </ul>
   </main>
   <script>
-    const s = { hunger: 20, happy: 50, energy: 80, gp: 0 };
+    const s = { hunger: 40, happy: 50, energy: 70, gp: 0 };
     const foods = { basic: [20, 5, 5], tasty: [40, 10, 15] };
     function stage() {
-      if (s.gp >= 500) return "Adult";
-      if (s.gp >= 200) return "Young";
-      if (s.gp >= 50) return "Hatchling";
-      return "Egg";
+      if (s.gp >= 500) return "adult";
+      if (s.gp >= 200) return "young";
+      if (s.gp >= 50) return "hatchling";
+      return "egg";
     }
     function mood() {
       if (s.hunger >= 70) return "hungry";
@@ -43,32 +48,33 @@
       if (s.happy >= 50 && s.energy >= 60) return "playful";
       return "neutral";
     }
-    function paint() {
-      document.getElementById("stage").textContent = stage();
-      document.getElementById("mood").textContent = `Mood: ${mood()} · hunger ${s.hunger} · energy ${s.energy} · happiness ${s.happy} · gp ${s.gp}`;
+    function show() {
+      document.getElementById("status").textContent =
+        `Stage ${stage()} · mood ${mood()} · growth ${s.gp} · hunger ${s.hunger} · happiness ${s.happy} · energy ${s.energy}`;
     }
-    document.querySelector(".card").onclick = (e) => {
-      const food = e.target.dataset.food;
-      if (food) {
-        const [h, g, p] = foods[food];
-        const half = s.hunger < 25 ? 0.5 : 1;
-        s.hunger = Math.max(0, s.hunger - h * half);
-        s.gp += g * half;
-        s.happy = Math.min(100, s.happy + p * half);
-      }
-      if (e.target.id === "play") {
-        s.happy = Math.min(100, s.happy + 12);
-        s.energy = Math.max(0, s.energy - 8);
-        s.gp += 4;
-      }
-      if (e.target.id === "tick") {
-        if (mood() === "sleepy") s.energy = Math.min(100, s.energy + 15);
-        else s.energy = Math.max(0, s.energy - 6);
-        s.hunger = Math.min(100, s.hunger + 8);
-      }
-      paint();
+    function feed(kind) {
+      const [hunger, gp, happy] = foods[kind];
+      const half = s.hunger < 30 ? 0.5 : 1;
+      s.hunger = Math.max(0, s.hunger - hunger * half);
+      s.gp += Math.round(gp * half);
+      s.happy = Math.min(100, s.happy + Math.round(happy * half));
+      show();
+    }
+    document.getElementById("basic").onclick = () => feed("basic");
+    document.getElementById("tasty").onclick = () => feed("tasty");
+    document.getElementById("play").onclick = () => {
+      s.happy = Math.min(100, s.happy + 8);
+      s.energy = Math.max(0, s.energy - 6);
+      s.gp += 2;
+      show();
     };
-    paint();
+    document.getElementById("tick").onclick = () => {
+      if (mood() === "sleepy") s.energy = Math.min(100, s.energy + 15);
+      else s.energy = Math.max(0, s.energy - 8);
+      s.hunger = Math.min(100, s.hunger + 6);
+      show();
+    };
+    show();
   </script>
 </body>
 </html>

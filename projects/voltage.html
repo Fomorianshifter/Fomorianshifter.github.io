@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voltage drop — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voltage-drop lab — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
-  <main class="lab">
-    <h1>Voltage drop</h1>
-    <p>Single-phase copper estimate: VD = 2 × K × I × D / CM. K is 12.9 for copper. This is a study tool, not an NEC stamp.</p>
-    <form class="panel" id="form">
-      <label>Load amps <input id="amps" type="number" min="0" step="0.1" value="20" /></label>
-      <label>One-way length, feet <input id="feet" type="number" min="0" step="1" value="80" /></label>
-      <label>Conductor
-        <select id="cm">
-          <option value="6530">14 AWG (6530 cm)</option>
-          <option value="10380" selected>12 AWG (10380 cm)</option>
-          <option value="16510">10 AWG (16510 cm)</option>
-          <option value="26240">8 AWG (26240 cm)</option>
-          <option value="41740">6 AWG (41740 cm)</option>
-        </select>
-      </label>
-      <label>Source volts <input id="volts" type="number" min="1" step="1" value="120" /></label>
-      <button type="submit">Estimate</button>
-      <p class="result" id="out">—</p>
-    </form>
+  <header>
+    <a class="brand" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../projects.html">Projects</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Field estimate</p>
+    <h1>Voltage-drop check</h1>
+    <p class="lead">Single-phase copper estimate: drop = 2 × length × current × ohms per foot. Use it to spot a long run. It is not an NEC calculation and it ignores temperature and conduit fill.</p>
+    <label>One-way length (ft) <input id="len" type="number" value="150" min="1"></label>
+    <label>Load (A) <input id="amps" type="number" value="16" min="0" step="0.1"></label>
+    <label>Source (V) <input id="volts" type="number" value="120" min="1"></label>
+    <label>Copper size
+      <select id="wire">
+        <option value="0.00198">14 AWG</option>
+        <option value="0.00124" selected>12 AWG</option>
+        <option value="0.000782">10 AWG</option>
+        <option value="0.000491">8 AWG</option>
+        <option value="0.000308">6 AWG</option>
+      </select>
+    </label>
+    <p id="out" class="lead"></p>
+    <p class="note">Ohms per foot are approximate DC resistance for solid copper, for teaching only.</p>
   </main>
   <script>
-    document.getElementById("form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const I = Number(document.getElementById("amps").value);
-      const D = Number(document.getElementById("feet").value);
-      const CM = Number(document.getElementById("cm").value);
-      const V = Number(document.getElementById("volts").value);
-      const vd = (2 * 12.9 * I * D) / CM;
-      const pct = V ? (vd / V) * 100 : 0;
-      document.getElementById("out").textContent = vd.toFixed(2) + " V drop · " + pct.toFixed(1) + "% of " + V + " V";
-    });
+    const ids = ["len", "amps", "volts", "wire"];
+    function calc() {
+      const len = Number(document.getElementById("len").value);
+      const amps = Number(document.getElementById("amps").value);
+      const volts = Number(document.getElementById("volts").value);
+      const ohm = Number(document.getElementById("wire").value);
+      const drop = 2 * len * amps * ohm;
+      const pct = volts ? (drop / volts) * 100 : 0;
+      document.getElementById("out").textContent =
+        `About ${drop.toFixed(2)} V drop (${pct.toFixed(1)}%). Voltage at the load about ${(volts - drop).toFixed(1)} V.`;
+    }
+    ids.forEach((id) => document.getElementById(id).addEventListener("input", calc));
+    calc();
   </script>
 </body>
 </html>

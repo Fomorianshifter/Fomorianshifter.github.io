@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fault log lab — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../projects.html">Projects</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Sample tickets</p>
+    <h1>Foundry fault log</h1>
+    <p class="lead">Illustrative tickets in the shape of foundry electrical calls. Not Grede work orders and not a count of the resume’s “over 50 issues a month.”</p>
+    <label for="filter">Filter</label>
+    <select id="filter">
+      <option value="all">All</option>
+      <option value="motor">Motors</option>
+      <option value="sensor">Sensors</option>
+      <option value="control">Control power</option>
+    </select>
+    <table>
+      <thead><tr><th>Ticket</th><th>Asset</th><th>Symptom</th><th>Check</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+  <script>
+    const tickets = [
+      ["M-14", "motor", "Mold line conveyor", "Contactor chatters", "Check control voltage and aux contact"],
+      ["S-03", "sensor", "Pour proximity", "False trips", "Clean target and confirm NPN/PNP"],
+      ["C-22", "control", "PLC rack", "Output dark", "Verify fuse and common before swapping the card"],
+      ["M-08", "motor", "Shakeout fan", "Overload trip", "Amp-clamp against nameplate after reset"],
+      ["S-11", "sensor", "Limit on ladle car", "No made signal", "Flag alignment, then input LED"],
+      ["C-04", "control", "E-stop string", "Will not reset", "Walk the NC loop; do not jumper a safety"]
+    ];
+    const filter = document.getElementById("filter");
+    const rows = document.getElementById("rows");
+    function render() {
+      rows.innerHTML = tickets
+        .filter((t) => filter.value === "all" || t[1] === filter.value)
+        .map((t) => `<tr><td>${t[0]}</td><td>${t[2]}</td><td>${t[3]}</td><td>${t[4]}</td></tr>`)
+        .join("");
+    }
+    filter.onchange = render;
+    render();
+  </script>
+</body>
+</html>

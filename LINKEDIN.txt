@@ -1,9 +1,9 @@
-LinkedIn website field:
-https://fomorianshifter.github.io/
-
-Featured links:
-https://fomorianshifter.github.io/
-https://github.com/Fomorianshifter/Loki
+LinkedIn website: https://fomorianshifter.github.io/
 
 Headline:
-Industrial electrician · PLC support · controls learner · Green Bay, WI
+Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open to relocate
+
+About:
+Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric. I am studying toward NEC certification and freeCodeCamp computer science.
+
+Public projects: https://fomorianshifter.github.io/

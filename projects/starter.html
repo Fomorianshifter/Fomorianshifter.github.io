@@ -1,36 +1,56 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Motor starter lab</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motor starter lab — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 <body>
-<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a></nav>
-<h1>Motor starter seal-in</h1>
-<p class="lede">Three-wire control. Stop is normally closed. Start is normally open. The auxiliary contact seals the coil in after start, until stop or overload opens.</p></header>
-<main>
-<p><button id="stop" class="on">Stop (NC) closed</button>
-<button id="start">Start (NO) open</button>
-<button id="ol" class="on">Overload closed</button></p>
-<p>Coil <span id="lamp" class="lamp"></span> <span id="state">dropped out</span></p>
-<pre class="out" id="logic">waiting</pre>
-<p class="warn">Teaching model only. Real starters also need correct overloads, a disconnect, and lockout.</p>
-</main>
-<script>
-const stop=document.getElementById("stop"), start=document.getElementById("start"), ol=document.getElementById("ol");
-let seal=false;
-const bit=el=>el.classList.contains("on");
-function tick(){
-  const run=bit(stop)&&bit(ol)&&(bit(start)||seal);
-  seal=run;
-  document.getElementById("lamp").classList.toggle("lit", run);
-  document.getElementById("state").textContent=run?"picked up":"dropped out";
-  document.getElementById("logic").textContent=`stop NC ${bit(stop)?"closed":"open"}  start ${bit(start)?"closed":"open"}  OL ${bit(ol)?"closed":"open"}\ncoil = stop AND overload AND (start OR seal)\nseal = ${seal}`;
-}
-[stop,start,ol].forEach(b=>b.onclick=()=>{
-  b.classList.toggle("on");
-  if(b===stop) b.textContent=bit(stop)?"Stop (NC) closed":"Stop (NC) open";
-  if(b===start) b.textContent=bit(start)?"Start (NO) closed":"Start (NO) open";
-  if(b===ol) b.textContent=bit(ol)?"Overload closed":"Overload open";
-  tick();
-});
-tick();
-</script>
-</body></html>
+  <header>
+    <a class="brand" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../projects.html">Projects</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Teaching lab</p>
+    <h1>3-wire motor starter</h1>
+    <p class="lead">Start is momentary. Stop is normally closed. The auxiliary contact seals the coil in until stop or overload opens. This is a browser model of a common control circuit, not a live panel.</p>
+    <div class="row">
+      <button class="act" id="start" type="button">Start</button>
+      <button class="act" id="stop" type="button">Stop</button>
+      <button class="act" id="ol" type="button">Trip overload</button>
+      <button class="act" id="reset" type="button">Reset overload</button>
+    </div>
+    <p id="status" class="meta">Coil de-energized. Motor off.</p>
+    <pre class="ladder" id="ladder"></pre>
+    <p class="note">Hold start only long enough to pull in. If the overload is tripped, start will not seal.</p>
+  </main>
+  <script>
+    const state = { start: false, stop: true, ol: true, seal: false };
+    const start = document.getElementById("start");
+    const stop = document.getElementById("stop");
+    const ol = document.getElementById("ol");
+    const reset = document.getElementById("reset");
+    function coil() { return state.stop && state.ol && (state.start || state.seal); }
+    function draw() {
+      const on = coil();
+      state.seal = on;
+      const mark = (hot) => hot ? "hot" : "cold";
+      document.getElementById("ladder").innerHTML =
+        `<span class="${mark(true)}">L1</span> —— [<span class="${mark(state.stop)}">STOP NC</span>] —— [<span class="${mark(state.ol)}">OL NC</span>] —— [<span class="${mark(state.start)}">START NO</span>] —— (<span class="${mark(on)}">M</span>) —— <span class="${mark(true)}">L2</span>\n` +
+        `                         |\n` +
+        `                         —— [<span class="${mark(state.seal)}">M aux NO</span>] ——`;
+      document.getElementById("status").textContent = on
+        ? "Coil sealed in. Motor contactor would be closed."
+        : "Coil de-energized. Motor off.";
+    }
+    start.onpointerdown = () => { state.start = true; draw(); };
+    start.onpointerup = start.onpointerleave = () => { state.start = false; draw(); };
+    stop.onpointerdown = () => { state.stop = false; draw(); };
+    stop.onpointerup = stop.onpointerleave = () => { state.stop = true; draw(); };
+    ol.onclick = () => { state.ol = false; draw(); };
+    reset.onclick = () => { state.ol = true; draw(); };
+    draw();
+  </script>
+</body>
+</html>
