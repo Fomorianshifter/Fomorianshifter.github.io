@@ -1,38 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Three-wire starter — Nicholas Lane</title>
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three-wire starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a></nav>
+<p class="kicker">Lab · PLC path</p><h1>Three-wire starter</h1>
+<p>Stop is normally closed. Start is normally open. The seal-in contact holds the coil after start is released. Overload opens the rung.</p></header>
 <main>
-<p><a href="../index.html">← Portfolio</a></p>
-<h1>Three-wire starter</h1>
-<p class="note">Stop, start, seal-in contact, and overload. Study model, not a panel drawing.</p>
-<div class="lab">
-  <button type="button" id="start">Start</button>
-  <button type="button" id="stop">Stop</button>
-  <button type="button" id="ol">Trip overload</button>
-  <pre class="out" id="rung"></pre>
-  <p id="motor"></p>
+<div class="row">
+<button type="button" id="stop">Stop closed</button>
+<button type="button" id="start">Start open</button>
+<button type="button" id="ol">Overload closed</button>
 </div>
-<script>
-var run = false, ol = false;
-function draw() {
-  var seal = run ? "M closed" : "M open";
-  var coil = run ? "M ON" : "M off";
-  document.getElementById("rung").textContent =
-    "|--[ stop ]--[ start ]--+--( " + coil + " )--|   OL: " + (ol ? "TRIP" : "ok") + "\n" +
-    "                       |\n" +
-    "                       +----[ " + seal + " ]----+";
-  document.getElementById("motor").textContent = "Motor: " + (run ? "running" : "off");
-}
-document.getElementById("start").onclick = function () { if (!ol) run = true; draw(); };
-document.getElementById("stop").onclick = function () { run = false; draw(); };
-document.getElementById("ol").onclick = function () { ol = !ol; if (ol) run = false; draw(); };
-draw();
-</script>
+<p id="state" class="meta">Coil: off</p>
+<div class="coil" id="coil">M</div>
+<pre id="rung" class="card"></pre>
 </main>
-</body>
-</html>
+<script>
+const stop=document.getElementById('stop'), start=document.getElementById('start'), ol=document.getElementById('ol');
+let stopClosed=true, startOn=false, olClosed=true, seal=false;
+function draw(){
+  const coil = stopClosed && olClosed && (startOn || seal);
+  seal = coil;
+  document.getElementById('coil').className = coil ? 'coil on' : 'coil';
+  document.getElementById('state').textContent = coil ? 'Coil: energized, seal-in closed' : 'Coil: off';
+  stop.textContent = stopClosed ? 'Stop closed' : 'Stop open';
+  start.textContent = startOn ? 'Start held' : 'Start open';
+  ol.textContent = olClosed ? 'Overload closed' : 'Overload tripped';
+  document.getElementById('rung').textContent = 'L1 --[Stop '+(stopClosed?'X':'/')+']--[Start '+(startOn?'X':'/')+']--+--(M)-- L2\n              |                      |\n              +----[seal '+(seal?'X':'/')+']----+--[OL '+(olClosed?'X':'/')+']';
+}
+stop.onclick=()=>{stopClosed=!stopClosed; if(!stopClosed) seal=false; draw();};
+start.onmousedown=()=>{startOn=true; draw();};
+start.onmouseup=()=>{startOn=false; draw();};
+ol.onclick=()=>{olClosed=!olClosed; if(!olClosed) seal=false; draw();};
+draw();
+</script></body></html>

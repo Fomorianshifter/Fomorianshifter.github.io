@@ -1,43 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orbit lab — Nicholas Lane</title>
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-<main>
-<p><a href="../index.html">← Portfolio</a> · <a href="https://github.com/Fomorianshifter/SolarSystem">Solar System repo</a></p>
-<h1>Orbit lab</h1>
-<p class="note">Small canvas version of the public Solar System sketches. Not to scale.</p>
-<canvas id="c" width="520" height="360"></canvas>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit lab — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a></nav><h1>Planets in orbit</h1>
+<p class="meta">Cleaned-up demo of the public SolarSystem sketch.</p></header>
+<main><canvas id="c" width="640" height="420" style="width:100%;background:#0b1020;border-radius:8px"></canvas>
+<p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></p></main>
 <script>
-var c = document.getElementById("c");
-var x = c.getContext("2d");
-var planets = [
-  { n:"Mercury", r:46, s:0.021, col:"#c4b7a6" },
-  { n:"Venus", r:70, s:0.015, col:"#e2c48a" },
-  { n:"Earth", r:96, s:0.012, col:"#7eb0d4" },
-  { n:"Mars", r:124, s:0.009, col:"#c4714a" }
-];
-var t = 0;
-function frame() {
-  x.clearRect(0,0,520,360);
-  x.fillStyle = "#0c0e0a";
-  x.fillRect(0,0,520,360);
-  x.beginPath(); x.arc(260,180,16,0,6.3); x.fillStyle = "#e2b15a"; x.fill();
-  planets.forEach(function (p) {
-    x.beginPath(); x.arc(260,180,p.r,0,6.3); x.strokeStyle = "#3a382c"; x.stroke();
-    var a = t * p.s;
-    var px = 260 + Math.cos(a) * p.r;
-    var py = 180 + Math.sin(a) * p.r * 0.62;
-    x.beginPath(); x.arc(px, py, 5, 0, 6.3); x.fillStyle = p.col; x.fill();
+const c=document.getElementById('c'), x=c.getContext('2d');
+const bodies=[{r:60,s:.03,col:'#c4b8a5'},{r:95,s:.02,col:'#e0c07a'},{r:130,s:.015,col:'#6aa8d6'},{r:165,s:.012,col:'#c2654a'}];
+let t=0;
+function frame(){
+  x.clearRect(0,0,640,420); x.fillStyle='#f4e2b0'; x.beginPath(); x.arc(320,210,18,0,7); x.fill();
+  bodies.forEach(b=>{
+    const a=t*b.s; const px=320+Math.cos(a)*b.r, py=210+Math.sin(a)*b.r*0.55;
+    x.strokeStyle='#243044'; x.beginPath(); x.ellipse(320,210,b.r,b.r*0.55,0,0,7); x.stroke();
+    x.fillStyle=b.col; x.beginPath(); x.arc(px,py,6,0,7); x.fill();
   });
-  t += 1;
-  requestAnimationFrame(frame);
+  t++; requestAnimationFrame(frame);
 }
 frame();
-</script>
-</main>
-</body>
-</html>
+</script></body></html>

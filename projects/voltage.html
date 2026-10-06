@@ -1,46 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voltage drop — Nicholas Lane</title>
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-<main>
-<p><a href="../index.html">← Portfolio</a></p>
-<h1>Voltage drop</h1>
-<p class="note">Single-phase copper estimate. K = 12.9. Confirm with NEC tables before you pull wire.</p>
-<div class="lab">
-  <label>Load amps <input id="amps" type="number" value="16" min="0" step="0.1"></label>
-  <label>One-way length, feet <input id="feet" type="number" value="80" min="0"></label>
-  <label>Voltage <input id="volts" type="number" value="240" min="1"></label>
-  <label>AWG
-    <select id="awg">
-      <option value="14">14</option>
-      <option value="12" selected>12</option>
-      <option value="10">10</option>
-      <option value="8">8</option>
-      <option value="6">6</option>
-    </select>
-  </label>
-  <p class="out" id="out"></p>
-</div>
-<script>
-var cm = {14:4110, 12:6530, 10:10380, 8:16510, 6:26240};
-function calc() {
-  var i = +document.getElementById("amps").value;
-  var l = +document.getElementById("feet").value;
-  var v = +document.getElementById("volts").value;
-  var a = document.getElementById("awg").value;
-  var drop = (2 * 12.9 * i * l) / cm[a];
-  var pct = v ? (drop / v) * 100 : 0;
-  document.getElementById("out").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + v + " V";
-}
-["amps","feet","volts","awg"].forEach(function (id) {
-  document.getElementById(id).addEventListener("input", calc);
-});
-calc();
-</script>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a></nav><h1>Single-phase voltage drop</h1>
+<p class="meta">Study estimate using VD = 2 x K x I x L / cmil. K = 12.9 for copper. Not a code calculation.</p></header>
+<main class="card">
+<label>Load amps<input id="amps" type="number" value="20"></label>
+<label>One-way length, feet<input id="feet" type="number" value="100"></label>
+<label>Wire
+<select id="wire">
+<option value="6530">12 AWG (6530 cmil)</option>
+<option value="10380" selected>10 AWG (10380 cmil)</option>
+<option value="16510">8 AWG (16510 cmil)</option>
+<option value="26240">6 AWG (26240 cmil)</option>
+<option value="41740">4 AWG (41740 cmil)</option>
+</select></label>
+<label>Source volts<input id="volts" type="number" value="120"></label>
+<button type="button" id="go">Estimate</button>
+<p id="out"></p>
 </main>
-</body>
-</html>
+<script>
+document.getElementById('go').onclick=()=>{
+  const I=+amps.value, L=+feet.value, cmil=+wire.value, V=+volts.value;
+  const vd = 2*12.9*I*L/cmil;
+  const pct = V? vd/V*100 : 0;
+  out.textContent = vd.toFixed(2)+' V drop ('+pct.toFixed(1)+'%). Receiving about '+(V-vd).toFixed(1)+' V.';
+};
+</script></body></html>

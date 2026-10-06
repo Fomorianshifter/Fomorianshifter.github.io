@@ -1,5 +1,5 @@
 # Nicholas Lane portfolio
 
-Live: https://fomorianshifter.github.io/
+Live site: https://fomorianshifter.github.io/
 
-Feature that URL on LinkedIn. Paste text is in linkedin.html.
+Feature this URL on LinkedIn. Labs under /projects run in the browser.

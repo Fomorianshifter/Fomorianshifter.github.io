@@ -1,64 +1,25 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Locus grapher</title><link rel="stylesheet" href="../styles.css"></head>
-<body>
-<header><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#work">Work</a></nav></header>
-<main>
-<p class="kicker">Browser lab</p>
-<h1>Locus</h1>
-<p class="lede">Type a function of x. Scroll to zoom. Allowed: numbers, x, + - * / ^, parentheses, sin cos tan sqrt abs pi.</p>
-<div class="panel">
-<label>f(x)<input id="expr" value="sin(x)*x"></label>
-<p id="read">x = — · y = —</p>
-<canvas id="c" width="900" height="420" style="width:100%;background:#10130e;border-radius:8px"></canvas>
-</div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coordinate lab — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a></nav><h1>Coordinate log</h1>
+<p class="meta">Browser stand-in for GhostGPS. Points stay on this page. Distance uses a flat approximation.</p></header>
+<main class="card">
+<label>Label<input id="label" value="panel"></label>
+<label>Latitude<input id="lat" type="number" step="0.0001" value="44.5133"></label>
+<label>Longitude<input id="lon" type="number" step="0.0001" value="-88.0133"></label>
+<button type="button" id="add">Add point</button>
+<p id="out"></p>
 </main>
 <script>
-var c = document.getElementById('c');
-var ctx = c.getContext('2d');
-var scale = 40, ox = 450, oy = 210;
-function compile(src) {
-  if (!/^[0-9xX+\-*/^().,\s]+$/.test(src.replace(/sin|cos|tan|sqrt|abs|pi/gi, ''))) throw new Error('bad');
-  var body = src.replace(/\^/g, '**').replace(/pi/gi, 'Math.PI').replace(/sin/gi, 'Math.sin').replace(/cos/gi, 'Math.cos').replace(/tan/gi, 'Math.tan').replace(/sqrt/gi, 'Math.sqrt').replace(/abs/gi, 'Math.abs');
-  return new Function('x', 'return (' + body + ');');
-}
-function draw() {
-  ctx.clearRect(0, 0, c.width, c.height);
-  ctx.strokeStyle = '#34382e';
-  var x, y;
-  for (x = ox % scale; x < c.width; x += scale) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, c.height); ctx.stroke(); }
-  for (y = oy % scale; y < c.height; y += scale) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke(); }
-  ctx.strokeStyle = '#e0a15f';
-  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(c.width, oy); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, c.height); ctx.stroke();
-  var fn;
-  try { fn = compile(expr.value); } catch (e) { return; }
-  ctx.strokeStyle = '#8fbf6a';
-  ctx.beginPath();
-  var started = false;
-  for (var px = 0; px < c.width; px++) {
-    var xv = (px - ox) / scale;
-    var yv;
-    try { yv = fn(xv); } catch (e2) { yv = NaN; }
-    if (!Number.isFinite(yv)) { started = false; continue; }
-    var py = oy - yv * scale;
-    if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+const pts=[];
+document.getElementById('add').onclick=()=>{
+  pts.push({label:label.value, lat:+lat.value, lon:+lon.value});
+  let text=pts.map(p=>p.label+': '+p.lat+', '+p.lon).join('\n');
+  if(pts.length>1){
+    const a=pts.at(-2), b=pts.at(-1);
+    const miles=Math.hypot((b.lat-a.lat)*69, (b.lon-a.lon)*69*Math.cos(a.lat*Math.PI/180));
+    text+='\nLast leg about '+miles.toFixed(2)+' miles.';
   }
-  ctx.stroke();
-}
-expr.addEventListener('input', draw);
-c.addEventListener('wheel', function (e) {
-  e.preventDefault();
-  scale = Math.min(160, Math.max(12, scale * (e.deltaY < 0 ? 1.1 : 0.9)));
-  draw();
-}, { passive: false });
-c.addEventListener('mousemove', function (e) {
-  var r = c.getBoundingClientRect();
-  var px = (e.clientX - r.left) * (c.width / r.width);
-  var xv = (px - ox) / scale;
-  var yv = NaN;
-  try { yv = compile(expr.value)(xv); } catch (err) {}
-  read.textContent = 'x = ' + xv.toFixed(2) + ' · y = ' + (Number.isFinite(yv) ? yv.toFixed(3) : '—');
-});
-draw();
-</script>
-</body></html>
+  out.textContent=text;
+};
+</script></body></html>

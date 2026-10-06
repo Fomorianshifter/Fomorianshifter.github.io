@@ -1,62 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loki life cycle — Nicholas Lane</title>
-<link rel="stylesheet" href="../styles.css">
-</head>
-<body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loki life cycle — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav><a href="../index.html">Home</a></nav>
+<p class="kicker">From the Loki README rules</p><h1>Loki life cycle</h1></header>
 <main>
-<p><a href="../index.html">← Portfolio</a> · <a href="https://github.com/Fomorianshifter/Loki">Loki source</a></p>
-<h1>Loki life cycle</h1>
-<p class="note">Browser stand-in for the growth rules in loki_life.c. Egg 0, hatchling 50, young 200, adult 500 growth points.</p>
-<div class="lab">
-  <button type="button" data-food="basic">Feed basic</button>
-  <button type="button" data-food="tasty">Feed tasty</button>
-  <button type="button" data-food="special">Feed special</button>
-  <button type="button" id="play">Interact</button>
-  <p class="out" id="status"></p>
+<div class="row">
+<button type="button" data-food="basic">Basic food</button>
+<button type="button" data-food="tasty">Tasty</button>
+<button type="button" data-food="special">Special</button>
+<button type="button" id="play">Interact</button>
 </div>
-<script>
-var gp = 0, hunger = 40, happy = 50, energy = 70;
-var foods = { basic:[20,5,5], tasty:[40,10,15], special:[60,20,25] };
-function stage() {
-  if (gp >= 500) return "adult";
-  if (gp >= 200) return "young";
-  if (gp >= 50) return "hatchling";
-  return "egg";
-}
-function mood() {
-  if (hunger >= 70) return "hungry";
-  if (energy <= 20) return "sleepy";
-  if (happy <= 30 || hunger >= 50) return "grumpy";
-  if (happy >= 70) return "happy";
-  if (happy >= 50 && energy >= 60) return "playful";
-  return "neutral";
-}
-function show() {
-  document.getElementById("status").textContent =
-    "Stage: " + stage() + " · gp " + gp + " · hunger " + hunger + " · happy " + happy + " · energy " + energy + " · mood " + mood();
-}
-document.querySelectorAll("[data-food]").forEach(function (b) {
-  b.onclick = function () {
-    var f = foods[b.getAttribute("data-food")];
-    var pen = hunger < 20 ? 0.5 : 1;
-    hunger = Math.max(0, hunger - Math.round(f[0] * pen));
-    gp += Math.round(f[1] * pen);
-    happy = Math.min(100, happy + Math.round(f[2] * pen));
-    show();
-  };
-});
-document.getElementById("play").onclick = function () {
-  happy = Math.min(100, happy + 8);
-  energy = Math.max(0, energy - 6);
-  gp += 4;
-  hunger = Math.min(100, hunger + 4);
-  show();
-};
-show();
-</script>
+<p id="status" class="card"></p>
+<p class="meta"><a href="https://github.com/Fomorianshifter/Loki">Loki repository</a></p>
 </main>
-</body>
-</html>
+<script>
+const foods={basic:[20,5,5], tasty:[40,10,15], special:[60,20,25]};
+const s={hunger:40,happy:50,energy:70,gp:0};
+function stage(){return s.gp>=500?'Adult':s.gp>=200?'Young':s.gp>=50?'Hatchling':'Egg'}
+function mood(){
+  if(s.hunger>=70) return 'Hungry';
+  if(s.energy<=20) return 'Sleepy';
+  if(s.happy<=30||s.hunger>=50) return 'Grumpy';
+  if(s.happy>=70) return 'Happy';
+  if(s.happy>=50&&s.energy>=60) return 'Playful';
+  return 'Neutral';
+}
+function show(){status.textContent=stage()+' · '+mood()+' · growth '+s.gp+' · hunger '+s.hunger+' · happy '+s.happy+' · energy '+s.energy;}
+function clamp(){['hunger','happy','energy'].forEach(k=>{s[k]=Math.max(0,Math.min(100,s[k]));});}
+document.querySelectorAll('[data-food]').forEach(b=>b.onclick=()=>{
+  let pair=foods[b.dataset.food];
+  let h=pair[0], g=pair[1], p=pair[2];
+  if(s.hunger<30){h/=2;g/=2;p/=2;}
+  s.hunger-=h; s.gp+=g; s.happy+=p; s.energy-=5; clamp(); show();
+});
+document.getElementById('play').onclick=()=>{s.happy+=8; s.energy-=10; s.gp+=3; s.hunger+=6; clamp(); show();};
+show();
+</script></body></html>
