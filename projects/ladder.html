@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Start / stop seal-in — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
-  <style>
-    .rung { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-family: ui-monospace, monospace; }
-    .contact { min-width: 92px; }
-    .hot { outline: 2px solid #e2a14a; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Starter rung — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../index.html">NL</a>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html">Projects</a>
+    </nav>
+  </header>
   <main>
-    <h1>Start / stop seal-in</h1>
-    <p class="note">Stop is normally closed. Start is normally open. The motor contact seals around Start. Overload is normally closed.</p>
-    <div class="rung" id="r1"><span>L1</span><button class="contact" id="stop">STOP NC</button><button class="contact" id="start">START NO</button><span>M</span></div>
-    <div class="rung" id="r2"><span>seal</span><button class="contact" id="seal" disabled>M NO</button><span>in parallel with START</span></div>
-    <p class="out" id="state">Motor off</p>
-    <button id="ol">Toggle overload</button>
+    <p class="kicker">Controls demo</p>
+    <h1>Three-wire motor starter</h1>
+    <p class="lede">Stop is normally closed. Start is normally open. A seal-in contact closes with the coil. The overload is normally closed and drops the coil if it opens.</p>
+    <div class="card">
+      <div class="row">
+        <button class="btn" id="stop" type="button">Stop closed</button>
+        <button class="btn ghost" id="start" type="button">Start open</button>
+        <button class="btn ghost" id="ol" type="button">Overload closed</button>
+      </div>
+      <div class="ladder">
+        <div class="rail"></div>
+        <div class="rung">
+          <span class="tag" id="s1">STOP</span>
+          <span class="tag" id="s2">START</span>
+          <span class="tag" id="s3">SEAL</span>
+          <span class="tag" id="s4">OL</span>
+        </div>
+        <div class="coil" id="coil">M</div>
+      </div>
+      <p id="status" class="meta"></p>
+    </div>
+    <footer>Logic only. Not a wiring diagram and not a substitute for a lockout procedure.</footer>
   </main>
   <script>
-    let startHeld = false, stopOpen = false, overload = false, motor = false;
-    const state = document.getElementById("state");
-    function tick() {
-      const seal = motor;
-      motor = !stopOpen && !overload && (startHeld || seal);
-      state.textContent = motor ? "Motor running — seal-in closed" : "Motor off";
-      document.getElementById("seal").textContent = motor ? "M NO closed" : "M NO open";
-      document.getElementById("r1").classList.toggle("hot", motor);
+    var stopClosed = true, start = false, ol = true, seal = false;
+    function render() {
+      var path = stopClosed && ol && (start || seal);
+      seal = path;
+      document.getElementById("stop").textContent = stopClosed ? "Stop closed" : "Stop open";
+      document.getElementById("start").textContent = start ? "Start held" : "Start open";
+      document.getElementById("ol").textContent = ol ? "Overload closed" : "Overload open";
+      document.getElementById("coil").className = path ? "coil on" : "coil";
+      document.getElementById("s3").textContent = seal ? "SEAL in" : "SEAL out";
+      document.getElementById("status").textContent = path
+        ? "Coil M is picked up. Release Start and the seal-in holds it until Stop or the overload opens."
+        : "Coil M is dropped. Close Stop and the overload, then press Start.";
     }
-    document.getElementById("start").addEventListener("mousedown", () => { startHeld = true; tick(); });
-    document.getElementById("start").addEventListener("mouseup", () => { startHeld = false; tick(); });
-    document.getElementById("start").addEventListener("mouseleave", () => { startHeld = false; tick(); });
-    document.getElementById("stop").addEventListener("mousedown", () => { stopOpen = true; tick(); });
-    document.getElementById("stop").addEventListener("mouseup", () => { stopOpen = false; tick(); });
-    document.getElementById("ol").addEventListener("click", () => { overload = !overload; tick(); });
-    tick();
+    document.getElementById("stop").onclick = function () { stopClosed = !stopClosed; render(); };
+    document.getElementById("start").onclick = function () { start = !start; render(); };
+    document.getElementById("ol").onclick = function () { ol = !ol; render(); };
+    render();
   </script>
 </body>
 </html>

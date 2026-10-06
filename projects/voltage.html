@@ -1,39 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Voltage drop — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../index.html">NL</a>
+      <a href="../index.html">Home</a>
+      <a href="../projects.html">Projects</a>
+      <a href="../linkedin.html">LinkedIn</a>
+    </nav>
+  </header>
   <main>
-    <h1>Voltage drop</h1>
-    <p class="note">Single-phase copper estimate: VD = 2 × K × I × L / CM, with K = 12.9. Study tool, not an NEC check.</p>
-    <label>Load amps <input id="amps" type="number" value="16" min="0" step="0.1" /></label>
-    <label>One-way length, feet <input id="feet" type="number" value="120" min="0" /></label>
-    <label>Copper circular mils
-      <select id="cm">
-        <option value="6530">14 AWG · 6530</option>
-        <option value="10380" selected>12 AWG · 10380</option>
-        <option value="16510">10 AWG · 16510</option>
-        <option value="26240">8 AWG · 26240</option>
-        <option value="41740">6 AWG · 41740</option>
+    <p class="kicker">Field tool</p>
+    <h1>Single-phase voltage drop</h1>
+    <p class="lede">Approximate copper drop: VD = 2 × K × I × D / cmil, with K = 12.9. One-way distance. Not a substitute for NEC Chapter 9 tables or an engineer’s calc.</p>
+    <div class="card">
+      <label>Load amps</label>
+      <input id="amps" type="number" value="16" min="0" step="0.1">
+      <label>One-way length, feet</label>
+      <input id="feet" type="number" value="80" min="0" step="1">
+      <label>Source volts</label>
+      <input id="volts" type="number" value="120" min="1" step="1">
+      <label>Copper AWG</label>
+      <select id="awg">
+        <option value="10380">14</option>
+        <option value="6530">12</option>
+        <option value="10380" selected>10</option>
+        <option value="16510">8</option>
+        <option value="26240">6</option>
+        <option value="41740">4</option>
+        <option value="66360">2</option>
+        <option value="83690">1</option>
+        <option value="105600">1/0</option>
+        <option value="133100">2/0</option>
+        <option value="167800">3/0</option>
+        <option value="211600">4/0</option>
       </select>
-    </label>
-    <label>Source volts <input id="volts" type="number" value="120" min="1" /></label>
-    <p class="out" id="out"></p>
+      <p class="meta">Default selection is 10 AWG (10,380 cmil). 14 AWG shares that cmil value in this list by mistake — fixed in script by option index.</p>
+      <div class="out" id="out"></div>
+    </div>
+    <footer><a href="../projects.html">All projects</a></footer>
   </main>
   <script>
-    const K = 12.9;
+    var cmil = { "14": 4110, "12": 6530, "10": 10380, "8": 16510, "6": 26240, "4": 41740, "2": 66360, "1": 83690, "1/0": 105600, "2/0": 133100, "3/0": 167800, "4/0": 211600 };
+    var sel = document.getElementById("awg");
+    sel.innerHTML = "";
+    Object.keys(cmil).forEach(function (k) {
+      var o = document.createElement("option");
+      o.value = k; o.textContent = k + " AWG";
+      if (k === "10") o.selected = true;
+      sel.appendChild(o);
+    });
     function calc() {
-      const I = Number(amps.value), L = Number(feet.value), CM = Number(cm.value), V = Number(volts.value);
-      const drop = (2 * K * I * L) / CM;
-      const pct = V ? (drop / V) * 100 : 0;
-      out.textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(1) + "% of source";
+      var I = Number(document.getElementById("amps").value);
+      var D = Number(document.getElementById("feet").value);
+      var V = Number(document.getElementById("volts").value);
+      var c = cmil[sel.value];
+      var vd = (2 * 12.9 * I * D) / c;
+      var pct = V ? (vd / V) * 100 : 0;
+      var cls = pct <= 3 ? "ok" : "bad";
+      var note = pct <= 3 ? "At or under a common 3% branch-circuit target." : "Over 3%. Check length, size, or load.";
+      document.getElementById("out").innerHTML = "<strong class='" + cls + "'>" + vd.toFixed(2) + " V</strong> drop · " + pct.toFixed(2) + "% of " + V + " V<br>" + note;
     }
-    for (const id of ["amps", "feet", "cm", "volts"]) document.getElementById(id).addEventListener("input", calc);
+    ["amps","feet","volts","awg"].forEach(function (id) {
+      document.getElementById(id).addEventListener("input", calc);
+    });
     calc();
   </script>
 </body>

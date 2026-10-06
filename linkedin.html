@@ -1,23 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LinkedIn paste sheet — Nicholas Lane</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LinkedIn — Nicholas Lane</title>
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="top"><a class="mark" href="index.html">NL</a><nav><a href="index.html">Home</a></nav></header>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="index.html">NL</a>
+      <a href="index.html">Home</a>
+      <a href="work.html">Work</a>
+      <a href="projects.html">Projects</a>
+      <a href="resume.html">Resume</a>
+      <a href="linkedin.html" aria-current="page">LinkedIn</a>
+    </nav>
+  </header>
   <main>
-    <h1>LinkedIn</h1>
+    <p class="kicker">Paste into LinkedIn</p>
+    <h1>Connect this site</h1>
     <ol>
-      <li>Contact info → Website: https://fomorianshifter.github.io/</li>
-      <li>Featured → Add a link to that URL, and a second link to the Loki repo.</li>
-      <li>Headline: Industrial electrician · PLC support · controls learner · Green Bay, WI</li>
+      <li>LinkedIn → Me → View profile → pencil on the intro card.</li>
+      <li>Website: <code>https://fomorianshifter.github.io/</code> — label it Portfolio.</li>
+      <li>Paste the headline and About below. Add the same URL under Contact info and Featured.</li>
     </ol>
-    <h2>About draft</h2>
-    <p>Industrial electrician with field time at Grede Foundries, AC Electric, and Greenfield Electric. Comfortable in panels, on service calls, and reading prints. Supporting PLC install and troubleshooting, studying toward NEC certification, and building in public at github.com/Fomorianshifter. Portfolio: https://fomorianshifter.github.io/</p>
-    <p class="note">Skills the jobs or repos support: electrical troubleshooting, blueprint reading, PLC troubleshooting, industrial maintenance, sensors, motors, safe work practices, preventive maintenance, HTML, CSS, JavaScript, Git. The resume’s long keyword list is left off because it is not backed by the work history or the public repos.</p>
+    <h2>Headline</h2>
+    <pre id="headline">Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open to relocate</pre>
+    <h2>About</h2>
+    <pre id="about">Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric.
+
+I am studying toward NEC certification and freeCodeCamp computer science. Public projects, including a voltage-drop check, a motor-starter rung, and the Loki embedded companion, are at https://fomorianshifter.github.io/
+
+Green Bay, WI. Willing to relocate. Authorized to work in the US.</pre>
+    <p><button class="btn" id="copy" type="button">Copy About</button></p>
+    <p class="meta">Featured links: home, Loki, voltage drop, ladder. GitHub: https://github.com/Fomorianshifter</p>
+    <footer>Do not put a phone number in the public About if you would rather keep it on the contact card only.</footer>
   </main>
+  <script>
+    document.getElementById("copy").onclick = function () {
+      navigator.clipboard.writeText(document.getElementById("about").textContent);
+      this.textContent = "Copied";
+    };
+  </script>
 </body>
 </html>

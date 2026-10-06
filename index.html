@@ -3,87 +3,76 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nicholas Lane — electrician and controls portfolio</title>
-  <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC support, electrical troubleshooting, and public GitHub projects.">
-  <link rel="stylesheet" href="styles.css">
+  <title>Nicholas Lane — Industrial electrician and controls</title>
+  <meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC support, electrical maintenance, and small controls tools.">
   <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <a class="brand" href="index.html">Nicholas Lane</a>
-    <nav>
-      <a href="index.html#work">Work</a>
+    <nav class="nav">
+      <a class="brand" href="index.html">NL</a>
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="work.html">Work</a>
       <a href="projects.html">Projects</a>
       <a href="resume.html">Resume</a>
-      <a href="linkedin.html">LinkedIn kit</a>
-      <a href="https://github.com/Fomorianshifter">GitHub</a>
+      <a href="linkedin.html">LinkedIn</a>
     </nav>
   </header>
   <main>
-    <p class="kicker">Green Bay, WI · willing to relocate · authorized to work in the US</p>
-    <h1>Field electrician who can open the panel and the repo.</h1>
-    <p class="lead">More than five years on residential, commercial, and foundry electrical work, including PLC install and troubleshooting support at Grede Foundries. Studying toward NEC certification and freeCodeCamp computer science. Public code is under <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+    <p class="kicker">Green Bay, WI · willing to relocate</p>
+    <div class="hero">
+      <h1>Nicholas Lane</h1>
+      <p class="lede">Industrial electrician with more than five years in residential, commercial, and foundry electrical work. I install and troubleshoot power and control circuits, support PLC systems, and build small tools that make field work faster.</p>
+    </div>
     <div class="row">
-      <a class="btn primary" href="projects.html">Open the labs</a>
-      <a class="btn" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
-      <a class="btn" href="tel:+16087177602">608-717-7602</a>
+      <a class="btn" href="projects.html">Open projects</a>
+      <a class="btn ghost" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
+      <a class="btn ghost" href="https://github.com/Fomorianshifter">GitHub</a>
     </div>
-    <p class="meta">LinkedIn website field: <strong>https://fomorianshifter.github.io/</strong></p>
-
-    <h2 id="work">Work</h2>
-    <div class="grid">
-      <article class="card">
-        <p class="tag">Oct 2021 – Mar 2024</p>
-        <h3>Industrial electrician</h3>
-        <p>Grede Foundries, Reedsburg, WI. Assisted PLC installation and programming for automated processes. Worked with engineering on electrical faults — the resume cites over 50 issues a month — and monthly inspections held to a stated 100% safety-compliance rate.</p>
-      </article>
-      <article class="card">
-        <p class="tag">Sep 2018 – Oct 2021</p>
-        <h3>Electrician</h3>
-        <p>AC Electric, Hayward, WI. New construction, remodels, and service calls. Observed PLC installs and kept service work moving.</p>
-      </article>
-      <article class="card">
-        <p class="tag">Jul 2016 – Sep 2018</p>
-        <h3>Electrician, laborer / apprentice</h3>
-        <p>Greenfield Electric, Greenfield, WI. Assisted journeyman and master electricians on installs and basic programming tasks.</p>
-      </article>
-      <article class="card">
-        <p class="tag">Apr 2013 – Dec 2015</p>
-        <h3>Quality control inspector</h3>
-        <p>CompX, Grayslake, IL. CNC process inspection and support for machinists on programming and electronics integration.</p>
-      </article>
-    </div>
-
-    <h2 id="projects">Projects recruiters can click</h2>
-    <div class="grid">
-      <article class="card">
-        <p class="tag">Lab · runs in the browser</p>
-        <h3><a href="projects/starter.html">3-wire motor starter</a></h3>
-        <p>Start, stop, and overload on a seal-in circuit. Built as a teaching panel from field electrical work, not a claim of a specific plant program.</p>
-      </article>
-      <article class="card">
-        <p class="tag">Lab · runs in the browser</p>
-        <h3><a href="projects/faults.html">Foundry fault log</a></h3>
-        <p>Sample maintenance tickets for motors, sensors, and control power. Clearly labeled examples, not a dump of Grede work orders.</p>
-      </article>
-      <article class="card">
-        <p class="tag">Lab · runs in the browser</p>
-        <h3><a href="projects/voltage.html">Voltage-drop check</a></h3>
-        <p>Single-phase copper drop from length, load, and wire size. A field check, not a code substitute.</p>
-      </article>
-      <article class="card">
-        <p class="tag">GitHub · C / Python</p>
-        <h3><a href="https://github.com/Fomorianshifter/Loki">Loki</a></h3>
-        <p>Embedded companion for a Linux single-board computer: HAL, TFT and bus drivers, local config UI, Flipper UART notes. Strongest public repo. Browser walkthrough: <a href="projects/loki.html">Loki lab</a>.</p>
-      </article>
-      <article class="card">
-        <p class="tag">GitHub · 2024 sketch</p>
-        <h3><a href="projects/orbits.html">Planet alignment</a></h3>
-        <p>Interactive version of the public <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a> idea. The old repo is a short sketch; this page is the running demo.</p>
-      </article>
-    </div>
-    <p class="note">Forks of phone-lookup and packet tools are left off this page on purpose. GhostGPS is an early concept README without a finished app, so it is listed on the projects page and not featured.</p>
+    <section>
+      <h2>What I bring to a controls job</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Foundry electrical</h3>
+          <p>Grede Foundries, Reedsburg. Assisted PLC install and programming, worked with engineering on electrical faults, and kept monthly equipment inspections at full safety compliance.</p>
+        </article>
+        <article class="card">
+          <h3>Construction and service</h3>
+          <p>AC Electric and Greenfield Electric. New construction, remodels, service calls, and apprentice work beside journeyman and master electricians.</p>
+        </article>
+        <article class="card">
+          <h3>Controls practice</h3>
+          <p>Ladder logic, voltage drop, motor starter checks, and a fault log. These are working demos on this site, not screenshots.</p>
+        </article>
+      </div>
+    </section>
+    <section>
+      <h2>Featured</h2>
+      <div class="grid">
+        <article class="card">
+          <span class="tag">C</span><span class="tag">embedded</span>
+          <h3>Loki</h3>
+          <p>Dragon companion for a Linux single-board computer: TFT display, hardware drivers, a local config UI, and Flipper Zero UART.</p>
+          <p><a href="projects/loki.html">Project page</a> · <a href="https://github.com/Fomorianshifter/Loki">Source</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">interactive</span>
+          <h3>Voltage drop</h3>
+          <p>Single-phase copper drop from length, load, and wire size. Useful on a phone in the field.</p>
+          <p><a href="projects/voltage.html">Open calculator</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">interactive</span>
+          <h3>Starter rung</h3>
+          <p>Stop, start, and overload contacts seal in a motor coil. Click the devices and watch the rung.</p>
+          <p><a href="projects/ladder.html">Open ladder</a></p>
+        </article>
+      </div>
+    </section>
+    <footer>
+      <p>Authorized to work in the US. Phone +1 608 717 7602. Site: <a href="https://fomorianshifter.github.io/">fomorianshifter.github.io</a></p>
+    </footer>
   </main>
-  <footer>Nicholas Lane · Green Bay, WI 54313 · nlane713@gmail.com</footer>
 </body>
 </html>

@@ -4,48 +4,57 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Projects — Nicholas Lane</title>
+  <link rel="icon" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <a class="brand" href="index.html">Nicholas Lane</a>
-    <nav>
+    <nav class="nav">
+      <a class="brand" href="index.html">NL</a>
       <a href="index.html">Home</a>
+      <a href="work.html">Work</a>
+      <a href="projects.html" aria-current="page">Projects</a>
       <a href="resume.html">Resume</a>
-      <a href="linkedin.html">LinkedIn kit</a>
+      <a href="linkedin.html">LinkedIn</a>
     </nav>
   </header>
   <main>
-    <p class="kicker">Labs and public repos</p>
+    <p class="kicker">Selected work</p>
     <h1>Projects</h1>
-    <p class="lead">Four labs run on this site. Two come from public GitHub work. The electrical labs are original teaching tools written for this portfolio.</p>
+    <p class="lede">Best public repo first, then three small tools built for this portfolio so a hiring manager can click something that runs.</p>
     <div class="grid">
       <article class="card">
-        <h3><a href="projects/starter.html">Motor starter lab</a></h3>
-        <p>3-wire start/stop with seal-in and overload. Press the buttons and watch the rung.</p>
+        <span class="tag">GitHub</span><span class="tag">C</span>
+        <h2>Loki</h2>
+        <p>Embedded companion for Orange Pi and Raspberry Pi class boards. TFT support, drivers, a local configuration UI, Flipper Zero UART. MIT license.</p>
+        <p><a href="projects/loki.html">Write-up</a> · <a href="https://github.com/Fomorianshifter/Loki">Repository</a></p>
       </article>
       <article class="card">
-        <h3><a href="projects/faults.html">Fault log lab</a></h3>
-        <p>Filter sample foundry electrical tickets by asset type.</p>
+        <span class="tag">GitHub</span>
+        <h2>GhostGPS</h2>
+        <p>Smaller hardware experiment in the same account. Source is public; treat it as an in-progress lab, not a product.</p>
+        <p><a href="https://github.com/Fomorianshifter/GhostGPS">Repository</a></p>
       </article>
       <article class="card">
-        <h3><a href="projects/voltage.html">Voltage-drop lab</a></h3>
-        <p>Estimate single-phase copper drop before a long run.</p>
+        <span class="tag">demo</span>
+        <h2>Voltage drop</h2>
+        <p>Single-phase copper voltage drop from amps, one-way feet, and AWG. Approximate field check, not a code calculation.</p>
+        <p><a href="projects/voltage.html">Open</a></p>
       </article>
       <article class="card">
-        <h3><a href="projects/orbits.html">Orbits lab</a></h3>
-        <p>Canvas planets from the 2024 SolarSystem sketch.</p>
+        <span class="tag">demo</span>
+        <h2>Motor starter rung</h2>
+        <p>Three-wire control: stop, start, seal-in auxiliary, and overload. Coil only picks up when the path is complete.</p>
+        <p><a href="projects/ladder.html">Open</a></p>
       </article>
       <article class="card">
-        <h3><a href="projects/loki.html">Loki walkthrough</a></h3>
-        <p>Life-cycle states from the embedded repo, simulated in the browser. Source: <a href="https://github.com/Fomorianshifter/Loki">Fomorianshifter/Loki</a>.</p>
-      </article>
-      <article class="card">
-        <h3><a href="https://github.com/Fomorianshifter/GhostGPS">GhostGPS</a></h3>
-        <p>Early concept note only. README describes a maps-side companion idea. No finished app in the repo, so it is not a featured lab.</p>
+        <span class="tag">demo</span>
+        <h2>Shift fault log</h2>
+        <p>Local maintenance log: asset, symptom, action. Stays in this browser. No server.</p>
+        <p><a href="projects/fault-log.html">Open</a></p>
       </article>
     </div>
+    <footer>Profile: <a href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a></footer>
   </main>
-  <footer>Nicholas Lane · <a href="https://github.com/Fomorianshifter">github.com/Fomorianshifter</a></footer>
 </body>
 </html>

@@ -1,41 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shift fault log — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fault log — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="../index.html">NL</a>
+      <a href="../projects.html">Projects</a>
+    </nav>
+  </header>
   <main>
+    <p class="kicker">Maintenance log</p>
     <h1>Shift fault log</h1>
-    <p class="note">Sample foundry-style tickets. Filter stays in this browser. Nothing is uploaded.</p>
-    <label>Asset
-      <select id="filter">
-        <option value="all">All</option>
-        <option value="motor">Motor</option>
-        <option value="sensor">Sensor</option>
-        <option value="plc">PLC</option>
-      </select>
-    </label>
-    <ul id="list"></ul>
+    <p class="lede">Entries stay in this browser (localStorage). Clear them before handing the laptop to someone else.</p>
+    <div class="card">
+      <label>Asset</label>
+      <input id="asset" placeholder="MCC-2 feeder 4">
+      <label>Symptom</label>
+      <input id="symptom" placeholder="Motor would not start after stop">
+      <label>Action</label>
+      <textarea id="action" rows="3" placeholder="Checked stop contact and overload. Reset and test-ran."></textarea>
+      <p><button class="btn" id="add" type="button">Add entry</button> <button class="btn ghost" id="clear" type="button">Clear log</button></p>
+    </div>
+    <table>
+      <thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
   </main>
   <script>
-    const rows = [
-      { asset: "motor", text: "Mold line 2 — conveyor motor overload after restart." },
-      { asset: "sensor", text: "Pour deck — proximity sensor stuck high, gate would not index." },
-      { asset: "plc", text: "Shot blast — input card not seen after panel washdown. Reseated and logged." },
-      { asset: "motor", text: "Shakeout — starter chatter, loose control wire on seal-in." },
-      { asset: "sensor", text: "Cooling — photoeye dirty, false stops on the transfer." }
-    ];
-    const list = document.getElementById("list");
+    var key = "nl-fault-log";
+    function load() { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch (e) { return []; } }
+    function save(rows) { localStorage.setItem(key, JSON.stringify(rows)); }
     function draw() {
-      const f = filter.value;
-      list.innerHTML = rows.filter(r => f === "all" || r.asset === f)
-        .map(r => "<li><strong>" + r.asset + "</strong> — " + r.text + "</li>").join("");
+      var rows = load();
+      document.getElementById("rows").innerHTML = rows.map(function (r) {
+        return "<tr><td>" + r.when + "</td><td>" + r.asset + "</td><td>" + r.symptom + "</td><td>" + r.action + "</td></tr>";
+      }).join("") || "<tr><td colspan='4'>No entries yet.</td></tr>";
     }
-    filter.addEventListener("change", draw);
+    function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&":"&","<":"<",">":">" }[c]; }); }
+    document.getElementById("add").onclick = function () {
+      var rows = load();
+      rows.unshift({
+        when: new Date().toLocaleString(),
+        asset: esc(document.getElementById("asset").value || "—"),
+        symptom: esc(document.getElementById("symptom").value || "—"),
+        action: esc(document.getElementById("action").value || "—")
+      });
+      save(rows); draw();
+    };
+    document.getElementById("clear").onclick = function () { localStorage.removeItem(key); draw(); };
     draw();
   </script>
 </body>

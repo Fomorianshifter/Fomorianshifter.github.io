@@ -1,5 +1,5 @@
 # Nicholas Lane portfolio
 
-Live site for LinkedIn: https://fomorianshifter.github.io/
+Static site for GitHub Pages: https://fomorianshifter.github.io/
 
-Work history is from the resume. Featured public repos are Loki, GhostGPS, and Solar System. The four labs under `projects/` run in the browser.
+Industrial electrician portfolio with resume, LinkedIn paste text, Loki, and three working demos (voltage drop, starter rung, fault log).

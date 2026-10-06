@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loki life-cycle lab</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loki life — Nicholas Lane</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
 <body>
-<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a> <a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav>
-<h1>Loki life cycle</h1>
-<p class="lede">Browser stand-in for the companion in the Loki repo: egg, hatchling, juvenile, adult. The real project is C drivers for a Linux board, a TFT, and Flipper Zero UART.</p></header>
-<main>
-<p>Stage <strong id="stage">egg</strong> · hunger <span id="hunger">20</span> · mood <span id="mood">50</span></p>
-<p><button id="feed">Feed</button> <button id="rest">Rest</button> <button id="tick">Advance hour</button></p>
-<pre class="out" id="log">egg is warming.</pre>
-</main>
-<script>
-const stages=["egg","hatchling","juvenile","adult"];
-let i=0, hunger=20, mood=50, hours=0;
-function paint(msg){stage.textContent=stages[i]; document.getElementById("hunger").textContent=hunger; document.getElementById("mood").textContent=mood; log.textContent=msg;}
-feed.onclick=()=>{hunger=Math.max(0,hunger-25); mood=Math.min(100,mood+8); paint("fed");};
-rest.onclick=()=>{mood=Math.min(100,mood+12); hunger=Math.min(100,hunger+4); paint("resting");};
-tick.onclick=()=>{hours++; hunger=Math.min(100,hunger+7); mood=Math.max(0,mood-3); if(hours%4===0 && i<3 && hunger<70) i++; paint(stages[i]+" after "+hours+" h");};
-</script>
-</body></html>
+  <header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="loki.html">Loki</a></nav></header>
+  <main>
+    <p class="kicker">Browser stand-in</p>
+    <h1>Loki on a desk</h1>
+    <p class="lede">A tiny state machine so the portfolio has something to click if the board is not on the bench. Hunger and charge tick down. Feed or charge to keep it awake.</p>
+    <div class="card">
+      <p id="face" style="font-size:2rem;margin:0">o_o</p>
+      <p id="stats"></p>
+      <div class="row">
+        <button class="btn" id="feed" type="button">Feed</button>
+        <button class="btn ghost" id="charge" type="button">Charge</button>
+      </div>
+    </div>
+  </main>
+  <script>
+    var hunger = 70, charge = 80;
+    function tick() {
+      hunger = Math.max(0, hunger - 4);
+      charge = Math.max(0, charge - 3);
+      var face = charge < 15 ? "x_x" : hunger < 25 ? ">_<" : "^_^";
+      document.getElementById("face").textContent = face;
+      document.getElementById("stats").textContent = "Hunger " + hunger + " · charge " + charge;
+    }
+    document.getElementById("feed").onclick = function () { hunger = Math.min(100, hunger + 25); tick(); };
+    document.getElementById("charge").onclick = function () { charge = Math.min(100, charge + 30); tick(); };
+    setInterval(tick, 1600);
+    tick();
+  </script>
+</body>
+</html>
