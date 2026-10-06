@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Voltage drop — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header>
-    <strong>Voltage drop</strong>
-    <nav><a href="../index.html">Home</a></nav>
-  </header>
-  <main>
-    <section>
-      <p class="note">Single-phase copper estimate: VD = (2 × K × I × D) / CM, with K = 12.9. Study tool, not an NEC stamp.</p>
-      <div class="card">
-        <label>Load current (A)</label>
-        <input id="amps" type="number" value="16" min="0" step="0.1">
-        <label>One-way length (ft)</label>
-        <input id="feet" type="number" value="80" min="0" step="1">
-        <label>Copper AWG</label>
-        <select id="awg">
-          <option value="10380">14</option>
-          <option value="6530" selected>12</option>
-          <option value="10380">10 is listed below</option>
-          <option value="10380">10</option>
-          <option value="16510">8</option>
-          <option value="26240">6</option>
-          <option value="41740">4</option>
-          <option value="66360">2</option>
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
+  <main class="lab">
+    <h1>Voltage drop</h1>
+    <p>Single-phase copper estimate: VD = 2 × K × I × D / CM. K is 12.9 for copper. This is a study tool, not an NEC stamp.</p>
+    <form class="panel" id="form">
+      <label>Load amps <input id="amps" type="number" min="0" step="0.1" value="20" /></label>
+      <label>One-way length, feet <input id="feet" type="number" min="0" step="1" value="80" /></label>
+      <label>Conductor
+        <select id="cm">
+          <option value="6530">14 AWG (6530 cm)</option>
+          <option value="10380" selected>12 AWG (10380 cm)</option>
+          <option value="16510">10 AWG (16510 cm)</option>
+          <option value="26240">8 AWG (26240 cm)</option>
+          <option value="41740">6 AWG (41740 cm)</option>
         </select>
-        <label>Source voltage</label>
-        <input id="volts" type="number" value="120" min="1">
-        <p><button class="action" id="go" type="button">Estimate</button></p>
-        <div class="out" id="out">Enter a load and length.</div>
-      </div>
-    </section>
+      </label>
+      <label>Source volts <input id="volts" type="number" min="1" step="1" value="120" /></label>
+      <button type="submit">Estimate</button>
+      <p class="result" id="out">—</p>
+    </form>
   </main>
   <script>
-    const cm = { "14": 4110, "12": 6530, "10": 10380, "8": 16510, "6": 26240, "4": 41740, "2": 66360 };
-    document.getElementById("awg").innerHTML = Object.keys(cm).map(k => `<option value="${k}" ${k==="12"?"selected":""}>${k} AWG</option>`).join("");
-    document.getElementById("go").onclick = () => {
+    document.getElementById("form").addEventListener("submit", (e) => {
+      e.preventDefault();
       const I = Number(document.getElementById("amps").value);
       const D = Number(document.getElementById("feet").value);
+      const CM = Number(document.getElementById("cm").value);
       const V = Number(document.getElementById("volts").value);
-      const size = document.getElementById("awg").value;
-      const vd = (2 * 12.9 * I * D) / cm[size];
+      const vd = (2 * 12.9 * I * D) / CM;
       const pct = V ? (vd / V) * 100 : 0;
-      document.getElementById("out").textContent = `${vd.toFixed(2)} V drop (${pct.toFixed(2)}% of ${V} V) on ${size} AWG copper, ${D} ft one way, ${I} A. Branch circuits are often checked against a 3% rule of thumb; feeders often 2–5%. Confirm with the NEC and the print.`;
-    };
+      document.getElementById("out").textContent = vd.toFixed(2) + " V drop · " + pct.toFixed(1) + "% of " + V + " V";
+    });
   </script>
 </body>
 </html>

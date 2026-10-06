@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Start / stop seal-in — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header>
-    <strong>Start / stop seal-in</strong>
-    <nav><a href="../index.html">Home</a></nav>
-  </header>
-  <main>
-    <section>
-      <p class="note">Stop is normally closed. Start is normally open. The motor contact seals around Start. Overload drops the coil.</p>
-      <div class="card ladder" id="board"></div>
-      <div class="out" id="status">Coil off.</div>
-    </section>
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
+  <main class="lab">
+    <h1>Start / stop seal-in</h1>
+    <p>Stop is normally closed. Start is normally open. The motor contact seals around start. Click a contact to toggle it. This is a picture of the idea, not a safety circuit.</p>
+    <div class="panel" id="ladder"></div>
+    <p id="status">Motor off</p>
   </main>
   <script>
-    const state = { stop: true, start: false, ol: true, motor: false };
-    const board = document.getElementById("board");
-    function render() {
-      state.motor = state.stop && state.ol && (state.start || state.motor);
-      if (!state.stop || !state.ol) state.motor = false;
-      board.innerHTML = `
-        <div class="rung"><span>L1</span><span>Stop NC <button class="action" data-k="stop">${state.stop ? "closed" : "open"}</button></span><span></span></div>
-        <div class="rung"><span></span><span>Start NO <button class="action" data-k="start">${state.start ? "closed" : "open"}</button> in parallel with M seal</span><span class="coil ${state.motor ? "on" : ""}">M</span></div>
-        <div class="rung"><span></span><span>Overload NC <button class="action" data-k="ol">${state.ol ? "closed" : "tripped"}</button></span><span>L2</span></div>`;
-      document.getElementById("status").textContent = state.motor ? "Coil sealed in. Motor contact holding." : "Coil off.";
+    const state = { stop: true, start: false, motor: false };
+    const root = document.getElementById("ladder");
+    function evalMotor() {
+      state.motor = state.stop && (state.start || state.motor);
+      if (!state.stop) state.motor = false;
     }
-    board.onclick = (e) => {
-      const k = e.target.dataset.k;
-      if (!k) return;
-      state[k] = !state[k];
-      if (k === "start" && !state.start) { /* release does not drop a sealed coil */ }
-      render();
-    };
-    render();
+    function draw() {
+      evalMotor();
+      root.innerHTML = "";
+      [["Stop NC", "stop", state.stop], ["Start NO", "start", state.start], ["Seal-in", "seal", state.motor]].forEach(([label, key, on]) => {
+        const row = document.createElement("div");
+        row.className = "rung";
+        const b = document.createElement("button");
+        b.className = "contact" + (on ? " on" : "");
+        b.textContent = label + (on ? " closed" : " open");
+        b.disabled = key === "seal";
+        if (key !== "seal") b.onclick = () => { state[key] = !state[key]; draw(); };
+        const coil = document.createElement("span");
+        coil.className = "contact coil" + (state.motor ? " on" : "");
+        coil.textContent = state.motor ? "( M )" : "(   )";
+        row.append(b, document.createTextNode(" —— "), coil);
+        root.append(row);
+      });
+      document.getElementById("status").textContent = state.motor ? "Motor running" : "Motor off";
+    }
+    draw();
   </script>
 </body>
 </html>

@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shift fault log — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header>
-    <strong>Shift fault log</strong>
-    <nav><a href="../index.html">Home</a></nav>
-  </header>
-  <main>
-    <section>
-      <p class="note">Stored in this browser only. Nothing is uploaded.</p>
-      <div class="card">
-        <label>Asset</label>
-        <input id="asset" placeholder="Moulder 2, panel MCC-1">
-        <label>What failed</label>
-        <textarea id="note" rows="3" placeholder="E-stop chain open at door switch"></textarea>
-        <p><button class="action" id="add" type="button">Add call</button> <button class="action" id="clear" type="button">Clear</button></p>
-        <table><thead><tr><th>When</th><th>Asset</th><th>Note</th></tr></thead><tbody id="rows"></tbody></table>
-      </div>
-    </section>
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
+  <main class="lab">
+    <h1>Shift fault log</h1>
+    <p>Calls stay in this browser (localStorage). Nothing is uploaded.</p>
+    <form class="panel" id="form">
+      <label>Area <input id="area" required placeholder="Melt deck MCC" /></label>
+      <label>Symptom <input id="sym" required placeholder="Conveyor will not start" /></label>
+      <label>What you found <textarea id="found" rows="3" placeholder="Overload tripped, reset after jam cleared"></textarea></label>
+      <button type="submit">Add call</button>
+    </form>
+    <table>
+      <thead><tr><th>When</th><th>Area</th><th>Symptom</th><th>Found</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
   </main>
   <script>
-    const key = "lane-fault-log";
-    const load = () => JSON.parse(localStorage.getItem(key) || "[]");
-    const save = (rows) => localStorage.setItem(key, JSON.stringify(rows));
-    function paint() {
-      document.getElementById("rows").innerHTML = load().map(r => `<tr><td>${r.when}</td><td>${r.asset}</td><td>${r.note}</td></tr>`).join("") || `<tr><td colspan="3">No calls yet.</td></tr>`;
+    const KEY = "nl-fault-log";
+    const load = () => JSON.parse(localStorage.getItem(KEY) || "[]");
+    const save = (rows) => localStorage.setItem(KEY, JSON.stringify(rows));
+    function esc(s) {
+      return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
     }
-    document.getElementById("add").onclick = () => {
-      const asset = document.getElementById("asset").value.trim();
-      const note = document.getElementById("note").value.trim();
-      if (!asset || !note) return;
+    function render() {
+      const body = document.getElementById("rows");
+      body.innerHTML = "";
+      load().forEach((row, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + esc(row.when) + "</td><td>" + esc(row.area) + "</td><td>" + esc(row.sym) + "</td><td>" + esc(row.found) + "</td>";
+        const td = document.createElement("td");
+        const b = document.createElement("button");
+        b.textContent = "Remove";
+        b.onclick = () => { const rows = load(); rows.splice(i, 1); save(rows); render(); };
+        td.append(b);
+        tr.append(td);
+        body.append(tr);
+      });
+    }
+    document.getElementById("form").onsubmit = (e) => {
+      e.preventDefault();
       const rows = load();
-      rows.unshift({ when: new Date().toLocaleString(), asset, note });
-      save(rows.slice(0, 40));
-      document.getElementById("note").value = "";
-      paint();
+      rows.unshift({
+        when: new Date().toLocaleString(),
+        area: document.getElementById("area").value,
+        sym: document.getElementById("sym").value,
+        found: document.getElementById("found").value
+      });
+      save(rows);
+      e.target.reset();
+      render();
     };
-    document.getElementById("clear").onclick = () => { localStorage.removeItem(key); paint(); };
-    paint();
+    render();
   </script>
 </body>
 </html>
