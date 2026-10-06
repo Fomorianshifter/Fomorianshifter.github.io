@@ -1,62 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Starter rung — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="../index.html">NL</a>
-      <a href="../index.html">Home</a>
-      <a href="../projects.html">Projects</a>
-    </nav>
-  </header>
-  <main>
-    <p class="kicker">Controls demo</p>
-    <h1>Three-wire motor starter</h1>
-    <p class="lede">Stop is normally closed. Start is normally open. A seal-in contact closes with the coil. The overload is normally closed and drops the coil if it opens.</p>
-    <div class="card">
-      <div class="row">
-        <button class="btn" id="stop" type="button">Stop closed</button>
-        <button class="btn ghost" id="start" type="button">Start open</button>
-        <button class="btn ghost" id="ol" type="button">Overload closed</button>
-      </div>
-      <div class="ladder">
-        <div class="rail"></div>
-        <div class="rung">
-          <span class="tag" id="s1">STOP</span>
-          <span class="tag" id="s2">START</span>
-          <span class="tag" id="s3">SEAL</span>
-          <span class="tag" id="s4">OL</span>
-        </div>
-        <div class="coil" id="coil">M</div>
-      </div>
-      <p id="status" class="meta"></p>
-    </div>
-    <footer>Logic only. Not a wiring diagram and not a substitute for a lockout procedure.</footer>
-  </main>
-  <script>
-    var stopClosed = true, start = false, ol = true, seal = false;
-    function render() {
-      var path = stopClosed && ol && (start || seal);
-      seal = path;
-      document.getElementById("stop").textContent = stopClosed ? "Stop closed" : "Stop open";
-      document.getElementById("start").textContent = start ? "Start held" : "Start open";
-      document.getElementById("ol").textContent = ol ? "Overload closed" : "Overload open";
-      document.getElementById("coil").className = path ? "coil on" : "coil";
-      document.getElementById("s3").textContent = seal ? "SEAL in" : "SEAL out";
-      document.getElementById("status").textContent = path
-        ? "Coil M is picked up. Release Start and the seal-in holds it until Stop or the overload opens."
-        : "Coil M is dropped. Close Stop and the overload, then press Start.";
-    }
-    document.getElementById("stop").onclick = function () { stopClosed = !stopClosed; render(); };
-    document.getElementById("start").onclick = function () { start = !start; render(); };
-    document.getElementById("ol").onclick = function () { ol = !ol; render(); };
-    render();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Starter rung — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
+<main><p class="kicker">Ladder practice</p><h1>Three-wire motor starter</h1>
+<p class="lede">Stop is normally closed. Start is normally open. The auxiliary contact seals the start button. An open overload drops the coil.</p>
+<div class="rung" id="rung"></div><p class="out" id="coil">Coil off</p><p id="path"></p>
+<footer><a href="../projects.html">Back to projects</a></footer></main>
+<script>
+const state={stop:true,start:false,ol:true};
+const labels={stop:"Stop NC",start:"Start NO",aux:"Aux seal",ol:"Overload NC"};
+function sealed(){return state.stop&&state.ol&&(state.start||state.aux);}
+function draw(){
+state.aux=sealed();
+const rung=document.getElementById("rung");
+rung.innerHTML="";
+for(const key of ["stop","start","aux","ol"]){
+const button=document.createElement("button");
+button.className="device "+(state[key]?"on":"off");
+button.textContent=labels[key]+"\n"+(state[key]?"closed":"open");
+button.addEventListener("click",()=>{if(key!=="aux")state[key]=!state[key];draw();});
+rung.appendChild(button);
+}
+const on=state.stop&&state.ol&&(state.start||state.aux);
+state.aux=on;
+document.getElementById("coil").textContent=on?"Coil sealed in":"Coil off";
+document.getElementById("coil").className="out "+(on?"ok":"bad");
+document.getElementById("path").textContent=on?"Path is complete through stop, overload, and either start or the auxiliary contact.":"Path is open. Close stop and overload, then press start.";
+}
+draw();
+</script></body></html>

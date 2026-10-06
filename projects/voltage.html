@@ -1,77 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voltage drop — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="../index.html">NL</a>
-      <a href="../index.html">Home</a>
-      <a href="../projects.html">Projects</a>
-      <a href="../linkedin.html">LinkedIn</a>
-    </nav>
-  </header>
-  <main>
-    <p class="kicker">Field tool</p>
-    <h1>Single-phase voltage drop</h1>
-    <p class="lede">Approximate copper drop: VD = 2 × K × I × D / cmil, with K = 12.9. One-way distance. Not a substitute for NEC Chapter 9 tables or an engineer’s calc.</p>
-    <div class="card">
-      <label>Load amps</label>
-      <input id="amps" type="number" value="16" min="0" step="0.1">
-      <label>One-way length, feet</label>
-      <input id="feet" type="number" value="80" min="0" step="1">
-      <label>Source volts</label>
-      <input id="volts" type="number" value="120" min="1" step="1">
-      <label>Copper AWG</label>
-      <select id="awg">
-        <option value="10380">14</option>
-        <option value="6530">12</option>
-        <option value="10380" selected>10</option>
-        <option value="16510">8</option>
-        <option value="26240">6</option>
-        <option value="41740">4</option>
-        <option value="66360">2</option>
-        <option value="83690">1</option>
-        <option value="105600">1/0</option>
-        <option value="133100">2/0</option>
-        <option value="167800">3/0</option>
-        <option value="211600">4/0</option>
-      </select>
-      <p class="meta">Default selection is 10 AWG (10,380 cmil). 14 AWG shares that cmil value in this list by mistake — fixed in script by option index.</p>
-      <div class="out" id="out"></div>
-    </div>
-    <footer><a href="../projects.html">All projects</a></footer>
-  </main>
-  <script>
-    var cmil = { "14": 4110, "12": 6530, "10": 10380, "8": 16510, "6": 26240, "4": 41740, "2": 66360, "1": 83690, "1/0": 105600, "2/0": 133100, "3/0": 167800, "4/0": 211600 };
-    var sel = document.getElementById("awg");
-    sel.innerHTML = "";
-    Object.keys(cmil).forEach(function (k) {
-      var o = document.createElement("option");
-      o.value = k; o.textContent = k + " AWG";
-      if (k === "10") o.selected = true;
-      sel.appendChild(o);
-    });
-    function calc() {
-      var I = Number(document.getElementById("amps").value);
-      var D = Number(document.getElementById("feet").value);
-      var V = Number(document.getElementById("volts").value);
-      var c = cmil[sel.value];
-      var vd = (2 * 12.9 * I * D) / c;
-      var pct = V ? (vd / V) * 100 : 0;
-      var cls = pct <= 3 ? "ok" : "bad";
-      var note = pct <= 3 ? "At or under a common 3% branch-circuit target." : "Over 3%. Check length, size, or load.";
-      document.getElementById("out").innerHTML = "<strong class='" + cls + "'>" + vd.toFixed(2) + " V</strong> drop · " + pct.toFixed(2) + "% of " + V + " V<br>" + note;
-    }
-    ["amps","feet","volts","awg"].forEach(function (id) {
-      document.getElementById(id).addEventListener("input", calc);
-    });
-    calc();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Voltage drop — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
+<main><p class="kicker">Field tool</p><h1>Single-phase voltage drop</h1>
+<p class="lede">Approximate copper drop: 2 × 12.9 × amps × one-way feet ÷ circular mils. A field check, not an NEC substitute.</p>
+<form id="vd"><label>Load amps <input id="amps" type="number" min="0" step="0.1" value="16"></label>
+<label>One-way length, feet <input id="feet" type="number" min="0" step="1" value="80"></label>
+<label>Source volts <input id="volts" type="number" min="1" step="1" value="120"></label>
+<label>AWG copper <select id="awg"></select></label>
+<p><button class="primary" type="submit">Calculate</button></p></form>
+<p class="out" id="out">—</p><p id="note"></p>
+<footer><a href="../projects.html">Back to projects</a></footer></main>
+<script>
+const cm={"14":4110,"12":6530,"10":10380,"8":16510,"6":26240,"4":41740};
+document.getElementById("awg").innerHTML=Object.entries(cm).map(([awg,value])=>`<option value="${value}" ${awg==="12"?"selected":""}>${awg}</option>`).join("");
+document.getElementById("vd").addEventListener("submit",(event)=>{
+event.preventDefault();
+const amps=Number(document.getElementById("amps").value);
+const feet=Number(document.getElementById("feet").value);
+const volts=Number(document.getElementById("volts").value);
+const circular=Number(document.getElementById("awg").value);
+const drop=(2*12.9*amps*feet)/circular;
+const pct=volts?(drop/volts)*100:0;
+const out=document.getElementById("out");
+out.textContent=`${drop.toFixed(2)} V · ${pct.toFixed(1)}%`;
+out.className="out "+(pct>5?"bad":"ok");
+document.getElementById("note").textContent=pct>5?"Over 5% on this approximation. Look at a larger conductor or a shorter run before treating it as acceptable.":"At or under 5% on this approximation. Still confirm with the job spec and the code table that applies.";
+});
+</script></body></html>

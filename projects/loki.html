@@ -1,34 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loki — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="../index.html">NL</a>
-      <a href="../projects.html">Projects</a>
-    </nav>
-  </header>
-  <main>
-    <p class="kicker">GitHub · C · MIT</p>
-    <h1>Loki</h1>
-    <p class="lede">Embedded dragon companion for Linux single-board computers. The public repo covers a TFT display path, hardware drivers, a local configuration UI, and Flipper Zero UART integration. Topics: embedded-systems, flipper-zero, orange-pi, raspberry-pi, tft-display.</p>
-    <div class="row">
-      <a class="btn" href="https://github.com/Fomorianshifter/Loki">Open repository</a>
-      <a class="btn ghost" href="projects/loki-life.html">Browser life sim</a>
-    </div>
-    <h2>Why it is on the portfolio</h2>
-    <ul>
-      <li>It is the strongest original repo on the account: real C, hardware targets, a license, and a written scope.</li>
-      <li>It shows the same habit as plant work — devices, serial links, and a local UI instead of a cloud demo.</li>
-    </ul>
-    <p class="meta">1 star, 1 fork at the time this page was written. Open issues are still on the board, so call it a working project, not a finished product.</p>
-    <footer><a href="../projects.html">All projects</a></footer>
-  </main>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
+<main><p class="kicker">Best public repository</p><h1>Loki</h1>
+<p class="lede">Embedded C companion for a Linux single-board computer. The interesting part for a controls reader is the hardware split, not the dragon theme.</p>
+<div class="grid">
+<article class="card"><h2>Hardware layers</h2><p>HAL modules for GPIO, SPI, I2C, UART, and PWM. Separate drivers for a TFT display, SD card, flash, EEPROM, and Flipper Zero UART.</p></article>
+<article class="card"><h2>Runtime</h2><p>Startup and shutdown path, leveled logging, tracked allocation helpers, and retry logic for flaky bus calls. Local config UI on the board network.</p></article>
+<article class="card"><h2>Status</h2><p>Public, MIT licensed. The README still has an unresolved merge-conflict marker. Treat it as a working learning project, not a shipped product.</p></article>
+</div>
+<p><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p>
+<footer><a href="../projects.html">Back to projects</a></footer></main></body></html>

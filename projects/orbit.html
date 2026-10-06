@@ -1,52 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Orbits — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
-  <main>
-    <h1>Orbits</h1>
-    <p class="note">Browser version of the 2024 Solar System sketch. Periods are illustrative, not ephemeris data.</p>
-    <canvas id="sky" width="640" height="420" style="width:100%;background:#100e0b;border:1px solid #3a342c"></canvas>
-    <p><a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></p>
-  </main>
-  <script>
-    const c = document.getElementById("sky");
-    const g = c.getContext("2d");
-    const planets = [
-      { name: "Mercury", r: 50, p: 4, color: "#c4b7a6" },
-      { name: "Venus", r: 80, p: 7, color: "#e2a14a" },
-      { name: "Earth", r: 115, p: 10, color: "#7eb0d4" },
-      { name: "Mars", r: 150, p: 16, color: "#c46b4a" }
-    ];
-    const t0 = performance.now();
-    function frame(now) {
-      const t = (now - t0) / 1000;
-      g.clearRect(0, 0, c.width, c.height);
-      g.fillStyle = "#e7e1d6";
-      g.beginPath();
-      g.arc(320, 210, 10, 0, Math.PI * 2);
-      g.fill();
-      for (const p of planets) {
-        g.strokeStyle = "#3a342c";
-        g.beginPath();
-        g.ellipse(320, 210, p.r, p.r * 0.62, 0, 0, Math.PI * 2);
-        g.stroke();
-        const a = (t / p.p) * Math.PI * 2;
-        const x = 320 + Math.cos(a) * p.r;
-        const y = 210 + Math.sin(a) * p.r * 0.62;
-        g.fillStyle = p.color;
-        g.beginPath();
-        g.arc(x, y, 6, 0, Math.PI * 2);
-        g.fill();
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Orbit sketch — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
+<main><p class="kicker">Basic web project</p><h1>Orbit sketch</h1>
+<p class="lede">A small runnable version of the public SolarSystem idea. Source: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a>.</p>
+<canvas id="sky" width="640" height="360" style="width:100%;max-width:640px;background:#0d120c;border:1px solid #31402c;border-radius:10px"></canvas>
+<footer><a href="../projects.html">Back to projects</a></footer></main>
+<script>
+const canvas=document.getElementById("sky");const ctx=canvas.getContext("2d");
+const planets=[{r:50,size:4,speed:0.03,color:"#d2a24a"},{r:90,size:6,speed:0.018,color:"#8fbf6a"},{r:140,size:7,speed:0.012,color:"#7eb6d6"},{r:190,size:5,speed:0.008,color:"#d46a4c"}];
+let t=0;function frame(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#e7efe2";ctx.beginPath();ctx.arc(320,180,14,0,Math.PI*2);ctx.fill();
+for(const planet of planets){const x=320+Math.cos(t*planet.speed)*planet.r;const y=180+Math.sin(t*planet.speed)*planet.r*0.62;ctx.strokeStyle="#31402c";ctx.beginPath();ctx.ellipse(320,180,planet.r,planet.r*0.62,0,0,Math.PI*2);ctx.stroke();ctx.fillStyle=planet.color;ctx.beginPath();ctx.arc(x,y,planet.size,0,Math.PI*2);ctx.fill();}t+=1;requestAnimationFrame(frame);}frame();
+</script></body></html>

@@ -1,48 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LinkedIn — Nicholas Lane</title>
-  <link rel="icon" href="favicon.svg">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="index.html">NL</a>
-      <a href="index.html">Home</a>
-      <a href="work.html">Work</a>
-      <a href="projects.html">Projects</a>
-      <a href="resume.html">Resume</a>
-      <a href="linkedin.html" aria-current="page">LinkedIn</a>
-    </nav>
-  </header>
-  <main>
-    <p class="kicker">Paste into LinkedIn</p>
-    <h1>Connect this site</h1>
-    <ol>
-      <li>LinkedIn → Me → View profile → pencil on the intro card.</li>
-      <li>Website: <code>https://fomorianshifter.github.io/</code> — label it Portfolio.</li>
-      <li>Paste the headline and About below. Add the same URL under Contact info and Featured.</li>
-    </ol>
-    <h2>Headline</h2>
-    <pre id="headline">Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open to relocate</pre>
-    <h2>About</h2>
-    <pre id="about">Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric.
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LinkedIn — Nicholas Lane</title><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="index.html">NL</a><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="linkedin.html" aria-current="page">LinkedIn</a></nav></header>
+<main><p class="kicker">Paste into LinkedIn</p><h1>Website field</h1>
+<p>Use this URL in the contact info website field:</p>
+<pre>https://fomorianshifter.github.io/</pre>
+<h2>Headline</h2>
+<pre>Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open to relocate</pre>
+<h2>About</h2>
+<pre>Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric.
 
-I am studying toward NEC certification and freeCodeCamp computer science. Public projects, including a voltage-drop check, a motor-starter rung, and the Loki embedded companion, are at https://fomorianshifter.github.io/
+I am studying toward NEC certification and freeCodeCamp computer science. Public projects, including working field tools, are at https://fomorianshifter.github.io/
 
 Green Bay, WI. Willing to relocate. Authorized to work in the US.</pre>
-    <p><button class="btn" id="copy" type="button">Copy About</button></p>
-    <p class="meta">Featured links: home, Loki, voltage drop, ladder. GitHub: https://github.com/Fomorianshifter</p>
-    <footer>Do not put a phone number in the public About if you would rather keep it on the contact card only.</footer>
-  </main>
-  <script>
-    document.getElementById("copy").onclick = function () {
-      navigator.clipboard.writeText(document.getElementById("about").textContent);
-      this.textContent = "Copied";
-    };
-  </script>
-</body>
-</html>
+<p>Featured section: add the site, then the Loki repo at https://github.com/Fomorianshifter/Loki</p>
+<footer>Phone +1 608 717 7602 · nlane713@gmail.com</footer></main></body></html>

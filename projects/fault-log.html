@@ -1,60 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fault log — Nicholas Lane</title>
-  <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="../index.html">NL</a>
-      <a href="../projects.html">Projects</a>
-    </nav>
-  </header>
-  <main>
-    <p class="kicker">Maintenance log</p>
-    <h1>Shift fault log</h1>
-    <p class="lede">Entries stay in this browser (localStorage). Clear them before handing the laptop to someone else.</p>
-    <div class="card">
-      <label>Asset</label>
-      <input id="asset" placeholder="MCC-2 feeder 4">
-      <label>Symptom</label>
-      <input id="symptom" placeholder="Motor would not start after stop">
-      <label>Action</label>
-      <textarea id="action" rows="3" placeholder="Checked stop contact and overload. Reset and test-ran."></textarea>
-      <p><button class="btn" id="add" type="button">Add entry</button> <button class="btn ghost" id="clear" type="button">Clear log</button></p>
-    </div>
-    <table>
-      <thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th></tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
-  </main>
-  <script>
-    var key = "nl-fault-log";
-    function load() { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch (e) { return []; } }
-    function save(rows) { localStorage.setItem(key, JSON.stringify(rows)); }
-    function draw() {
-      var rows = load();
-      document.getElementById("rows").innerHTML = rows.map(function (r) {
-        return "<tr><td>" + r.when + "</td><td>" + r.asset + "</td><td>" + r.symptom + "</td><td>" + r.action + "</td></tr>";
-      }).join("") || "<tr><td colspan='4'>No entries yet.</td></tr>";
-    }
-    function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&":"&","<":"<",">":">" }[c]; }); }
-    document.getElementById("add").onclick = function () {
-      var rows = load();
-      rows.unshift({
-        when: new Date().toLocaleString(),
-        asset: esc(document.getElementById("asset").value || "—"),
-        symptom: esc(document.getElementById("symptom").value || "—"),
-        action: esc(document.getElementById("action").value || "—")
-      });
-      save(rows); draw();
-    };
-    document.getElementById("clear").onclick = function () { localStorage.removeItem(key); draw(); };
-    draw();
-  </script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shift fault log — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
+<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
+<main><p class="kicker">Local only</p><h1>Shift fault log</h1>
+<p class="lede">A small CMMS-style log for a phone. Entries stay in this browser. Nothing is uploaded.</p>
+<form id="log"><label>Asset <input id="asset" required placeholder="Furnace conveyor 2"></label>
+<label>Symptom <input id="symptom" required placeholder="Starter chatters"></label>
+<label>Action <textarea id="action" required placeholder="Checked aux contact and tightened coil leads"></textarea></label>
+<p><button class="primary" type="submit">Add entry</button> <button type="button" id="clear">Clear log</button></p></form>
+<div id="list"></div><footer><a href="../projects.html">Back to projects</a></footer></main>
+<script>
+const key="nl-fault-log";
+function load(){return JSON.parse(localStorage.getItem(key)||"[]");}
+function save(rows){localStorage.setItem(key,JSON.stringify(rows));render();}
+function render(){
+const rows=load();
+document.getElementById("list").innerHTML=rows.map((row)=>`<article class="card"><strong>${row.asset}</strong><p>${row.symptom}</p><p>${row.action}</p><p class="kicker">${row.when}</p></article>`).join("")||"<p>No entries yet.</p>";
+}
+document.getElementById("log").addEventListener("submit",(event)=>{
+event.preventDefault();
+const rows=load();
+rows.unshift({asset:document.getElementById("asset").value,symptom:document.getElementById("symptom").value,action:document.getElementById("action").value,when:new Date().toLocaleString()});
+event.target.reset();save(rows);
+});
+document.getElementById("clear").addEventListener("click",()=>save([]));
+render();
+</script></body></html>
