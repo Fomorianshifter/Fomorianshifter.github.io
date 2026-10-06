@@ -1,1 +1,6 @@
-# Nicholas Lane portfolio\n\nPublic site: https://fomorianshifter.github.io\n\nLinkedIn website field should use that URL.\n\nFeatured project is Loki.\n
+# Nicholas Lane portfolio
+
+Live site for LinkedIn: https://fomorianshifter.github.io/
+
+Paste that URL into the LinkedIn website field and as a Featured link.
+Featured repo: https://github.com/Fomorianshifter/Loki
