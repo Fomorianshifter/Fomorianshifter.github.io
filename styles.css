@@ -1,1 +1,40 @@
-:root{--bg:#12160f;--panel:#1c2418;--line:#31402a;--ink:#e7eedd;--muted:#a7b59a;--amber:#e6a23c;--copper:#c4784a;--good:#7dcea0}*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 400px at 10% -10%,#2a3524 0%,transparent 55%),var(--bg);color:var(--ink);font-family:Segoe UI,sans-serif;line-height:1.5}a{color:var(--amber);text-decoration:none}a:hover{text-decoration:underline}header,main,footer{width:min(1080px,calc(100% - 32px));margin:0 auto}header{padding:28px 0 8px}nav{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;font-size:14px}nav strong{margin-right:auto}.kicker{color:var(--copper);font-family:ui-monospace,Consolas,monospace;font-size:13px;margin:22px 0 6px}h1{font-size:clamp(32px,5vw,52px);line-height:1.05;margin:0 0 12px;max-width:16ch}.lede{max-width:68ch;color:var(--muted);font-size:18px}.row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.btn{display:inline-block;background:var(--amber);color:#1a1408;padding:10px 14px;border-radius:4px;font-weight:650}.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}.meta{color:var(--muted);font-size:13px}h2{margin:36px 0 12px;font-size:22px;border-top:1px solid var(--line);padding-top:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px}.card h3{margin:0 0 4px}.tag{display:inline-block;margin:8px 6px 0 0;padding:2px 7px;border:1px solid var(--line);border-radius:99px;font-size:12px;color:var(--muted)}footer{padding:28px 0 40px;color:var(--muted);font-size:14px}label{display:block;margin:10px 0 4px;font-size:13px;color:var(--muted)}input,select,textarea,button{font:inherit;color:var(--ink);background:#10150e;border:1px solid var(--line);border-radius:4px;padding:8px 10px}button{cursor:pointer;background:#2a3520}button.on{background:var(--good);color:#102016}.lamp{width:18px;height:18px;border-radius:50%;display:inline-block;background:#3a2a22;vertical-align:-3px}.lamp.lit{background:var(--amber);box-shadow:0 0 12px var(--amber)}.out{font-family:ui-monospace,Consolas,monospace;background:#0d120c;padding:12px;border-radius:6px;border:1px solid var(--line);white-space:pre-wrap}canvas{width:100%;max-width:640px;background:#0b0f0a;border:1px solid var(--line);border-radius:8px}.warn{color:var(--copper);font-size:13px}
+:root {
+  color-scheme: dark;
+  --bg: #12140f;
+  --ink: #efe7d2;
+  --muted: #b7ad96;
+  --line: #3a4032;
+  --accent: #e2a23a;
+  --card: #1b1e16;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+a { color: var(--accent); }
+.top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #12140fe6;
+}
+.mark { font-weight: 700; text-decoration: none; letter-spacing: 0.08em; }
+nav a { margin-left: 1rem; text-decoration: none; }
+main { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+.kicker, .meta, .tag, .note { color: var(--muted); }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0.4rem 0; }
+.lede { font-size: 1.05rem; }
+.actions, .row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.btn, button {
+  background: var(--accent); color: #1a1408; border: 0; border-radius: 999px;
+  padding: 0.55rem 0.9rem; text-decoration: none; font-weight: 600; cursor: pointer;
+}
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+section { margin-top: 2.4rem; }
+article { border-top: 1px solid var(--line); padding: 0.9rem 0; }
+.cards { display: grid; gap: 0.8rem; }
+@media (min-width: 700px) { .cards { grid-template-columns: 1fr 1fr 1fr; } }
+.card, .lab { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; }
+.grid { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; color: var(--muted); }
+input, select { background: #0e100c; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 0.45rem; }
+.out { font-variant-numeric: tabular-nums; }
+canvas { width: 100%; height: auto; background: #0b0d09; border-radius: 8px; }
+ul { padding-left: 1.1rem; }
