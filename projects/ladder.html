@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Start / stop seal-in — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .rung { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-family: ui-monospace, monospace; }
+    .contact { min-width: 92px; }
+    .hot { outline: 2px solid #e2a14a; }
+  </style>
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
-  <main class="lab">
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
+  <main>
     <h1>Start / stop seal-in</h1>
-    <p>Stop is normally closed. Start is normally open. The motor contact seals around start. Click a contact to toggle it. This is a picture of the idea, not a safety circuit.</p>
-    <div class="panel" id="ladder"></div>
-    <p id="status">Motor off</p>
+    <p class="note">Stop is normally closed. Start is normally open. The motor contact seals around Start. Overload is normally closed.</p>
+    <div class="rung" id="r1"><span>L1</span><button class="contact" id="stop">STOP NC</button><button class="contact" id="start">START NO</button><span>M</span></div>
+    <div class="rung" id="r2"><span>seal</span><button class="contact" id="seal" disabled>M NO</button><span>in parallel with START</span></div>
+    <p class="out" id="state">Motor off</p>
+    <button id="ol">Toggle overload</button>
   </main>
   <script>
-    const state = { stop: true, start: false, motor: false };
-    const root = document.getElementById("ladder");
-    function evalMotor() {
-      state.motor = state.stop && (state.start || state.motor);
-      if (!state.stop) state.motor = false;
+    let startHeld = false, stopOpen = false, overload = false, motor = false;
+    const state = document.getElementById("state");
+    function tick() {
+      const seal = motor;
+      motor = !stopOpen && !overload && (startHeld || seal);
+      state.textContent = motor ? "Motor running — seal-in closed" : "Motor off";
+      document.getElementById("seal").textContent = motor ? "M NO closed" : "M NO open";
+      document.getElementById("r1").classList.toggle("hot", motor);
     }
-    function draw() {
-      evalMotor();
-      root.innerHTML = "";
-      [["Stop NC", "stop", state.stop], ["Start NO", "start", state.start], ["Seal-in", "seal", state.motor]].forEach(([label, key, on]) => {
-        const row = document.createElement("div");
-        row.className = "rung";
-        const b = document.createElement("button");
-        b.className = "contact" + (on ? " on" : "");
-        b.textContent = label + (on ? " closed" : " open");
-        b.disabled = key === "seal";
-        if (key !== "seal") b.onclick = () => { state[key] = !state[key]; draw(); };
-        const coil = document.createElement("span");
-        coil.className = "contact coil" + (state.motor ? " on" : "");
-        coil.textContent = state.motor ? "( M )" : "(   )";
-        row.append(b, document.createTextNode(" —— "), coil);
-        root.append(row);
-      });
-      document.getElementById("status").textContent = state.motor ? "Motor running" : "Motor off";
-    }
-    draw();
+    document.getElementById("start").addEventListener("mousedown", () => { startHeld = true; tick(); });
+    document.getElementById("start").addEventListener("mouseup", () => { startHeld = false; tick(); });
+    document.getElementById("start").addEventListener("mouseleave", () => { startHeld = false; tick(); });
+    document.getElementById("stop").addEventListener("mousedown", () => { stopOpen = true; tick(); });
+    document.getElementById("stop").addEventListener("mouseup", () => { stopOpen = false; tick(); });
+    document.getElementById("ol").addEventListener("click", () => { overload = !overload; tick(); });
+    tick();
   </script>
 </body>
 </html>

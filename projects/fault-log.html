@@ -1,63 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shift fault log — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Projects</a></nav></header>
-  <main class="lab">
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
+  <main>
     <h1>Shift fault log</h1>
-    <p>Calls stay in this browser (localStorage). Nothing is uploaded.</p>
-    <form class="panel" id="form">
-      <label>Area <input id="area" required placeholder="Melt deck MCC" /></label>
-      <label>Symptom <input id="sym" required placeholder="Conveyor will not start" /></label>
-      <label>What you found <textarea id="found" rows="3" placeholder="Overload tripped, reset after jam cleared"></textarea></label>
-      <button type="submit">Add call</button>
-    </form>
-    <table>
-      <thead><tr><th>When</th><th>Area</th><th>Symptom</th><th>Found</th><th></th></tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
+    <p class="note">Sample foundry-style tickets. Filter stays in this browser. Nothing is uploaded.</p>
+    <label>Asset
+      <select id="filter">
+        <option value="all">All</option>
+        <option value="motor">Motor</option>
+        <option value="sensor">Sensor</option>
+        <option value="plc">PLC</option>
+      </select>
+    </label>
+    <ul id="list"></ul>
   </main>
   <script>
-    const KEY = "nl-fault-log";
-    const load = () => JSON.parse(localStorage.getItem(KEY) || "[]");
-    const save = (rows) => localStorage.setItem(KEY, JSON.stringify(rows));
-    function esc(s) {
-      return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    const rows = [
+      { asset: "motor", text: "Mold line 2 — conveyor motor overload after restart." },
+      { asset: "sensor", text: "Pour deck — proximity sensor stuck high, gate would not index." },
+      { asset: "plc", text: "Shot blast — input card not seen after panel washdown. Reseated and logged." },
+      { asset: "motor", text: "Shakeout — starter chatter, loose control wire on seal-in." },
+      { asset: "sensor", text: "Cooling — photoeye dirty, false stops on the transfer." }
+    ];
+    const list = document.getElementById("list");
+    function draw() {
+      const f = filter.value;
+      list.innerHTML = rows.filter(r => f === "all" || r.asset === f)
+        .map(r => "<li><strong>" + r.asset + "</strong> — " + r.text + "</li>").join("");
     }
-    function render() {
-      const body = document.getElementById("rows");
-      body.innerHTML = "";
-      load().forEach((row, i) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = "<td>" + esc(row.when) + "</td><td>" + esc(row.area) + "</td><td>" + esc(row.sym) + "</td><td>" + esc(row.found) + "</td>";
-        const td = document.createElement("td");
-        const b = document.createElement("button");
-        b.textContent = "Remove";
-        b.onclick = () => { const rows = load(); rows.splice(i, 1); save(rows); render(); };
-        td.append(b);
-        tr.append(td);
-        body.append(tr);
-      });
-    }
-    document.getElementById("form").onsubmit = (e) => {
-      e.preventDefault();
-      const rows = load();
-      rows.unshift({
-        when: new Date().toLocaleString(),
-        area: document.getElementById("area").value,
-        sym: document.getElementById("sym").value,
-        found: document.getElementById("found").value
-      });
-      save(rows);
-      e.target.reset();
-      render();
-    };
-    render();
+    filter.addEventListener("change", draw);
+    draw();
   </script>
 </body>
 </html>

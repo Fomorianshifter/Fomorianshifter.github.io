@@ -1,48 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voltage-drop lab — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voltage drop — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header>
-    <a class="brand" href="../index.html">Nicholas Lane</a>
-    <nav><a href="../projects.html">Projects</a></nav>
-  </header>
+  <header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Home</a></nav></header>
   <main>
-    <p class="kicker">Field estimate</p>
-    <h1>Voltage-drop check</h1>
-    <p class="lead">Single-phase copper estimate: drop = 2 × length × current × ohms per foot. Use it to spot a long run. It is not an NEC calculation and it ignores temperature and conduit fill.</p>
-    <label>One-way length (ft) <input id="len" type="number" value="150" min="1"></label>
-    <label>Load (A) <input id="amps" type="number" value="16" min="0" step="0.1"></label>
-    <label>Source (V) <input id="volts" type="number" value="120" min="1"></label>
-    <label>Copper size
-      <select id="wire">
-        <option value="0.00198">14 AWG</option>
-        <option value="0.00124" selected>12 AWG</option>
-        <option value="0.000782">10 AWG</option>
-        <option value="0.000491">8 AWG</option>
-        <option value="0.000308">6 AWG</option>
+    <h1>Voltage drop</h1>
+    <p class="note">Single-phase copper estimate: VD = 2 × K × I × L / CM, with K = 12.9. Study tool, not an NEC check.</p>
+    <label>Load amps <input id="amps" type="number" value="16" min="0" step="0.1" /></label>
+    <label>One-way length, feet <input id="feet" type="number" value="120" min="0" /></label>
+    <label>Copper circular mils
+      <select id="cm">
+        <option value="6530">14 AWG · 6530</option>
+        <option value="10380" selected>12 AWG · 10380</option>
+        <option value="16510">10 AWG · 16510</option>
+        <option value="26240">8 AWG · 26240</option>
+        <option value="41740">6 AWG · 41740</option>
       </select>
     </label>
-    <p id="out" class="lead"></p>
-    <p class="note">Ohms per foot are approximate DC resistance for solid copper, for teaching only.</p>
+    <label>Source volts <input id="volts" type="number" value="120" min="1" /></label>
+    <p class="out" id="out"></p>
   </main>
   <script>
-    const ids = ["len", "amps", "volts", "wire"];
+    const K = 12.9;
     function calc() {
-      const len = Number(document.getElementById("len").value);
-      const amps = Number(document.getElementById("amps").value);
-      const volts = Number(document.getElementById("volts").value);
-      const ohm = Number(document.getElementById("wire").value);
-      const drop = 2 * len * amps * ohm;
-      const pct = volts ? (drop / volts) * 100 : 0;
-      document.getElementById("out").textContent =
-        `About ${drop.toFixed(2)} V drop (${pct.toFixed(1)}%). Voltage at the load about ${(volts - drop).toFixed(1)} V.`;
+      const I = Number(amps.value), L = Number(feet.value), CM = Number(cm.value), V = Number(volts.value);
+      const drop = (2 * K * I * L) / CM;
+      const pct = V ? (drop / V) * 100 : 0;
+      out.textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(1) + "% of source";
     }
-    ids.forEach((id) => document.getElementById(id).addEventListener("input", calc));
+    for (const id of ["amps", "feet", "cm", "volts"]) document.getElementById(id).addEventListener("input", calc);
     calc();
   </script>
 </body>
