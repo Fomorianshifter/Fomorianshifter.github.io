@@ -1,20 +1,61 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Motor Control Panel</title><link rel="stylesheet" href="../styles.css" /></head>
-<body><div class="wrap"><header class="nav"><div class="brand"><a href="../index.html">NICHOLAS LANE</a></div><nav><a href="../projects.html">Projects</a></nav></header>
-<div class="kicker">Live demo</div><h1>Motor control panel</h1>
-<div class="demo-stage"><p>Selector</p><div class="hoa"><button id="hand">HAND</button><button id="off" class="active">OFF</button><button id="auto">AUTO</button></div>
-<p style="margin-top:18px">Protection</p><button id="ol">Simulate overload</button> <button id="reset">Reset OL</button>
-<p style="margin-top:18px">Motor <span id="motor" class="lamp"></span> Overload <span id="trip" class="lamp"></span></p>
-<p class="meta" id="status">OFF</p></div>
-<script>
-let mode="off", ol=false, permit=true;
-const motor=document.getElementById("motor"), trip=document.getElementById("trip"), status=document.getElementById("status");
-function setMode(m){mode=m;["hand","off","auto"].forEach(id=>document.getElementById(id).classList.toggle("active",id===m));render();}
-function render(){const run=!ol&&(mode==="hand"||(mode==="auto"&&permit));motor.className="lamp"+(run?" on":"");trip.className="lamp"+(ol?" trip":"");status.textContent=ol?"TRIP. Reset required.":run?(mode==="hand"?"HAND. Motor running.":"AUTO. Motor running."):"OFF. Contactor open.";}
-document.getElementById("hand").onclick=()=>setMode("hand");
-document.getElementById("off").onclick=()=>setMode("off");
-document.getElementById("auto").onclick=()=>setMode("auto");
-document.getElementById("ol").onclick=()=>{ol=true;render();};
-document.getElementById("reset").onclick=()=>{ol=false;render();};
-render();
-</script></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel log — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <a class="mark" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../index.html">Home</a><a href="orbits.html">Orbits</a><a href="loki.html">Loki</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Lab · electrical maintenance</p>
+    <h1>Panel fault log</h1>
+    <p class="lede">Log a call, set priority, and keep a shift count. Entries stay in this browser only.</p>
+    <form class="panel" id="form">
+      <div class="row">
+        <input name="area" placeholder="Area, e.g. melt deck MCC-2" required />
+        <select name="priority">
+          <option>Low</option><option selected>Medium</option><option>High</option>
+        </select>
+        <input name="note" placeholder="What failed" required />
+        <button class="plain" type="submit">Add</button>
+      </div>
+    </form>
+    <p class="meta" id="count"></p>
+    <table>
+      <thead><tr><th>When</th><th>Area</th><th>Priority</th><th>Note</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+  <script>
+    const key = "nl-panel-log";
+    const rows = document.querySelector("#rows");
+    const count = document.querySelector("#count");
+    function load() { return JSON.parse(localStorage.getItem(key) || "[]"); }
+    function paint() {
+      const items = load();
+      rows.innerHTML = items.map(i => `<tr><td>${i.when}</td><td>${i.area}</td><td>${i.priority}</td><td>${i.note}</td></tr>`).join("");
+      count.textContent = items.length + " open notes this browser";
+    }
+    document.querySelector("#form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const items = load();
+      items.unshift({
+        when: new Date().toLocaleString(),
+        area: data.get("area"),
+        priority: data.get("priority"),
+        note: data.get("note")
+      });
+      localStorage.setItem(key, JSON.stringify(items.slice(0, 20)));
+      e.target.reset();
+      paint();
+    });
+    paint();
+  </script>
+</body>
+</html>

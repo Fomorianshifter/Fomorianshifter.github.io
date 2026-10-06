@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Orbits — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <a class="mark" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../index.html">Home</a><a href="panel.html">Panel log</a><a href="loki.html">Loki</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Lab · from SolarSystem</p>
+    <h1>Planet alignment</h1>
+    <p class="lede">Four bodies on circular orbits. Pause it or speed the year up. This is the portfolio version of the public Solar System repos.</p>
+    <canvas id="sky" width="900" height="420"></canvas>
+    <div class="row">
+      <button class="plain" id="toggle" type="button">Pause</button>
+      <label>Speed <input id="speed" type="range" min="1" max="8" value="2" /></label>
+    </div>
+  </main>
+  <script>
+    const canvas = document.querySelector("#sky");
+    const ctx = canvas.getContext("2d");
+    const bodies = [
+      { name: "Mercury", r: 70, size: 4, color: "#c9b59a", w: 4.1 },
+      { name: "Venus", r: 110, size: 7, color: "#e2a04a", w: 1.6 },
+      { name: "Earth", r: 150, size: 8, color: "#7eb0d4", w: 1 },
+      { name: "Mars", r: 190, size: 6, color: "#c46b3a", w: 0.53 }
+    ];
+    let t = 0, running = true;
+    document.querySelector("#toggle").onclick = () => {
+      running = !running;
+      document.querySelector("#toggle").textContent = running ? "Pause" : "Run";
+    };
+    function frame() {
+      const speed = Number(document.querySelector("#speed").value);
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#0d0c0a";
+      ctx.fillRect(0, 0, w, h);
+      ctx.beginPath();
+      ctx.fillStyle = "#f4efe6";
+      ctx.arc(w / 2, h / 2, 16, 0, Math.PI * 2);
+      ctx.fill();
+      bodies.forEach((b) => {
+        ctx.beginPath();
+        ctx.strokeStyle = "#3a342b";
+        ctx.arc(w / 2, h / 2, b.r, 0, Math.PI * 2);
+        ctx.stroke();
+        const a = t * b.w;
+        const x = w / 2 + Math.cos(a) * b.r;
+        const y = h / 2 + Math.sin(a) * b.r * 0.42;
+        ctx.beginPath();
+        ctx.fillStyle = b.color;
+        ctx.arc(x, y, b.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      if (running) t += 0.008 * speed;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  </script>
+</body>
+</html>

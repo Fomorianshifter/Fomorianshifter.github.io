@@ -1,5 +1,5 @@
 # Nicholas Lane portfolio
 
-Live site for LinkedIn: https://fomorianshifter.github.io/
+Public site: https://fomorianshifter.github.io
 
-Industrial electrician portfolio with public GitHub highlights (Loki) and in-browser labs.
+LinkedIn website field should use that URL. Featured project is [Loki](https://github.com/Fomorianshifter/Loki). Browser labs live under `projects/`.

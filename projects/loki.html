@@ -1,43 +1,85 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loki life cycle — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
-<div class="hero"><p class="kicker">From Fomorianshifter/Loki</p><h1>Loki life cycle</h1>
-<p class="lede">Browser stand-in for the life-cycle in the embedded repo: egg, hatchling at 50 growth, young at 200, adult at 500. Food points match the README. The real project is C and Python on a single-board computer with a TFT and Flipper UART.</p></div></header>
-<main><section class="card"><p class="dragon" id="face">egg</p><p class="out" id="stage">Egg · 0 gp</p><p id="mood">Mood: neutral</p>
-<div class="row"><button class="btn" data-food="basic">Feed basic</button><button class="btn" data-food="tasty">Feed tasty</button><button class="btn" data-food="special">Feed special</button><button class="btn ghost" id="play">Interact</button><button class="btn ghost" id="tick">Tick 30s</button></div>
-<p class="meta"><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a> — MIT. Topics: embedded-systems, flipper-zero, orange-pi, raspberry-pi, tft-display.</p></section></main>
-<script>
-const s = { gp: 0, hunger: 20, happy: 50, energy: 80, stage: "Egg" };
-const food = { basic: [20, 5, 5], tasty: [40, 10, 15], special: [60, 20, 25] };
-function stage() { s.stage = s.gp >= 500 ? "Adult" : s.gp >= 200 ? "Young" : s.gp >= 50 ? "Hatchling" : "Egg"; }
-function mood() {
-  if (s.hunger >= 70) return "hungry";
-  if (s.energy <= 20) return "sleepy";
-  if (s.happy <= 30 || s.hunger >= 50) return "grumpy";
-  if (s.happy >= 70) return "happy";
-  if (s.happy >= 50 && s.energy >= 60) return "playful";
-  return "neutral";
-}
-function render() {
-  stage(); const m = mood();
-  document.getElementById("face").textContent = s.stage === "Egg" ? "egg" : m;
-  document.getElementById("stage").textContent = s.stage + " · " + s.gp + " gp";
-  document.getElementById("mood").textContent = "Mood: " + m + " · hunger " + s.hunger + " · happy " + s.happy + " · energy " + s.energy;
-}
-function clamp(n) { return Math.max(0, Math.min(100, n)); }
-document.querySelectorAll("[data-food]").forEach(btn => btn.addEventListener("click", () => {
-  const pair = food[btn.dataset.food];
-  const half = s.hunger < 25;
-  s.hunger = clamp(s.hunger - (half ? pair[0] / 2 : pair[0]));
-  s.gp += half ? pair[1] / 2 : pair[1];
-  s.happy = clamp(s.happy + (half ? pair[2] / 2 : pair[2]));
-  render();
-}));
-document.getElementById("play").addEventListener("click", () => { s.happy = clamp(s.happy + 12); s.energy = clamp(s.energy - 8); s.gp += 4; render(); });
-document.getElementById("tick").addEventListener("click", () => {
-  if (mood() === "sleepy") s.energy = clamp(s.energy + 15); else s.energy = clamp(s.energy - 6);
-  s.hunger = clamp(s.hunger + 8); s.happy = clamp(s.happy - 3); render();
-});
-render();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loki demo — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <a class="mark" href="../index.html">Nicholas Lane</a>
+    <nav><a href="../index.html">Home</a><a href="panel.html">Panel log</a><a href="orbits.html">Orbits</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Lab · simplified from Loki</p>
+    <h1>Loki life-cycle</h1>
+    <p class="lede">Browser stand-in for the C life-cycle in <a href="https://github.com/Fomorianshifter/Loki">Fomorianshifter/Loki</a>. Feed or interact. Growth points move the stage. The device build still lives in the repo.</p>
+    <div class="grid">
+      <article class="panel">
+        <h2 id="stage">Egg</h2>
+        <p class="meta" id="mood">Mood: neutral</p>
+        <p>Growth</p>
+        <div class="bar"><span id="gp" style="width:0%"></span></div>
+        <p>Hunger</p>
+        <div class="bar"><span id="hunger" style="width:20%"></span></div>
+        <div class="row">
+          <button class="plain" type="button" data-food="basic">Basic feed</button>
+          <button class="plain" type="button" data-food="tasty">Tasty feed</button>
+          <button class="plain" type="button" id="play">Interact</button>
+        </div>
+      </article>
+      <article class="panel">
+        <h3>What the repo actually has</h3>
+        <ul class="clean">
+          <li>HAL for GPIO, SPI, I2C, UART, PWM</li>
+          <li>TFT, SD, flash, EEPROM, Flipper UART drivers</li>
+          <li>Local web config UI on the board</li>
+          <li>Stages: egg, hatchling at 50, young at 200, adult at 500</li>
+        </ul>
+      </article>
+    </div>
+  </main>
+  <script>
+    const state = { gp: 0, hunger: 20, happy: 50, energy: 70 };
+    function stage() {
+      if (state.gp >= 500) return "Adult";
+      if (state.gp >= 200) return "Young";
+      if (state.gp >= 50) return "Hatchling";
+      return "Egg";
+    }
+    function mood() {
+      if (state.hunger >= 70) return "hungry";
+      if (state.energy <= 20) return "sleepy";
+      if (state.happy <= 30) return "grumpy";
+      if (state.happy >= 70) return "happy";
+      return "neutral";
+    }
+    function paint() {
+      document.querySelector("#stage").textContent = stage();
+      document.querySelector("#mood").textContent = "Mood: " + mood();
+      document.querySelector("#gp").style.width = Math.min(100, state.gp / 5) + "%";
+      document.querySelector("#hunger").style.width = state.hunger + "%";
+    }
+    document.querySelectorAll("[data-food]").forEach((btn) => btn.onclick = () => {
+      const tasty = btn.dataset.food === "tasty";
+      state.hunger = Math.max(0, state.hunger - (tasty ? 40 : 20));
+      state.gp += tasty ? 10 : 5;
+      state.happy = Math.min(100, state.happy + (tasty ? 15 : 5));
+      paint();
+    });
+    document.querySelector("#play").onclick = () => {
+      state.happy = Math.min(100, state.happy + 8);
+      state.energy = Math.max(0, state.energy - 6);
+      state.gp += 4;
+      paint();
+    };
+    setInterval(() => {
+      state.hunger = Math.min(100, state.hunger + 2);
+      state.energy = Math.max(0, state.energy - 1);
+      paint();
+    }, 2000);
+    paint();
+  </script>
+</body>
+</html>

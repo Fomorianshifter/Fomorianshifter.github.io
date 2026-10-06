@@ -1,7 +1,10 @@
-Featured link for LinkedIn:
-https://fomorianshifter.github.io/
+LinkedIn website: https://fomorianshifter.github.io
 
-GitHub:
-https://github.com/Fomorianshifter
+Featured links
+1. https://fomorianshifter.github.io — portfolio home
+2. https://github.com/Fomorianshifter/Loki — embedded companion
+3. https://fomorianshifter.github.io/projects/orbits.html — orbit lab
+4. https://fomorianshifter.github.io/projects/panel.html — panel fault log
 
-Email: nlane713@gmail.com
+About blurb
+Industrial electrician in Green Bay with foundry PLC support at Grede Foundries and earlier construction electrical work. Building controls skills in public: Loki, an embedded C companion for Linux boards, plus small browser labs for orbits and maintenance logging. Open to relocation. nlane713@gmail.com
