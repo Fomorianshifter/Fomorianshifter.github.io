@@ -1,85 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loki demo — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header>
-    <a class="mark" href="../index.html">Nicholas Lane</a>
-    <nav><a href="../index.html">Home</a><a href="panel.html">Panel log</a><a href="orbits.html">Orbits</a></nav>
-  </header>
-  <main>
-    <p class="kicker">Lab · simplified from Loki</p>
-    <h1>Loki life-cycle</h1>
-    <p class="lede">Browser stand-in for the C life-cycle in <a href="https://github.com/Fomorianshifter/Loki">Fomorianshifter/Loki</a>. Feed or interact. Growth points move the stage. The device build still lives in the repo.</p>
-    <div class="grid">
-      <article class="panel">
-        <h2 id="stage">Egg</h2>
-        <p class="meta" id="mood">Mood: neutral</p>
-        <p>Growth</p>
-        <div class="bar"><span id="gp" style="width:0%"></span></div>
-        <p>Hunger</p>
-        <div class="bar"><span id="hunger" style="width:20%"></span></div>
-        <div class="row">
-          <button class="plain" type="button" data-food="basic">Basic feed</button>
-          <button class="plain" type="button" data-food="tasty">Tasty feed</button>
-          <button class="plain" type="button" id="play">Interact</button>
-        </div>
-      </article>
-      <article class="panel">
-        <h3>What the repo actually has</h3>
-        <ul class="clean">
-          <li>HAL for GPIO, SPI, I2C, UART, PWM</li>
-          <li>TFT, SD, flash, EEPROM, Flipper UART drivers</li>
-          <li>Local web config UI on the board</li>
-          <li>Stages: egg, hatchling at 50, young at 200, adult at 500</li>
-        </ul>
-      </article>
-    </div>
-  </main>
-  <script>
-    const state = { gp: 0, hunger: 20, happy: 50, energy: 70 };
-    function stage() {
-      if (state.gp >= 500) return "Adult";
-      if (state.gp >= 200) return "Young";
-      if (state.gp >= 50) return "Hatchling";
-      return "Egg";
-    }
-    function mood() {
-      if (state.hunger >= 70) return "hungry";
-      if (state.energy <= 20) return "sleepy";
-      if (state.happy <= 30) return "grumpy";
-      if (state.happy >= 70) return "happy";
-      return "neutral";
-    }
-    function paint() {
-      document.querySelector("#stage").textContent = stage();
-      document.querySelector("#mood").textContent = "Mood: " + mood();
-      document.querySelector("#gp").style.width = Math.min(100, state.gp / 5) + "%";
-      document.querySelector("#hunger").style.width = state.hunger + "%";
-    }
-    document.querySelectorAll("[data-food]").forEach((btn) => btn.onclick = () => {
-      const tasty = btn.dataset.food === "tasty";
-      state.hunger = Math.max(0, state.hunger - (tasty ? 40 : 20));
-      state.gp += tasty ? 10 : 5;
-      state.happy = Math.min(100, state.happy + (tasty ? 15 : 5));
-      paint();
-    });
-    document.querySelector("#play").onclick = () => {
-      state.happy = Math.min(100, state.happy + 8);
-      state.energy = Math.max(0, state.energy - 6);
-      state.gp += 4;
-      paint();
-    };
-    setInterval(() => {
-      state.hunger = Math.min(100, state.hunger + 2);
-      state.energy = Math.max(0, state.energy - 1);
-      paint();
-    }, 2000);
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki life-cycle demo</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><a href="../index.html">Nicholas Lane</a><nav><a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav></header>
+<main class="wrap"><section class="hero"><div class="kicker">Browser model of loki_life.c</div><h1>Loki, without the board</h1>
+<p class="lede">Stages match the public README: egg, hatchling at 50 growth, young at 200, adult at 500. Feeding when hunger is already low halves the gain.</p>
+<div class="card"><div class="out" id="status"></div>
+<p><button class="tap" data-food="basic" type="button">Basic food</button><button class="tap" data-food="tasty" type="button">Tasty</button><button class="tap" data-food="special" type="button">Special</button><button class="tap" id="play" type="button">Interact</button></p>
+</div></section></main>
+<script>
+var state = {hunger:40, happiness:50, energy:70, gp:0};
+var foods = {basic:[20,5,5], tasty:[40,10,15], special:[60,20,25]};
+function stage(gp){ return gp>=500?"Adult":gp>=200?"Young":gp>=50?"Hatchling":"Egg"; }
+function mood(){
+  if (state.hunger>=70) return "Hungry";
+  if (state.energy<=20) return "Sleepy";
+  if (state.happiness<=30 || state.hunger>=50) return "Grumpy";
+  if (state.happiness>=70) return "Happy";
+  if (state.happiness>=50 && state.energy>=60) return "Playful";
+  return "Neutral";
+}
+function paint(){ document.getElementById("status").textContent = stage(state.gp)+" · "+state.gp+" gp · hunger "+state.hunger+" · happiness "+state.happiness+" · energy "+state.energy+" · "+mood(); }
+document.querySelectorAll("[data-food]").forEach(function(btn){
+  btn.onclick = function(){
+    var f = foods[btn.dataset.food], half = state.hunger<20?0.5:1;
+    state.hunger = Math.max(0, state.hunger - f[0]*half);
+    state.gp += Math.round(f[1]*half);
+    state.happiness = Math.min(100, state.happiness + Math.round(f[2]*half));
     paint();
-  </script>
-</body>
-</html>
+  };
+});
+document.getElementById("play").onclick = function(){ state.happiness=Math.min(100,state.happiness+8); state.energy=Math.max(0,state.energy-6); state.gp+=2; paint(); };
+setInterval(function(){ state.hunger=Math.min(100,state.hunger+1); state.energy = state.energy<=20?Math.min(100,state.energy+2):Math.max(0,state.energy-1); paint(); }, 1500);
+paint();
+</script></body></html>

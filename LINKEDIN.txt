@@ -1,6 +1,1 @@
-LinkedIn
-Website: https://fomorianshifter.github.io/
-Featured: same URL, title "Nicholas Lane — electrician and controls portfolio"
-
-About (paste):
-Industrial electrician with five-plus years on residential, commercial, and foundry electrical work. At Grede Foundries I supported PLC installation and programming and worked with engineering on electrical faults. I am studying toward NEC certification and freeCodeCamp computer science, and I keep public projects at github.com/Fomorianshifter — including Loki, an embedded companion for Linux single-board computers. Open to relocate. Authorized to work in the US.
+LinkedIn website: https://fomorianshifter.github.io/\nFeatured repo: https://github.com/Fomorianshifter/Loki\n

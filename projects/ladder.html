@@ -1,36 +1,26 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Motor starter ladder — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a class="brand" href="../index.html">NL</a><a href="../index.html#projects">Projects</a></nav>
-<div class="hero"><p class="kicker">Demo logic · not a wired starter</p><h1>Three-wire motor starter</h1>
-<p class="lede">Stop is normally closed. Start is normally open and momentary. The seal-in contact keeps the coil in after start is released, unless stop opens or the overload trips.</p></div></header>
-<main><section class="card"><div class="row">
-<button class="btn" id="start">Press start</button>
-<button class="btn ghost" id="stop">Open stop</button>
-<button class="btn ghost" id="ol">Trip overload</button>
-<button class="btn ghost" id="reset">Reset overload</button></div>
-<div class="ladder">
-<div class="rung"><div class="contact" id="cStop">STOP NC</div><div class="contact" id="cStart">START NO</div><div class="coil" id="coil">M coil</div></div>
-<div class="rung"><div class="contact" id="cStop2">STOP NC</div><div class="contact" id="cSeal">M seal</div><div class="contact" id="cOl">OL NC</div></div>
-</div><p class="out" id="state">Motor off</p>
-<p class="meta">Releasing stop with a healthy overload does not restart the motor. That is the point of three-wire control.</p></section></main>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Seal-in ladder</title><link rel="stylesheet" href="../styles.css"></head>
+<body><header><a href="../index.html">Nicholas Lane</a></header>
+<main class="wrap"><section class="hero"><div class="kicker">PLC-style study rung</div><h1>Start / stop motor seal-in</h1>
+<p class="lede">Stop is normally closed. Start is normally open. The motor contact seals around Start. Browser model, not a live PLC.</p>
+<div class="card">
+<div class="rail"><span>L1</span><div class="wire" id="w1"></div><div class="contact" id="stop">STOP</div><div class="wire" id="w2"></div><div class="contact" id="start">START</div><div class="wire" id="w3"></div><div class="coil" id="coil">M</div><span>L2</span></div>
+<div class="rail"><span>seal</span><div class="wire" id="w4"></div><div class="contact" id="seal">M</div><span class="note">parallel with Start</span></div>
+<p><button class="tap" id="btnStop" type="button">Toggle stop (NC)</button><button class="tap" id="btnStart" type="button">Pulse start</button></p>
+<div class="out" id="out"></div>
+</div></section></main>
 <script>
-let startHeld = false, stopOpen = false, olTrip = false, running = false;
+var stopClosed = true, startHeld = false, motor = false;
 function render() {
-  running = !stopOpen && !olTrip && (startHeld || running);
-  document.getElementById("cStop").className = "contact" + (stopOpen ? "" : " on");
-  document.getElementById("cStop2").className = "contact" + (stopOpen ? "" : " on");
-  document.getElementById("cStart").className = "contact" + (startHeld ? " on" : "");
-  document.getElementById("cSeal").className = "contact" + (running ? " on" : "");
-  document.getElementById("cOl").className = "contact" + (olTrip ? "" : " on");
-  document.getElementById("coil").className = "coil" + (running ? " on" : "");
-  document.getElementById("state").textContent = running ? "Motor running — seal-in held" : (olTrip ? "Motor off — overload open" : "Motor off");
+  motor = stopClosed && (startHeld || motor);
+  document.getElementById("stop").className = "contact" + (stopClosed ? " on" : "");
+  document.getElementById("start").className = "contact" + (startHeld ? " on" : "");
+  document.getElementById("seal").className = "contact" + (motor ? " on" : "");
+  document.getElementById("coil").className = "coil" + (motor ? " on" : "");
+  ["w1","w2","w3","w4"].forEach(function (id) { document.getElementById(id).className = "wire" + (motor ? " hot" : ""); });
+  document.getElementById("out").textContent = motor ? "Motor coil is sealed in. Open Stop to drop it out." : "Motor is off. Close Stop, then pulse Start.";
 }
-document.getElementById("start").addEventListener("mousedown", () => { startHeld = true; render(); });
-document.getElementById("start").addEventListener("mouseup", () => { startHeld = false; render(); });
-document.getElementById("start").addEventListener("mouseleave", () => { startHeld = false; render(); });
-document.getElementById("stop").addEventListener("click", () => { stopOpen = !stopOpen; document.getElementById("stop").textContent = stopOpen ? "Close stop" : "Open stop"; render(); });
-document.getElementById("ol").addEventListener("click", () => { olTrip = true; render(); });
-document.getElementById("reset").addEventListener("click", () => { olTrip = false; render(); });
+document.getElementById("btnStop").onclick = function () { stopClosed = !stopClosed; if (!stopClosed) motor = false; render(); };
+document.getElementById("btnStart").onclick = function () { startHeld = true; render(); setTimeout(function () { startHeld = false; render(); }, 400); };
 render();
 </script></body></html>
