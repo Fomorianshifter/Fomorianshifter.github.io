@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loki life cycle — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a href="../index.html">Home</a></nav>
-<p class="kicker">From the Loki README rules</p><h1>Loki life cycle</h1></header>
+<title>Loki life-cycle lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a> <a href="https://github.com/Fomorianshifter/Loki">Repo</a></nav>
+<h1>Loki life cycle</h1>
+<p class="lede">Browser stand-in for the companion in the Loki repo: egg, hatchling, juvenile, adult. The real project is C drivers for a Linux board, a TFT, and Flipper Zero UART.</p></header>
 <main>
-<div class="row">
-<button type="button" data-food="basic">Basic food</button>
-<button type="button" data-food="tasty">Tasty</button>
-<button type="button" data-food="special">Special</button>
-<button type="button" id="play">Interact</button>
-</div>
-<p id="status" class="card"></p>
-<p class="meta"><a href="https://github.com/Fomorianshifter/Loki">Loki repository</a></p>
+<p>Stage <strong id="stage">egg</strong> · hunger <span id="hunger">20</span> · mood <span id="mood">50</span></p>
+<p><button id="feed">Feed</button> <button id="rest">Rest</button> <button id="tick">Advance hour</button></p>
+<pre class="out" id="log">egg is warming.</pre>
 </main>
 <script>
-const foods={basic:[20,5,5], tasty:[40,10,15], special:[60,20,25]};
-const s={hunger:40,happy:50,energy:70,gp:0};
-function stage(){return s.gp>=500?'Adult':s.gp>=200?'Young':s.gp>=50?'Hatchling':'Egg'}
-function mood(){
-  if(s.hunger>=70) return 'Hungry';
-  if(s.energy<=20) return 'Sleepy';
-  if(s.happy<=30||s.hunger>=50) return 'Grumpy';
-  if(s.happy>=70) return 'Happy';
-  if(s.happy>=50&&s.energy>=60) return 'Playful';
-  return 'Neutral';
-}
-function show(){status.textContent=stage()+' · '+mood()+' · growth '+s.gp+' · hunger '+s.hunger+' · happy '+s.happy+' · energy '+s.energy;}
-function clamp(){['hunger','happy','energy'].forEach(k=>{s[k]=Math.max(0,Math.min(100,s[k]));});}
-document.querySelectorAll('[data-food]').forEach(b=>b.onclick=()=>{
-  let pair=foods[b.dataset.food];
-  let h=pair[0], g=pair[1], p=pair[2];
-  if(s.hunger<30){h/=2;g/=2;p/=2;}
-  s.hunger-=h; s.gp+=g; s.happy+=p; s.energy-=5; clamp(); show();
-});
-document.getElementById('play').onclick=()=>{s.happy+=8; s.energy-=10; s.gp+=3; s.hunger+=6; clamp(); show();};
-show();
-</script></body></html>
+const stages=["egg","hatchling","juvenile","adult"];
+let i=0, hunger=20, mood=50, hours=0;
+function paint(msg){stage.textContent=stages[i]; document.getElementById("hunger").textContent=hunger; document.getElementById("mood").textContent=mood; log.textContent=msg;}
+feed.onclick=()=>{hunger=Math.max(0,hunger-25); mood=Math.min(100,mood+8); paint("fed");};
+rest.onclick=()=>{mood=Math.min(100,mood+12); hunger=Math.min(100,hunger+4); paint("resting");};
+tick.onclick=()=>{hours++; hunger=Math.min(100,hunger+7); mood=Math.max(0,mood-3); if(hours%4===0 && i<3 && hunger<70) i++; paint(stages[i]+" after "+hours+" h");};
+</script>
+</body></html>

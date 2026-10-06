@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shift fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a href="../index.html">Home</a></nav><h1>Shift fault log</h1>
-<p class="meta">Stored only in this browser (localStorage). Nothing is uploaded.</p></header>
+<title>Shift fault log</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a></nav>
+<h1>Shift fault log</h1>
+<p class="lede">Calls stay in this browser (localStorage). Nothing is uploaded.</p></header>
 <main>
-<form class="card" id="f">
-<label>Asset<input name="asset" required placeholder="Line 2 conveyor"></label>
-<label>Symptom<textarea name="note" required placeholder="Starter chatters, overload warm"></textarea></label>
-<button>Add call</button>
-</form>
-<ul id="list"></ul>
+<label>Asset <input id="asset" placeholder="Mold line 2, conveyor 4"></label>
+<label>Symptom <input id="sym" placeholder="Starter chatters, no seal-in"></label>
+<label>What fixed it <textarea id="fix" rows="3" placeholder="Replaced aux contact"></textarea></label>
+<p><button id="add">Add call</button> <button id="clear">Clear log</button></p>
+<div id="list"></div>
 </main>
 <script>
-const KEY='lane-faults';
-const list=document.getElementById('list');
-function load(){return JSON.parse(localStorage.getItem(KEY)||'[]')}
+const KEY="nlane-fault-log";
+const load=()=>JSON.parse(localStorage.getItem(KEY)||"[]");
 function render(){
-  list.innerHTML='';
-  load().forEach((row,i)=>{
-    const li=document.createElement('li');
-    li.className='card';
-    li.textContent=new Date(row.t).toLocaleString()+' · '+row.asset+' — '+row.note;
-    const b=document.createElement('button'); b.textContent='Clear'; b.onclick=()=>{const a=load(); a.splice(i,1); localStorage.setItem(KEY,JSON.stringify(a)); render();};
-    li.appendChild(b); list.appendChild(li);
-  });
+  const rows=load();
+  list.innerHTML=rows.map(r=>`<article class="card"><h3>${r.asset}</h3><p>${r.sym}</p><p class="meta">${r.fix}</p><p class="meta">${r.when}</p></article>`).join("")||"<p class='meta'>No calls yet.</p>";
 }
-document.getElementById('f').onsubmit=e=>{
-  e.preventDefault();
-  const fd=new FormData(e.target);
-  const a=load(); a.unshift({t:Date.now(), asset:fd.get('asset'), note:fd.get('note')});
-  localStorage.setItem(KEY, JSON.stringify(a)); e.target.reset(); render();
+add.onclick=()=>{
+  if(!asset.value.trim()) return;
+  const rows=load();
+  rows.unshift({asset:asset.value.trim(),sym:sym.value.trim(),fix:fix.value.trim(),when:new Date().toLocaleString()});
+  asset.value=sym.value=fix.value="";
+  localStorage.setItem(KEY, JSON.stringify(rows));
+  render();
 };
+clear.onclick=()=>{localStorage.removeItem(KEY); render();};
 render();
-</script></body></html>
+</script>
+</body></html>

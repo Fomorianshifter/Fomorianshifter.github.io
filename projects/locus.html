@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coordinate lab — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a href="../index.html">Home</a></nav><h1>Coordinate log</h1>
-<p class="meta">Browser stand-in for GhostGPS. Points stay on this page. Distance uses a flat approximation.</p></header>
-<main class="card">
-<label>Label<input id="label" value="panel"></label>
-<label>Latitude<input id="lat" type="number" step="0.0001" value="44.5133"></label>
-<label>Longitude<input id="lon" type="number" step="0.0001" value="-88.0133"></label>
-<button type="button" id="add">Add point</button>
-<p id="out"></p>
+<title>Coordinate lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a> <a href="https://github.com/Fomorianshifter/GhostGPS">Repo</a></nav>
+<h1>Coordinate log</h1>
+<p class="lede">Click the map to drop points. Distance is a flat approximation, not a GPS fix.</p></header>
+<main>
+<canvas id="c" width="640" height="360"></canvas>
+<p class="out" id="out">No points yet.</p>
 </main>
 <script>
-const pts=[];
-document.getElementById('add').onclick=()=>{
-  pts.push({label:label.value, lat:+lat.value, lon:+lon.value});
-  let text=pts.map(p=>p.label+': '+p.lat+', '+p.lon).join('\n');
-  if(pts.length>1){
-    const a=pts.at(-2), b=pts.at(-1);
-    const miles=Math.hypot((b.lat-a.lat)*69, (b.lon-a.lon)*69*Math.cos(a.lat*Math.PI/180));
-    text+='\nLast leg about '+miles.toFixed(2)+' miles.';
-  }
-  out.textContent=text;
-};
-</script></body></html>
+const c=document.getElementById("c"), g=c.getContext("2d"), pts=[];
+function km(a,b){return Math.hypot((b.x-a.x)/640*2,(b.y-a.y)/360*1.2)*111;}
+function draw(){
+  g.fillStyle="#142016"; g.fillRect(0,0,640,360); g.strokeStyle="#31402a";
+  for(let i=0;i<8;i++){g.beginPath(); g.moveTo(i*80,0); g.lineTo(i*80,360); g.stroke(); g.beginPath(); g.moveTo(0,i*45); g.lineTo(640,i*45); g.stroke();}
+  g.strokeStyle="#e6a23c"; g.beginPath(); pts.forEach((p,i)=>{if(i===0) g.moveTo(p.x,p.y); else g.lineTo(p.x,p.y);}); g.stroke();
+  pts.forEach(p=>{g.fillStyle="#e6a23c"; g.beginPath(); g.arc(p.x,p.y,4,0,7); g.fill();});
+  let d=0; for(let i=1;i<pts.length;i++) d+=km(pts[i-1],pts[i]);
+  out.textContent=pts.length?pts.length+" points · path about "+d.toFixed(1)+" km (flat estimate)":"No points yet.";
+}
+c.onclick=e=>{const r=c.getBoundingClientRect(); pts.push({x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*360/r.height}); draw();};
+draw();
+</script>
+</body></html>

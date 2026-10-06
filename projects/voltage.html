@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voltage drop — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a href="../index.html">Home</a></nav><h1>Single-phase voltage drop</h1>
-<p class="meta">Study estimate using VD = 2 x K x I x L / cmil. K = 12.9 for copper. Not a code calculation.</p></header>
-<main class="card">
-<label>Load amps<input id="amps" type="number" value="20"></label>
-<label>One-way length, feet<input id="feet" type="number" value="100"></label>
-<label>Wire
-<select id="wire">
-<option value="6530">12 AWG (6530 cmil)</option>
-<option value="10380" selected>10 AWG (10380 cmil)</option>
-<option value="16510">8 AWG (16510 cmil)</option>
-<option value="26240">6 AWG (26240 cmil)</option>
-<option value="41740">4 AWG (41740 cmil)</option>
+<title>Voltage drop lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a></nav>
+<h1>Single-phase voltage drop</h1>
+<p class="lede">Estimate only, using copper ohms per thousand feet. Not a design calculation and not a substitute for the NEC.</p></header>
+<main>
+<label>Load amps <input id="amps" type="number" value="16" min="0" step="0.1"></label>
+<label>One-way length, feet <input id="feet" type="number" value="80" min="0"></label>
+<label>Voltage <input id="volts" type="number" value="120"></label>
+<label>Copper AWG
+<select id="awg">
+<option value="1.21">14 (1.21 ohm/kft)</option>
+<option value="0.764" selected>12 (0.764)</option>
+<option value="0.481">10 (0.481)</option>
+<option value="0.304">8 (0.304)</option>
+<option value="0.192">6 (0.192)</option>
+<option value="0.120">4 (0.120)</option>
 </select></label>
-<label>Source volts<input id="volts" type="number" value="120"></label>
-<button type="button" id="go">Estimate</button>
-<p id="out"></p>
+<p class="out" id="out"></p>
 </main>
 <script>
-document.getElementById('go').onclick=()=>{
-  const I=+amps.value, L=+feet.value, cmil=+wire.value, V=+volts.value;
-  const vd = 2*12.9*I*L/cmil;
-  const pct = V? vd/V*100 : 0;
-  out.textContent = vd.toFixed(2)+' V drop ('+pct.toFixed(1)+'%). Receiving about '+(V-vd).toFixed(1)+' V.';
-};
-</script></body></html>
+function calc(){
+  const I=+amps.value, L=+feet.value, V=+volts.value, r=+awg.value;
+  const drop=2*I*r*L/1000, pct=V?drop/V*100:0;
+  out.textContent=`Drop ${drop.toFixed(2)} V  (${pct.toFixed(2)}%)\nEnd voltage ${(V-drop).toFixed(1)} V\nVD = 2 x I x R x L / 1000`;
+}
+["amps","feet","volts","awg"].forEach(id=>document.getElementById(id).oninput=calc);
+calc();
+</script>
+</body></html>

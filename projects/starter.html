@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Three-wire starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav><a href="../index.html">Home</a></nav>
-<p class="kicker">Lab · PLC path</p><h1>Three-wire starter</h1>
-<p>Stop is normally closed. Start is normally open. The seal-in contact holds the coil after start is released. Overload opens the rung.</p></header>
+<title>Motor starter lab</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><nav><strong>Nicholas Lane</strong><a href="../index.html">Portfolio</a></nav>
+<h1>Motor starter seal-in</h1>
+<p class="lede">Three-wire control. Stop is normally closed. Start is normally open. The auxiliary contact seals the coil in after start, until stop or overload opens.</p></header>
 <main>
-<div class="row">
-<button type="button" id="stop">Stop closed</button>
-<button type="button" id="start">Start open</button>
-<button type="button" id="ol">Overload closed</button>
-</div>
-<p id="state" class="meta">Coil: off</p>
-<div class="coil" id="coil">M</div>
-<pre id="rung" class="card"></pre>
+<p><button id="stop" class="on">Stop (NC) closed</button>
+<button id="start">Start (NO) open</button>
+<button id="ol" class="on">Overload closed</button></p>
+<p>Coil <span id="lamp" class="lamp"></span> <span id="state">dropped out</span></p>
+<pre class="out" id="logic">waiting</pre>
+<p class="warn">Teaching model only. Real starters also need correct overloads, a disconnect, and lockout.</p>
 </main>
 <script>
-const stop=document.getElementById('stop'), start=document.getElementById('start'), ol=document.getElementById('ol');
-let stopClosed=true, startOn=false, olClosed=true, seal=false;
-function draw(){
-  const coil = stopClosed && olClosed && (startOn || seal);
-  seal = coil;
-  document.getElementById('coil').className = coil ? 'coil on' : 'coil';
-  document.getElementById('state').textContent = coil ? 'Coil: energized, seal-in closed' : 'Coil: off';
-  stop.textContent = stopClosed ? 'Stop closed' : 'Stop open';
-  start.textContent = startOn ? 'Start held' : 'Start open';
-  ol.textContent = olClosed ? 'Overload closed' : 'Overload tripped';
-  document.getElementById('rung').textContent = 'L1 --[Stop '+(stopClosed?'X':'/')+']--[Start '+(startOn?'X':'/')+']--+--(M)-- L2\n              |                      |\n              +----[seal '+(seal?'X':'/')+']----+--[OL '+(olClosed?'X':'/')+']';
+const stop=document.getElementById("stop"), start=document.getElementById("start"), ol=document.getElementById("ol");
+let seal=false;
+const bit=el=>el.classList.contains("on");
+function tick(){
+  const run=bit(stop)&&bit(ol)&&(bit(start)||seal);
+  seal=run;
+  document.getElementById("lamp").classList.toggle("lit", run);
+  document.getElementById("state").textContent=run?"picked up":"dropped out";
+  document.getElementById("logic").textContent=`stop NC ${bit(stop)?"closed":"open"}  start ${bit(start)?"closed":"open"}  OL ${bit(ol)?"closed":"open"}\ncoil = stop AND overload AND (start OR seal)\nseal = ${seal}`;
 }
-stop.onclick=()=>{stopClosed=!stopClosed; if(!stopClosed) seal=false; draw();};
-start.onmousedown=()=>{startOn=true; draw();};
-start.onmouseup=()=>{startOn=false; draw();};
-ol.onclick=()=>{olClosed=!olClosed; if(!olClosed) seal=false; draw();};
-draw();
-</script></body></html>
+[stop,start,ol].forEach(b=>b.onclick=()=>{
+  b.classList.toggle("on");
+  if(b===stop) b.textContent=bit(stop)?"Stop (NC) closed":"Stop (NC) open";
+  if(b===start) b.textContent=bit(start)?"Start (NO) closed":"Start (NO) open";
+  if(b===ol) b.textContent=bit(ol)?"Overload closed":"Overload open";
+  tick();
+});
+tick();
+</script>
+</body></html>
