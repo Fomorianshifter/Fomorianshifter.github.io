@@ -6,6 +6,7 @@ Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open 
 About:
 Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric.
 
-I am studying toward NEC certification and freeCodeCamp computer science. Public projects are at https://fomorianshifter.github.io/
+I am studying toward NEC certification and freeCodeCamp computer science. Public projects, including working field tools, are at https://fomorianshifter.github.io/
 
 Green Bay, WI. Willing to relocate. Authorized to work in the US.
+Featured: https://github.com/Fomorianshifter/Loki
