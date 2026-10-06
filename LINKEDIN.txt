@@ -1,3 +1,9 @@
-LinkedIn website: https://fomorianshifter.github.io/
-Featured: that URL and https://github.com/Fomorianshifter/Loki
-Headline: Industrial electrician · PLC support · controls learner · Green Bay, WI
+LinkedIn website field:
+https://fomorianshifter.github.io/
+
+Featured links:
+https://fomorianshifter.github.io/
+https://github.com/Fomorianshifter/Loki
+
+Headline:
+Industrial electrician · PLC support · controls learner · Green Bay, WI

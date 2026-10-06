@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#1b2216"/>
-  <path d="M7 22 V10 h4.2 l4.8 7.2 V10 H20 v12 h-4.1 L11 14.6 V22 Z" fill="#e2a23a"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#10140f"/><text x="4" y="22" fill="#d2a15a" font-family="Georgia" font-size="14">NL</text></svg>
