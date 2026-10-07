@@ -1,13 +1,1 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Orbit sketch — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
-<main><p class="kicker">Basic web project</p><h1>Orbit sketch</h1>
-<p class="lede">A small runnable version of the public SolarSystem idea. Source: <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem</a>.</p>
-<canvas id="sky" width="640" height="360" style="width:100%;max-width:640px;background:#0d120c;border:1px solid #31402c;border-radius:10px"></canvas>
-<footer><a href="../projects.html">Back to projects</a></footer></main>
-<script>
-const canvas=document.getElementById("sky");const ctx=canvas.getContext("2d");
-const planets=[{r:50,size:4,speed:0.03,color:"#d2a24a"},{r:90,size:6,speed:0.018,color:"#8fbf6a"},{r:140,size:7,speed:0.012,color:"#7eb6d6"},{r:190,size:5,speed:0.008,color:"#d46a4c"}];
-let t=0;function frame(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#e7efe2";ctx.beginPath();ctx.arc(320,180,14,0,Math.PI*2);ctx.fill();
-for(const planet of planets){const x=320+Math.cos(t*planet.speed)*planet.r;const y=180+Math.sin(t*planet.speed)*planet.r*0.62;ctx.strokeStyle="#31402c";ctx.beginPath();ctx.ellipse(320,180,planet.r,planet.r*0.62,0,0,Math.PI*2);ctx.stroke();ctx.fillStyle=planet.color;ctx.beginPath();ctx.arc(x,y,planet.size,0,Math.PI*2);ctx.fill();}t+=1;requestAnimationFrame(frame);}frame();
-</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Orbit lab</title><style>body{margin:0;background:#16130f}canvas{width:100%;height:390px;display:block}</style></head><body><canvas id="c"></canvas><script>const c=document.querySelector("#c");const ctx=c.getContext("2d");const planets=[{r:46,size:4,color:"#c47a2c",speed:.018},{r:78,size:6,color:"#7f9b8a",speed:.012},{r:112,size:7,color:"#d7c4a3",speed:.008},{r:150,size:5,color:"#b9c7d6",speed:.005}];function frame(t){const w=c.width=c.clientWidth*devicePixelRatio;const h=c.height=390*devicePixelRatio;ctx.clearRect(0,0,w,h);const cx=w/2,cy=h/2;ctx.fillStyle="#e7c56a";ctx.beginPath();ctx.arc(cx,cy,14*devicePixelRatio,0,7);ctx.fill();planets.forEach(p=>{ctx.strokeStyle="#3c342b";ctx.beginPath();ctx.arc(cx,cy,p.r*devicePixelRatio,0,7);ctx.stroke();const a=t*p.speed;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(cx+Math.cos(a)*p.r*devicePixelRatio,cy+Math.sin(a)*p.r*.62*devicePixelRatio,p.size*devicePixelRatio,0,7);ctx.fill()});requestAnimationFrame(frame)}requestAnimationFrame(frame);</script></body></html>
