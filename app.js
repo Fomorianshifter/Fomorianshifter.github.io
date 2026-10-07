@@ -1,90 +1,136 @@
-const vd = () => {
-  const i = Number(document.getElementById('vd-i').value);
-  const l = Number(document.getElementById('vd-l').value);
-  const v = Number(document.getElementById('vd-v').value);
-  const cm = Number(document.getElementById('vd-awg').value);
-  const drop = (2 * 12.9 * i * l) / cm;
-  const pct = v ? (drop / v) * 100 : 0;
-  document.getElementById('vd-out').textContent =
-    drop.toFixed(2) + ' V drop (' + pct.toFixed(1) + '%). A common study target is under 3% on a branch.';
-};
-['vd-i', 'vd-l', 'vd-v', 'vd-awg'].forEach((id) => {
-  document.getElementById(id).addEventListener('input', vd);
+function drop() {
+  const el = document.getElementById("vdrop");
+  if (!el) return;
+  const V = Number(document.getElementById("v").value);
+  const A = Number(document.getElementById("a").value);
+  const ft = Number(document.getElementById("ft").value);
+  const r = Number(document.getElementById("ohm").value);
+  const vd = (2 * A * r * ft) / 1000;
+  const pct = V ? (vd / V) * 100 : 0;
+  const cls = pct <= 3 ? "ok" : pct <= 5 ? "warn" : "bad";
+  el.className = "out " + cls;
+  el.textContent = vd.toFixed(2) + " V drop \u00b7 " + pct.toFixed(2) + "%";
+}
+["v", "a", "ft", "ohm"].forEach((id) => {
+  const n = document.getElementById(id);
+  if (n) n.addEventListener("input", drop);
 });
-vd();
+drop();
 
-let start = false;
-let stop = true;
-let ol = false;
-const drawCoil = () => {
-  const sealed = start && !stop && !ol;
-  document.getElementById('coil').textContent = sealed ? 'Coil: ON — start is sealed in' : 'Coil: off';
-};
-document.getElementById('btn-start').onclick = () => { start = true; stop = false; drawCoil(); };
-document.getElementById('btn-stop').onclick = () => { stop = true; start = false; drawCoil(); };
-document.getElementById('btn-ol').onclick = () => { ol = true; drawCoil(); };
-document.getElementById('btn-reset').onclick = () => { ol = false; drawCoil(); };
-
-const KEY = 'nl-faults';
-const list = document.getElementById('fault-list');
-const load = () => {
-  list.innerHTML = '';
-  JSON.parse(localStorage.getItem(KEY) || '[]').forEach((row) => {
-    const li = document.createElement('li');
-    li.textContent = row.area + ' — ' + row.note;
-    list.appendChild(li);
+const state = { stop: false, start: false, ol: true, seal: false };
+function rung() {
+  const box = document.getElementById("ladder");
+  const coil = document.getElementById("coil");
+  if (!box || !coil) return;
+  const path = !state.stop && state.ol && (state.start || state.seal);
+  state.seal = path;
+  box.innerHTML = "";
+  const bits = [
+    ["Stop NC", !state.stop, () => { state.stop = !state.stop; }],
+    ["Start NO", state.start, () => { state.start = !state.start; }],
+    ["OL NC", state.ol, () => { state.ol = !state.ol; }]
+  ];
+  bits.forEach(([name, on, fn]) => {
+    const b = document.createElement("button");
+    b.className = "btn ghost";
+    b.type = "button";
+    b.textContent = name + (on ? " closed" : " open");
+    b.onclick = () => { fn(); rung(); };
+    box.appendChild(b);
   });
-};
-document.getElementById('fault-form').onsubmit = (e) => {
-  e.preventDefault();
-  const rows = JSON.parse(localStorage.getItem(KEY) || '[]');
-  rows.unshift({
-    area: document.getElementById('fault-area').value,
-    note: document.getElementById('fault-note').value
-  });
-  localStorage.setItem(KEY, JSON.stringify(rows.slice(0, 12)));
-  e.target.reset();
-  load();
-};
-load();
+  const c = document.createElement("span");
+  c.className = "coil" + (state.seal ? " on" : "");
+  box.appendChild(c);
+  coil.textContent = state.seal ? "M coil sealed in" : "M coil off";
+  coil.className = "out " + (state.seal ? "ok" : "");
+}
+rung();
 
-const canvas = document.getElementById('sky');
-const ctx = canvas.getContext('2d');
-const planets = [
-  { r: 46, size: 3, hue: 200, w: 0.018 },
-  { r: 78, size: 5, hue: 42, w: 0.011 },
-  { r: 112, size: 4, hue: 18, w: 0.007 }
-];
-let t = 0;
-const sky = () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#d7c48a';
-  ctx.beginPath();
-  ctx.arc(320, 140, 14, 0, Math.PI * 2);
-  ctx.fill();
-  planets.forEach((p) => {
-    const a = t * p.w;
-    ctx.strokeStyle = '#3d4634';
+const faults = JSON.parse(localStorage.getItem("nl-faults") || "[]");
+function paintFaults() {
+  const ul = document.getElementById("faults");
+  if (!ul) return;
+  ul.innerHTML = "";
+  faults.slice(-5).reverse().forEach((f) => {
+    const li = document.createElement("li");
+    li.textContent = f.asset + " \u2014 " + f.note;
+    ul.appendChild(li);
+  });
+}
+const add = document.getElementById("addFault");
+if (add) add.onclick = () => {
+  const asset = document.getElementById("asset").value.trim();
+  const note = document.getElementById("note").value.trim();
+  if (!asset || !note) return;
+  faults.push({ asset, note, t: Date.now() });
+  localStorage.setItem("nl-faults", JSON.stringify(faults));
+  document.getElementById("note").value = "";
+  paintFaults();
+};
+paintFaults();
+
+const loki = { hunger: 30, happy: 50, gp: 0 };
+function stage() {
+  if (loki.gp >= 40) return "Adult";
+  if (loki.gp >= 18) return "Young";
+  if (loki.gp >= 6) return "Hatchling";
+  return "Egg";
+}
+function face() {
+  const s = stage();
+  if (loki.hunger > 70) return "\ud83d\ude24";
+  if (s === "Egg") return "\ud83e\udd5a";
+  if (loki.happy > 70) return "\ud83d\udc32";
+  return "\ud83d\udc09";
+}
+function paintLoki() {
+  const f = document.getElementById("face");
+  const st = document.getElementById("lokiStatus");
+  if (!f || !st) return;
+  f.textContent = face();
+  st.textContent = stage() + " \u00b7 hunger " + loki.hunger + " \u00b7 happy " + loki.happy + " \u00b7 gp " + loki.gp;
+}
+const feed = document.getElementById("feed");
+const play = document.getElementById("play");
+if (feed) feed.onclick = () => { loki.hunger = Math.max(0, loki.hunger - 25); loki.happy += 8; loki.gp += 4; paintLoki(); };
+if (play) play.onclick = () => { loki.happy += 12; loki.hunger += 6; loki.gp += 2; paintLoki(); };
+paintLoki();
+
+const sky = document.getElementById("sky");
+if (sky) {
+  const ctx = sky.getContext("2d");
+  const planets = [
+    { r: 46, s: 0.8, c: "#c9b18a" },
+    { r: 72, s: 0.55, c: "#d4843a" },
+    { r: 104, s: 0.35, c: "#7dba6a" },
+    { r: 136, s: 0.22, c: "#8eb4d4" }
+  ];
+  let t = 0;
+  function frame() {
+    const w = sky.clientWidth || 640;
+    sky.width = w * devicePixelRatio;
+    sky.height = 280 * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    ctx.fillStyle = "#0c0b09";
+    ctx.fillRect(0, 0, w, 280);
+    const cx = w / 2, cy = 140;
+    ctx.fillStyle = "#f0b27a";
     ctx.beginPath();
-    ctx.ellipse(320, 140, p.r, p.r * 0.42, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.fillStyle = 'hsl(' + p.hue + ' 60% 62%)';
-    ctx.beginPath();
-    ctx.arc(320 + Math.cos(a) * p.r, 140 + Math.sin(a) * p.r * 0.42, p.size, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 12, 0, Math.PI * 2);
     ctx.fill();
-  });
-  t += 1;
-  requestAnimationFrame(sky);
-};
-sky();
-
-const stages = ['Egg', 'Hatchling', 'Juvenile', 'Adult'];
-let hunger = 2;
-let age = 0;
-const loki = () => {
-  const stage = stages[Math.min(3, Math.floor(age / 3))];
-  document.getElementById('loki-stage').textContent = stage + ' · hunger ' + hunger + '/5 · day ' + age;
-};
-document.getElementById('loki-feed').onclick = () => { hunger = Math.max(0, hunger - 1); loki(); };
-document.getElementById('loki-tick').onclick = () => { age += 1; hunger = Math.min(5, hunger + 1); loki(); };
-loki();
+    planets.forEach((p) => {
+      const a = t * p.s;
+      ctx.strokeStyle = "#3a342c";
+      ctx.beginPath();
+      ctx.arc(cx, cy, p.r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = p.c;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a) * p.r, cy + Math.sin(a) * p.r * 0.42, 5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    t += 0.02;
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
