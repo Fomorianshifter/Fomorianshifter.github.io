@@ -1,30 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Starter rung — Nicholas Lane</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../styles.css"></head>
-<body><header><nav class="nav"><a class="brand" href="../index.html">NL</a><a href="../projects.html">Projects</a></nav></header>
-<main><p class="kicker">Ladder practice</p><h1>Three-wire motor starter</h1>
-<p class="lede">Stop is normally closed. Start is normally open. The auxiliary contact seals the start button. An open overload drops the coil.</p>
-<div class="rung" id="rung"></div><p class="out" id="coil">Coil off</p><p id="path"></p>
-<footer><a href="../projects.html">Back to projects</a></footer></main>
-<script>
-const state={stop:true,start:false,ol:true};
-const labels={stop:"Stop NC",start:"Start NO",aux:"Aux seal",ol:"Overload NC"};
-function sealed(){return state.stop&&state.ol&&(state.start||state.aux);}
-function draw(){
-state.aux=sealed();
-const rung=document.getElementById("rung");
-rung.innerHTML="";
-for(const key of ["stop","start","aux","ol"]){
-const button=document.createElement("button");
-button.className="device "+(state[key]?"on":"off");
-button.textContent=labels[key]+"\n"+(state[key]?"closed":"open");
-button.addEventListener("click",()=>{if(key!=="aux")state[key]=!state[key];draw();});
-rung.appendChild(button);
-}
-const on=state.stop&&state.ol&&(state.start||state.aux);
-state.aux=on;
-document.getElementById("coil").textContent=on?"Coil sealed in":"Coil off";
-document.getElementById("coil").className="out "+(on?"ok":"bad");
-document.getElementById("path").textContent=on?"Path is complete through stop, overload, and either start or the auxiliary contact.":"Path is open. Close stop and overload, then press start.";
-}
-draw();
-</script></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motor starter rung — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#projects">Projects</a></nav></header>
+<main><div class="kicker">Controls demo</div><h1>Motor starter rung</h1><p class="lede">Stop is normally closed. Start seals the coil if the overload is closed. This is a teaching model, not a wired starter.</p><div class="card"><div class="ladder" id="ladder"></div><p class="out" id="coil"></p></div><p><a href="https://github.com/Fomorianshifter/Loki">GitHub</a></p></main>
+<script src="../app.js"></script>
+</body></html>

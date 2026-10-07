@@ -1,58 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Orbits lab — Nicholas Lane</title>
-  <link rel="stylesheet" href="../styles.css">
-</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orbits — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css"></head>
 <body>
-  <header>
-    <a class="brand" href="../index.html">Nicholas Lane</a>
-    <nav><a href="../projects.html">Projects</a> <a href="https://github.com/Fomorianshifter/SolarSystem">SolarSystem repo</a></nav>
-  </header>
-  <main>
-    <p class="kicker">From the 2024 sketch</p>
-    <h1>Planet alignment</h1>
-    <p class="lead">The public SolarSystem repo is a short “planet alignment” note. This canvas is a new interactive version of that idea, not a claim that the old repo is a finished app.</p>
-    <canvas id="sky" width="900" height="520"></canvas>
-  </main>
-  <script>
-    const canvas = document.getElementById("sky");
-    const ctx = canvas.getContext("2d");
-    const bodies = [
-      { name: "Mercury", r: 70, size: 4, speed: 0.02, color: "#c4b7a6" },
-      { name: "Venus", r: 110, size: 7, speed: 0.012, color: "#e2c48a" },
-      { name: "Earth", r: 150, size: 8, speed: 0.01, color: "#6aa2d8" },
-      { name: "Mars", r: 190, size: 6, speed: 0.008, color: "#c46b4a" },
-      { name: "Jupiter", r: 250, size: 16, speed: 0.004, color: "#d7b48a" }
-    ];
-    let t = 0;
-    function frame() {
-      const w = canvas.width, h = canvas.height;
-      ctx.fillStyle = "#0b0f14";
-      ctx.fillRect(0, 0, w, h);
-      ctx.beginPath();
-      ctx.fillStyle = "#e2a23a";
-      ctx.arc(w / 2, h / 2, 22, 0, Math.PI * 2);
-      ctx.fill();
-      bodies.forEach((b) => {
-        ctx.strokeStyle = "#2c3642";
-        ctx.beginPath();
-        ctx.arc(w / 2, h / 2, b.r, 0, Math.PI * 2);
-        ctx.stroke();
-        const a = t * b.speed;
-        const x = w / 2 + Math.cos(a) * b.r;
-        const y = h / 2 + Math.sin(a) * b.r * 0.42;
-        ctx.fillStyle = b.color;
-        ctx.beginPath();
-        ctx.arc(x, y, b.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      t += 1;
-      requestAnimationFrame(frame);
-    }
-    frame();
-  </script>
-</body>
-</html>
+<header><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#projects">Projects</a></nav></header>
+<main><div class="kicker">From SolarSystem</div><h1>Orbits</h1><p class="lede">Four planets on elliptical-looking paths. Rebuilt from the 2024 solar-system repos.</p><canvas id="sky"></canvas><p><a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">GitHub</a></p></main>
+<script src="../app.js"></script>
+</body></html>

@@ -1,5 +1,5 @@
-# Nicholas Lane portfolio
+# Nicholas Lane
 
-Static site for GitHub Pages: https://fomorianshifter.github.io/
+Public portfolio for LinkedIn: https://fomorianshifter.github.io/
 
-Industrial electrician portfolio with resume, LinkedIn paste text, Loki, and three working demos (voltage drop, starter rung, fault log).
+Industrial electrician in Green Bay, WI. Highlights public GitHub work (Loki, solar system) and small interactive field tools.
