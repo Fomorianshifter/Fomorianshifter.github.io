@@ -1,13 +1,14 @@
-LinkedIn website: https://fomorianshifter.github.io/
+LinkedIn website
+https://fomorianshifter.github.io/
 
-Headline:
+Headline
 Industrial electrician | PLC install and troubleshooting | Green Bay, WI | open to relocate
 
-About:
-Industrial electrician with more than five years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on electrical faults. Earlier roles covered new construction, remodels, and service calls at AC Electric, and apprentice work at Greenfield Electric.
+About
+Industrial electrician with five-plus years in residential, commercial, and foundry electrical work. At Grede Foundries in Reedsburg I assisted PLC installation and programming and worked with engineering on plant electrical faults. Earlier roles covered new construction, remodels, and service calls, plus quality inspection on CNC work.
 
-I am studying toward NEC certification and freeCodeCamp computer science. Public projects and working field tools are at https://fomorianshifter.github.io/
+I am building the controls side in public: Loki, an embedded companion for Linux single-board computers (C, TFT, Flipper Zero UART), and small browser tools for voltage drop, a motor-starter rung, and a shift fault log. freeCodeCamp computer science study is in progress. Willing to relocate. Authorized to work in the US.
 
-Green Bay, WI. Willing to relocate. Authorized to work in the US.
-Featured: https://github.com/Fomorianshifter/Loki
-Featured demo: https://fomorianshifter.github.io/projects/loki.html
+Featured
+https://fomorianshifter.github.io/
+https://github.com/Fomorianshifter/Loki

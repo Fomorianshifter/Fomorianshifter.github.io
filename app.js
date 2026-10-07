@@ -1,136 +1,118 @@
-function drop() {
-  const el = document.getElementById("vdrop");
-  if (!el) return;
-  const V = Number(document.getElementById("v").value);
-  const A = Number(document.getElementById("a").value);
-  const ft = Number(document.getElementById("ft").value);
-  const r = Number(document.getElementById("ohm").value);
-  const vd = (2 * A * r * ft) / 1000;
-  const pct = V ? (vd / V) * 100 : 0;
-  const cls = pct <= 3 ? "ok" : pct <= 5 ? "warn" : "bad";
-  el.className = "out " + cls;
-  el.textContent = vd.toFixed(2) + " V drop \u00b7 " + pct.toFixed(2) + "%";
-}
-["v", "a", "ft", "ohm"].forEach((id) => {
-  const n = document.getElementById(id);
-  if (n) n.addEventListener("input", drop);
-});
-drop();
+const K = 12.9; // copper approx ohm-cmil / ft at 75C
 
-const state = { stop: false, start: false, ol: true, seal: false };
-function rung() {
-  const box = document.getElementById("ladder");
+function vdCalc() {
+  const volts = Number(document.getElementById("volts").value);
+  const amps = Number(document.getElementById("amps").value);
+  const feet = Number(document.getElementById("feet").value);
+  const cmil = Number(document.getElementById("cmil").value);
+  const phase = document.getElementById("phase").value;
+  const factor = phase === "1" ? 2 : 1.732;
+  const drop = (factor * K * amps * feet) / cmil;
+  const pct = volts ? (drop / volts) * 100 : 0;
+  const ok = pct <= 3 ? "within a common 3% branch target" : "above a common 3% branch target";
+  document.getElementById("vdout").textContent =
+    drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% · " + ok;
+}
+
+function wireLadder() {
+  const stop = document.getElementById("stop");
+  const start = document.getElementById("start");
+  const ol = document.getElementById("ol");
   const coil = document.getElementById("coil");
-  if (!box || !coil) return;
-  const path = !state.stop && state.ol && (state.start || state.seal);
-  state.seal = path;
-  box.innerHTML = "";
-  const bits = [
-    ["Stop NC", !state.stop, () => { state.stop = !state.stop; }],
-    ["Start NO", state.start, () => { state.start = !state.start; }],
-    ["OL NC", state.ol, () => { state.ol = !state.ol; }]
-  ];
-  bits.forEach(([name, on, fn]) => {
-    const b = document.createElement("button");
-    b.className = "btn ghost";
-    b.type = "button";
-    b.textContent = name + (on ? " closed" : " open");
-    b.onclick = () => { fn(); rung(); };
-    box.appendChild(b);
+  const seal = document.getElementById("seal");
+  let latched = false;
+  function draw() {
+    const path = stop.classList.contains("on") && ol.classList.contains("on") && (start.classList.contains("on") || latched);
+    latched = path;
+    coil.classList.toggle("energized", path);
+    coil.textContent = path ? "M ON" : "M OFF";
+    seal.textContent = path ? "M seal closed" : "M seal open";
+    seal.classList.toggle("on", path);
+  }
+  [stop, start, ol].forEach((el) => el.addEventListener("click", () => {
+    el.classList.toggle("on");
+    if (el === stop || el === ol) {
+      if (!el.classList.contains("on")) latched = false;
+    }
+    draw();
+  }));
+  draw();
+}
+
+function faultLog() {
+  const key = "nlane-faults";
+  const body = document.getElementById("faults");
+  function load() { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
+  function save(rows) { localStorage.setItem(key, JSON.stringify(rows)); }
+  function render() {
+    const rows = load();
+    body.innerHTML = rows.length ? rows.map((r) => `<tr><td>${r.when}</td><td>${r.area}</td><td>${r.note}</td></tr>`).join("") : `<tr><td colspan="3">No faults logged on this browser yet.</td></tr>`;
+  }
+  document.getElementById("addfault").addEventListener("click", () => {
+    const note = document.getElementById("fnote").value.trim();
+    if (!note) return;
+    const rows = load();
+    rows.unshift({ when: new Date().toLocaleString(), area: document.getElementById("farea").value, note });
+    save(rows.slice(0, 20));
+    document.getElementById("fnote").value = "";
+    render();
   });
-  const c = document.createElement("span");
-  c.className = "coil" + (state.seal ? " on" : "");
-  box.appendChild(c);
-  coil.textContent = state.seal ? "M coil sealed in" : "M coil off";
-  coil.className = "out " + (state.seal ? "ok" : "");
+  render();
 }
-rung();
 
-const faults = JSON.parse(localStorage.getItem("nl-faults") || "[]");
-function paintFaults() {
-  const ul = document.getElementById("faults");
-  if (!ul) return;
-  ul.innerHTML = "";
-  faults.slice(-5).reverse().forEach((f) => {
-    const li = document.createElement("li");
-    li.textContent = f.asset + " \u2014 " + f.note;
-    ul.appendChild(li);
-  });
-}
-const add = document.getElementById("addFault");
-if (add) add.onclick = () => {
-  const asset = document.getElementById("asset").value.trim();
-  const note = document.getElementById("note").value.trim();
-  if (!asset || !note) return;
-  faults.push({ asset, note, t: Date.now() });
-  localStorage.setItem("nl-faults", JSON.stringify(faults));
-  document.getElementById("note").value = "";
-  paintFaults();
-};
-paintFaults();
-
-const loki = { hunger: 30, happy: 50, gp: 0 };
-function stage() {
-  if (loki.gp >= 40) return "Adult";
-  if (loki.gp >= 18) return "Young";
-  if (loki.gp >= 6) return "Hatchling";
-  return "Egg";
-}
-function face() {
-  const s = stage();
-  if (loki.hunger > 70) return "\ud83d\ude24";
-  if (s === "Egg") return "\ud83e\udd5a";
-  if (loki.happy > 70) return "\ud83d\udc32";
-  return "\ud83d\udc09";
-}
-function paintLoki() {
-  const f = document.getElementById("face");
-  const st = document.getElementById("lokiStatus");
-  if (!f || !st) return;
-  f.textContent = face();
-  st.textContent = stage() + " \u00b7 hunger " + loki.hunger + " \u00b7 happy " + loki.happy + " \u00b7 gp " + loki.gp;
-}
-const feed = document.getElementById("feed");
-const play = document.getElementById("play");
-if (feed) feed.onclick = () => { loki.hunger = Math.max(0, loki.hunger - 25); loki.happy += 8; loki.gp += 4; paintLoki(); };
-if (play) play.onclick = () => { loki.happy += 12; loki.hunger += 6; loki.gp += 2; paintLoki(); };
-paintLoki();
-
-const sky = document.getElementById("sky");
-if (sky) {
-  const ctx = sky.getContext("2d");
+function solar() {
+  const c = document.getElementById("sky");
+  const ctx = c.getContext("2d");
   const planets = [
-    { r: 46, s: 0.8, c: "#c9b18a" },
-    { r: 72, s: 0.55, c: "#d4843a" },
-    { r: 104, s: 0.35, c: "#7dba6a" },
-    { r: 136, s: 0.22, c: "#8eb4d4" }
+    { n: "Mercury", a: 38, s: 0.02, r: 3, col: "#c4b7a6" },
+    { n: "Venus", a: 56, s: 0.015, r: 4, col: "#e2c07a" },
+    { n: "Earth", a: 76, s: 0.012, r: 4.5, col: "#7eb6d8" },
+    { n: "Mars", a: 96, s: 0.01, r: 3.5, col: "#d4654a" },
+    { n: "Jupiter", a: 128, s: 0.006, r: 8, col: "#d8b48a" }
   ];
   let t = 0;
   function frame() {
-    const w = sky.clientWidth || 640;
-    sky.width = w * devicePixelRatio;
-    sky.height = 280 * devicePixelRatio;
-    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-    ctx.fillStyle = "#0c0b09";
-    ctx.fillRect(0, 0, w, 280);
-    const cx = w / 2, cy = 140;
-    ctx.fillStyle = "#f0b27a";
-    ctx.beginPath();
-    ctx.arc(cx, cy, 12, 0, Math.PI * 2);
-    ctx.fill();
+    const w = c.width = c.clientWidth * 2;
+    const h = c.height = 280 * 2;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#0c100b";
+    ctx.fillRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+    ctx.fillStyle = "#e2a123";
+    ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
     planets.forEach((p) => {
-      const a = t * p.s;
-      ctx.strokeStyle = "#3a342c";
-      ctx.beginPath();
-      ctx.arc(cx, cy, p.r, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.fillStyle = p.c;
-      ctx.beginPath();
-      ctx.arc(cx + Math.cos(a) * p.r, cy + Math.sin(a) * p.r * 0.42, 5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.strokeStyle = "#3d4a2e";
+      ctx.beginPath(); ctx.arc(cx, cy, p.a * 2, 0, Math.PI * 2); ctx.stroke();
+      const x = cx + Math.cos(t * p.s) * p.a * 2;
+      const y = cy + Math.sin(t * p.s) * p.a * 2;
+      ctx.fillStyle = p.col;
+      ctx.beginPath(); ctx.arc(x, y, p.r * 2, 0, Math.PI * 2); ctx.fill();
     });
-    t += 0.02;
+    t += 1;
     requestAnimationFrame(frame);
   }
   frame();
 }
+
+function loki() {
+  const state = { hunger: 30, happy: 50, gp: 0, stage: "Egg" };
+  const face = document.getElementById("loki-face");
+  const line = document.getElementById("loki-line");
+  function tick() {
+    if (state.hunger < 80) state.stage = "Egg";
+    else if (state.happy < 70) state.stage = "Hatchling";
+    else state.stage = "Wyrm";
+    face.textContent = state.stage === "Egg" ? "egg" : state.stage === "Hatchling" ? "hatch" : "wyrm";
+    line.textContent = state.stage + " · hunger " + state.hunger + " · happy " + state.happy + " · gp " + state.gp;
+  }
+  document.getElementById("feed").onclick = () => { state.hunger = Math.min(100, state.hunger + 18); state.gp += 1; tick(); };
+  document.getElementById("play").onclick = () => { state.happy = Math.min(100, state.happy + 14); state.hunger = Math.max(0, state.hunger - 6); state.gp += 1; tick(); };
+  tick();
+}
+
+document.querySelectorAll("[data-vd]").forEach((el) => el.addEventListener("input", vdCalc));
+vdCalc();
+wireLadder();
+faultLog();
+solar();
+loki();
