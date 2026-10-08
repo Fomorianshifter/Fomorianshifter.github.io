@@ -1,1 +1,67 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shift fault log</title><style>body{margin:0;font-family:sans-serif;background:#16130f;color:#f4efe6}main{padding:14px}form{display:flex;gap:8px;flex-wrap:wrap}input,select,button{font:inherit;border-radius:8px;border:1px solid #3c342b;background:#241f1a;color:#f4efe6;padding:8px}button{background:#c47a2c;color:#1c1915;border:0;cursor:pointer}ul{list-style:none;padding:0;margin:12px 0 0}li{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #3c342b;padding:8px 0}.cleared{opacity:.45;text-decoration:line-through}</style></head><body><main><form id="form"><input id="area" placeholder="Area, e.g. melt deck" required><input id="note" placeholder="Fault, e.g. conveyor photoeye" required><select id="priority"><option>Low</option><option selected>Medium</option><option>High</option></select><button>Log</button></form><ul id="list"></ul></main><script>const key="lane-fault-log";const list=document.querySelector("#list");const load=()=>JSON.parse(localStorage.getItem(key)||"[]");const save=rows=>localStorage.setItem(key,JSON.stringify(rows));function draw(){list.innerHTML="";load().forEach((row,i)=>{const li=document.createElement("li");li.className=row.cleared?"cleared":"";li.innerHTML=`<span><strong>${row.priority}</strong> ${row.area} — ${row.note}</span>`;const b=document.createElement("button");b.textContent=row.cleared?"Reopen":"Clear";b.onclick=()=>{const rows=load();rows[i].cleared=!rows[i].cleared;save(rows);draw()};li.append(b);list.append(li)})}document.querySelector("#form").onsubmit=e=>{e.preventDefault();const rows=load();rows.unshift({area:area.value,note:note.value,priority:priority.value,cleared:false});save(rows);e.target.reset();draw()};draw();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shift fault log — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header><div class="wrap"><nav><a class="brand" href="../index.html">Nicholas Lane</a><div class="links"><a href="../index.html#projects">Projects</a></div></nav></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Portfolio lab</div>
+      <h1>Shift fault log</h1>
+      <p class="lede">A small stand-in for a maintenance note: asset, symptom, and what was checked. Entries stay in this browser only.</p>
+    </section>
+    <section class="panel">
+      <form id="form">
+        <div class="row">
+          <div><label for="asset">Asset</label><input id="asset" required placeholder="Mold line conveyor 2"></div>
+          <div><label for="symptom">Symptom</label><input id="symptom" required placeholder="Drive will not seal in"></div>
+        </div>
+        <label for="note">Checked</label>
+        <textarea id="note" rows="3" placeholder="Stop circuit closed, overload reset, aux contact dirty"></textarea>
+        <div class="actions"><button class="btn" type="submit">Add entry</button> <button class="btn ghost" id="clear" type="button">Clear log</button></div>
+      </form>
+      <table>
+        <thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Checked</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    const key = "lane-fault-log";
+    const rows = document.getElementById("rows");
+    function load() { return JSON.parse(localStorage.getItem(key) || "[]"); }
+    function save(items) { localStorage.setItem(key, JSON.stringify(items)); }
+    function draw() {
+      rows.innerHTML = "";
+      load().forEach((item) => {
+        const tr = document.createElement("tr");
+        [item.when, item.asset, item.symptom, item.note].forEach((text) => {
+          const td = document.createElement("td");
+          td.textContent = text;
+          tr.appendChild(td);
+        });
+        rows.appendChild(tr);
+      });
+    }
+    document.getElementById("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const items = load();
+      items.unshift({
+        when: new Date().toLocaleString(),
+        asset: document.getElementById("asset").value,
+        symptom: document.getElementById("symptom").value,
+        note: document.getElementById("note").value
+      });
+      save(items.slice(0, 30));
+      e.target.reset();
+      draw();
+    });
+    document.getElementById("clear").addEventListener("click", () => { save([]); draw(); });
+    draw();
+  </script>
+</body>
+</html>

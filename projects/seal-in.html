@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seal-in starter — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header><div class="wrap"><nav><a class="brand" href="../index.html">Nicholas Lane</a><div class="links"><a href="../index.html#projects">Projects</a></div></nav></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Portfolio lab</div>
+      <h1>Three-wire start / stop</h1>
+      <p class="lede">Stop is normally closed. Start is normally open. The auxiliary contact seals the coil in after start, so the motor stays running when start is released.</p>
+    </section>
+    <section class="panel">
+      <div class="actions">
+        <button class="btn" id="start" type="button">Press start</button>
+        <button class="btn ghost" id="stop" type="button">Press stop</button>
+        <button class="btn ghost" id="ol" type="button">Trip overload</button>
+      </div>
+      <p class="out" id="state">Motor stopped</p>
+      <pre class="ladder" id="ladder"></pre>
+      <p class="meta">Stop and overload must both be closed. Start or the seal-in contact must be closed. Releasing start opens that contact only.</p>
+    </section>
+  </main>
+  <script>
+    let running = false;
+    let startHeld = false;
+    let stopClosed = true;
+    let olClosed = true;
+    const state = document.getElementById("state");
+    const ladder = document.getElementById("ladder");
+    function render() {
+      const seal = running && stopClosed && olClosed;
+      const coil = stopClosed && olClosed && (startHeld || seal);
+      running = coil;
+      const mark = (on) => on ? "XX" : "..";
+      ladder.textContent =
+        "L1 " + mark(stopClosed) + " STOP  " + mark(olClosed) + " OL  " + mark(startHeld) + " START --+\n" +
+        "                                      " + mark(seal) + " M     --+-- ( ) M\n" +
+        "L2 ------------------------------------------------------------";
+      state.textContent = running ? "Motor running" : "Motor stopped";
+      state.className = running ? "out on" : "out off";
+    }
+    document.getElementById("start").addEventListener("mousedown", () => { startHeld = true; render(); });
+    document.getElementById("start").addEventListener("mouseup", () => { startHeld = false; render(); });
+    document.getElementById("start").addEventListener("mouseleave", () => { startHeld = false; render(); });
+    document.getElementById("start").addEventListener("touchstart", (e) => { e.preventDefault(); startHeld = true; render(); }, {passive: false});
+    document.getElementById("start").addEventListener("touchend", () => { startHeld = false; render(); });
+    document.getElementById("stop").addEventListener("click", () => { stopClosed = false; running = false; render(); setTimeout(() => { stopClosed = true; render(); }, 400); });
+    document.getElementById("ol").addEventListener("click", () => { olClosed = !olClosed; if (!olClosed) running = false; render(); });
+    render();
+  </script>
+</body>
+</html>

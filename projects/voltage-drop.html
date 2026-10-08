@@ -1,39 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voltage drop — Nicholas Lane</title>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voltage drop — Nicholas Lane</title>
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<header>
-  <div class="brand">Nicholas Lane <span>projects</span></div>
-  <nav><a href="../">Home</a><a href="../#labs">All projects</a><a href="https://github.com/Fomorianshifter">GitHub</a></nav>
-</header>
-<main class="wrap">
-<p><a class="back" href="../">← portfolio</a></p>
-
-<h1>Voltage drop</h1>
-<p class="lede">Single-phase copper estimate: drop = 2 × amps × ohms-per-kft × feet / 1000. Check NEC Chapter 9 tables before you buy wire.</p>
-<div class="card">
-  <label>Load amps <input id="amps" type="number" value="20" min="1"></label>
-  <label>One-way feet <input id="feet" type="number" value="100" min="1"></label>
-  <label>AWG <select id="awg"><option value="12">12</option><option value="10">10</option><option value="8">8</option><option value="6">6</option></select></label>
-  <label>Volts <input id="volts" type="number" value="240" min="1"></label>
-  <p class="stat" id="vd"></p>
-</div>
-<script>
-const ohms = {12: 1.98, 10: 1.24, 8: 0.778, 6: 0.491};
-function vd() {
-  const a = +amps.value, ft = +feet.value, v = +volts.value, r = ohms[awg.value];
-  const drop = 2 * a * r * ft / 1000;
-  const pct = v ? drop / v * 100 : 0;
-  document.getElementById("vd").textContent = drop.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of " + v + " V";
-}
-["amps","feet","awg","volts"].forEach(id => document.getElementById(id).addEventListener("input", vd));
-vd();
-</script>
-</main><footer>Nicholas Lane · nlane713@gmail.com · planning aids, not a jobsite procedure.</footer></body></html>
+  <header><div class="wrap"><nav><a class="brand" href="../index.html">Nicholas Lane</a><div class="links"><a href="../index.html#projects">Projects</a></div></nav></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Portfolio lab</div>
+      <h1>Single-phase voltage drop</h1>
+      <p class="lede">Approximate copper drop using VD = 2 × K × I × D / cmil, with K = 12.9. One-way distance. This is a study tool, not an NEC permit calculation.</p>
+    </section>
+    <section class="panel">
+      <div class="row">
+        <div><label for="volts">Source voltage</label><input id="volts" type="number" value="120" min="1"></div>
+        <div><label for="amps">Load amps</label><input id="amps" type="number" value="16" min="0" step="0.1"></div>
+        <div><label for="feet">One-way feet</label><input id="feet" type="number" value="80" min="0"></div>
+        <div>
+          <label for="awg">Copper AWG</label>
+          <select id="awg">
+            <option value="4107">14</option>
+            <option value="6530" selected>12</option>
+            <option value="10380">10</option>
+            <option value="16510">8</option>
+            <option value="26240">6</option>
+            <option value="41740">4</option>
+            <option value="66360">2</option>
+          </select>
+        </div>
+      </div>
+      <p class="out" id="drop">—</p>
+      <p class="meta" id="note"></p>
+    </section>
+  </main>
+  <script>
+    const volts = document.getElementById("volts");
+    const amps = document.getElementById("amps");
+    const feet = document.getElementById("feet");
+    const awg = document.getElementById("awg");
+    const drop = document.getElementById("drop");
+    const note = document.getElementById("note");
+    function calc() {
+      const v = Number(volts.value);
+      const i = Number(amps.value);
+      const d = Number(feet.value);
+      const cmil = Number(awg.value);
+      const vd = (2 * 12.9 * i * d) / cmil;
+      const pct = v ? (vd / v) * 100 : 0;
+      drop.textContent = vd.toFixed(2) + " V  ·  " + pct.toFixed(2) + "%";
+      note.textContent = pct > 3
+        ? "Over a common 3% branch-circuit study limit. Try a larger conductor or a shorter run."
+        : "At or under a common 3% branch-circuit study limit for these inputs.";
+      note.className = pct > 3 ? "warn" : "meta";
+    }
+    [volts, amps, feet, awg].forEach((el) => el.addEventListener("input", calc));
+    calc();
+  </script>
+</body>
+</html>
