@@ -1,130 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nicholas Lane — Controls, electrical, and software</title>
-<meta name="description" content="Portfolio of Nicholas Lane, industrial electrician in Green Bay, WI. PLC support, electrical maintenance, and software projects including Loki.">
-<meta property="og:title" content="Nicholas Lane — Portfolio">
-<meta property="og:description" content="Industrial electrician building toward controls. Live demos and GitHub projects.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://fomorianshifter.github.io/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23141a14' width='32' height='32'/%3E%3Cpath d='M6 22h20M8 22V12h4v10M14 22V8h4v14M20 22V14h4v8' stroke='%23d7a15a' stroke-width='2' fill='none'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nicholas Lane — electrician, controls, software</title>
+  <meta name="description" content="Portfolio of Nicholas Lane: industrial electrician in Green Bay, WI, with PLC support experience and public GitHub projects.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg">
 </head>
 <body>
-<header class="top">
-  <a class="mark" href="index.html">NL</a>
-  <nav>
-    <a href="#work">Work</a>
-    <a href="#projects">Projects</a>
-    <a href="#path">Path</a>
-    <a href="linkedin.html">LinkedIn copy</a>
-  </nav>
-</header>
-<main>
-  <section class="hero">
-    <p class="kicker">Green Bay, WI · open to relocate · US work authorized</p>
-    <h1>Industrial electrician moving into controls and software.</h1>
-    <p class="lede">Five-plus years on residential, commercial, and foundry electrical systems. I install and troubleshoot equipment, support PLC work, and build small software tools that make shop problems visible.</p>
-    <div class="actions">
-      <a class="btn" href="#projects">Open the demos</a>
-      <a class="btn ghost" href="https://github.com/Fomorianshifter" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn ghost" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="index.html">Nicholas Lane</a>
+        <div class="links">
+          <a href="#work">Work</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="resume.html">Resume</a>
+          <a href="https://github.com/Fomorianshifter" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </nav>
     </div>
-  </section>
-
-  <section id="work">
-    <h2>Selected experience</h2>
-    <article class="job">
-      <header>
-        <h3>Industrial Electrician</h3>
-        <p>Grede Foundries · Reedsburg, WI · Oct 2021 – Mar 2024</p>
-      </header>
-      <ul>
-        <li>Assisted installation and programming support for PLC systems on automated processes.</li>
-        <li>Worked with engineering to troubleshoot electrical issues — resume notes 50+ a month.</li>
-        <li>Monthly inspections and maintenance with a stated 100% safety-compliance rate.</li>
-      </ul>
-    </article>
-    <article class="job">
-      <header>
-        <h3>Electrician</h3>
-        <p>AC Electric · Hayward, WI · Sep 2018 – Oct 2021</p>
-      </header>
-      <ul>
-        <li>New construction, remodels, and service calls.</li>
-        <li>Observed PLC installs and maintenance on automated systems.</li>
-      </ul>
-    </article>
-    <article class="job">
-      <header>
-        <h3>Electrician, laborer / apprentice</h3>
-        <p>Greenfield Electric · Greenfield, WI · Jul 2016 – Sep 2018</p>
-      </header>
-      <ul>
-        <li>Assisted journeyman and master electricians on installs and basic programming tasks.</li>
-      </ul>
-    </article>
-    <article class="job">
-      <header>
-        <h3>Quality control inspector</h3>
-        <p>Comp X · Grayslake, IL · Apr 2013 – Dec 2015</p>
-      </header>
-      <ul>
-        <li>CNC process oversight and inspections; assisted with programming and electronics integration.</li>
-      </ul>
-    </article>
-  </section>
-
-  <section id="projects">
-    <h2>Projects you can open</h2>
-    <p class="note">Featured GitHub work first, then small tools built for this portfolio so a LinkedIn visitor can click something that runs.</p>
-    <div class="grid">
-      <a class="card" href="projects/loki.html">
-        <span class="tag">GitHub · C / Python</span>
-        <h3>Loki</h3>
-        <p>Embedded companion for a single-board computer: TFT, drivers, local config UI, Flipper UART, and a life-cycle loop. Best public repo.</p>
-      </a>
-      <a class="card" href="projects/orbit.html">
-        <span class="tag">GitHub · web</span>
-        <h3>Orbit lab</h3>
-        <p>Working version of the Solar System sketch. Scaled orbits you can pause and inspect.</p>
-      </a>
-      <a class="card" href="projects/voltage.html">
-        <span class="tag">Portfolio tool</span>
-        <h3>Voltage drop</h3>
-        <p>Single-phase copper estimate from load, one-way distance, and wire size. For learning, not a permit calc.</p>
-      </a>
-      <a class="card" href="projects/starter.html">
-        <span class="tag">Portfolio tool</span>
-        <h3>Start / stop seal-in</h3>
-        <p>A three-wire motor starter you can click. Shows why the holding contact matters.</p>
-      </a>
-      <a class="card" href="projects/faults.html">
-        <span class="tag">Portfolio tool</span>
-        <h3>Shift fault log</h3>
-        <p>Foundry-style log that stays in the browser. Add a fault, filter by area, export CSV.</p>
-      </a>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Green Bay, WI · open to relocate · US work authorized</div>
+      <h1>Industrial electrician building toward controls and software.</h1>
+      <p class="lede">Five-plus years on residential, commercial, and foundry electrical systems. I install and troubleshoot equipment, support PLC work, and publish the software side of that interest on GitHub as <a href="https://github.com/Fomorianshifter">Fomorianshifter</a>.</p>
+      <div class="actions">
+        <a class="btn" href="#projects">Open projects</a>
+        <a class="btn ghost" href="mailto:nlane713@gmail.com">nlane713@gmail.com</a>
+        <a class="btn ghost" href="tel:+16087177602">608 717 7602</a>
+      </div>
+    </section>
+    <section id="work">
+      <h2>Selected experience</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="meta">Oct 2021 – Mar 2024 · Reedsburg, WI</div>
+          <h3>Industrial electrician</h3>
+          <p>Grede Foundries. Assisted PLC installation and programming for automated processes, worked with engineering on electrical troubleshooting, and ran monthly inspections aimed at safety compliance.</p>
+        </article>
+        <article class="card">
+          <div class="meta">Sep 2018 – Oct 2021 · Hayward, WI</div>
+          <h3>Electrician</h3>
+          <p>AC Electric. New construction, remodels, and service calls. Observed PLC installation and maintenance on automated equipment.</p>
+        </article>
+        <article class="card">
+          <div class="meta">Jul 2016 – Sep 2018 · Greenfield, WI</div>
+          <h3>Electrician, laborer / apprentice</h3>
+          <p>Greenfield Electric. Assisted journeyman and master electricians with installations and basic programming tasks.</p>
+        </article>
+        <article class="card">
+          <div class="meta">Apr 2013 – Dec 2015 · Grayslake, IL</div>
+          <h3>Quality control inspector</h3>
+          <p>Comp X. CNC process inspections and support for programming and electronics integration with machinists and maintenance.</p>
+        </article>
+      </div>
+    </section>
+    <section id="projects">
+      <h2>Projects you can open</h2>
+      <p class="meta">Featured public GitHub work first. The labs below run in the browser so a LinkedIn visitor can click something that works without cloning a repo.</p>
+      <div class="grid">
+        <article class="card">
+          <span class="tag">GitHub · C / Python</span>
+          <h3>Loki</h3>
+          <p>Best public repo. Embedded companion for a Linux single-board computer: TFT, drivers, local config UI, Flipper UART, and a life-cycle loop. MIT licensed.</p>
+          <p><a href="https://github.com/Fomorianshifter/Loki">github.com/Fomorianshifter/Loki</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">GitHub · web</span>
+          <h3>Solar system sketch</h3>
+          <p>Early planets-in-orbit project. A working version of that idea is the orbit lab on this site.</p>
+          <p><a href="projects/orbit.html">Open orbit lab</a> · <a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">source repo</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">Portfolio lab</span>
+          <h3>Voltage drop</h3>
+          <p>Single-phase copper estimate from load, one-way distance, and wire size. For learning, not a permit calculation.</p>
+          <p><a href="projects/voltage-drop.html">Open calculator</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">Portfolio lab</span>
+          <h3>Start / stop seal-in</h3>
+          <p>A three-wire motor starter you can click. Shows why the holding contact matters.</p>
+          <p><a href="projects/seal-in.html">Open ladder demo</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">Portfolio lab</span>
+          <h3>Shift fault log</h3>
+          <p>Small maintenance log: asset, symptom, and what was checked. Stays in this browser.</p>
+          <p><a href="projects/fault-log.html">Open log</a></p>
+        </article>
+      </div>
+    </section>
+    <section id="skills">
+      <h2>Skills to lead with</h2>
+      <div class="panel">
+        <p>Electrical installation and maintenance, blueprint and schematic reading, motors, sensors, industrial controls, PLC troubleshooting support, preventive maintenance, and safe work practices. Software in progress: HTML, CSS, JavaScript, Git, and freeCodeCamp computer science coursework since March 2023.</p>
+        <p class="meta">Education: Associate’s, Liberal Arts and Sciences, Cardinal Stritch University (2012). High school diploma, Round Lake Senior High School (2006). Pursuing NEC certification.</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>Nicholas Lane · Green Bay, WI 54313 · <a href="mailto:nlane713@gmail.com">nlane713@gmail.com</a> · willing to relocate.</p>
+      <p>LinkedIn website field: <a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
     </div>
-  </section>
-
-  <section id="path">
-    <h2>Training</h2>
-    <ul class="plain">
-      <li>Computer science coursework, freeCodeCamp, remote, Mar 2023 – present. Responsive web design certificate listed.</li>
-      <li>Associate’s, Liberal Arts & Sciences, Cardinal Stritch University, Milwaukee, 2010–2012.</li>
-      <li>High school diploma, Round Lake Senior High School, Round Lake, IL, 2006.</li>
-      <li>Pursuing NEC certification. Safety training listed on the resume includes HAZWOPER, CPR, first aid, AED, aerial lift, and scissor lift.</li>
-    </ul>
-    <p class="note">Phone +1 608 717 7602 · LinkedIn URL to paste: <a href="https://fomorianshifter.github.io/">https://fomorianshifter.github.io/</a></p>
-  </section>
-</main>
-<footer>
-  <p>Nicholas Lane · portfolio for LinkedIn · source on <a href="https://github.com/Fomorianshifter/Fomorianshifter.github.io">GitHub Pages</a></p>
-</footer>
+  </footer>
 </body>
 </html>
