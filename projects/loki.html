@@ -1,49 +1,42 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki life — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loki — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 <body>
-<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#projects">Projects</a></nav></header>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Back</a></nav></header>
 <main>
-  <h1>Loki life-cycle</h1>
-  <p>Same thresholds as loki_life.c: egg, hatchling at 50 gp, young at 200, adult at 500. Hunger rises each tick.</p>
+  <p class="kicker">GitHub · C and Python · Orange Pi / Raspberry Pi class boards</p>
+  <h1>Loki</h1>
+  <p class="lede">Dragon-themed embedded companion. Hardware abstraction for GPIO, SPI, I2C, UART, and PWM, plus drivers for a TFT, SD, flash, and EEPROM, a local config UI, and Flipper Zero UART commands. The life-cycle loop feeds growth points into egg, hatchling, young, and adult stages.</p>
+  <p><a href="https://github.com/Fomorianshifter/Loki">Repository</a></p>
   <div class="panel">
-    <p class="out" id="face">egg</p>
-    <p id="stat"></p>
-    <button type="button" id="basic">Feed basic</button>
-    <button type="button" id="tasty">Feed tasty</button>
-    <button type="button" id="tick">Tick</button>
+    <h2>Life-cycle demo</h2>
+    <p class="note">Same stage thresholds as the repo: 50, 200, and 500 growth points.</p>
+    <p id="status">Egg · 0 gp · neutral</p>
+    <div class="row">
+      <button id="basic" type="button">Feed basic (+5)</button>
+      <button id="tasty" type="button">Feed tasty (+10)</button>
+      <button id="special" type="button">Feed special (+20)</button>
+      <button id="play" type="button">Interact (+8)</button>
+    </div>
   </div>
-  <p><a href="https://github.com/Fomorianshifter/Loki">Loki repository</a></p>
 </main>
 <script>
-const s = {hunger:40, happy:50, energy:70, gp:0};
-function stage() { return s.gp>=500?"adult":s.gp>=200?"young":s.gp>=50?"hatchling":"egg"; }
-function mood() {
-  if (s.hunger>=70) return "hungry";
-  if (s.energy<=20) return "sleepy";
-  if (s.happy<=30 || s.hunger>=50) return "grumpy";
-  if (s.happy>=70) return "happy";
-  if (s.happy>=50 && s.energy>=60) return "playful";
-  return "neutral";
+const stages = [[500, "Adult"], [200, "Young"], [50, "Hatchling"], [0, "Egg"]];
+let gp = 0;
+function render() {
+  const stage = stages.find(s => gp >= s[0])[1];
+  document.getElementById("status").textContent = stage + " · " + gp + " gp · " + (gp > 80 ? "playful" : "neutral");
 }
-function feed(h,g,p) {
-  const pen = s.hunger<30 ? 0.5 : 1;
-  s.hunger = Math.max(0, s.hunger - h*pen);
-  s.gp += g*pen; s.happy = Math.min(100, s.happy + p*pen);
-  draw();
-}
-function draw() {
-  face.textContent = stage() + " · " + mood();
-  stat.textContent = `hunger ${s.hunger.toFixed(0)} · happiness ${s.happy.toFixed(0)} · energy ${s.energy.toFixed(0)} · growth ${s.gp.toFixed(0)}`;
-}
-basic.onclick = () => feed(20,5,5);
-tasty.onclick = () => feed(40,10,15);
-tick.onclick = () => {
-  if (mood()==="sleepy") s.energy = Math.min(100, s.energy+15);
-  else s.energy = Math.max(0, s.energy-8);
-  s.hunger = Math.min(100, s.hunger+10);
-  s.happy = Math.max(0, s.happy-3);
-  draw();
-};
-draw();
+document.getElementById("basic").onclick = () => { gp += 5; render(); };
+document.getElementById("tasty").onclick = () => { gp += 10; render(); };
+document.getElementById("special").onclick = () => { gp += 20; render(); };
+document.getElementById("play").onclick = () => { gp += 8; render(); };
 </script>
-</body></html>
+</body>
+</html>

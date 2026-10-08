@@ -1,35 +1,50 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Orbits — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit lab — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 <body>
-<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#projects">Projects</a></nav></header>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Back</a></nav></header>
 <main>
-  <h1>Solar system</h1>
-  <p>Rebuilt from the 2024 Solar System repos. Drag to pause is not required — it just runs.</p>
-  <canvas id="c" width="800" height="420"></canvas>
-  <p><a href="https://github.com/Fomorianshifter/Mynewproject-SolarSystem">Original repo</a></p>
+  <p class="kicker">From SolarSystem / Mynewproject-SolarSystem</p>
+  <h1>Orbit lab</h1>
+  <p>Those GitHub repos only had a license and a short readme. This is the working sketch: periods are scaled, not a real ephemeris.</p>
+  <div class="panel">
+    <canvas id="sky" width="900" height="520"></canvas>
+    <div class="row"><button id="toggle" type="button">Pause</button><span class="note" id="readout"></span></div>
+  </div>
 </main>
 <script>
-const c = document.getElementById("c"), x = c.getContext("2d");
-const bodies = [
-  {n:"Mercury", r:46, s:1.6, col:"#c8b8a2", d:3},
-  {n:"Venus", r:70, s:1.2, col:"#e0c48a", d:5},
-  {n:"Earth", r:96, s:1, col:"#7eb6d9", d:5},
-  {n:"Mars", r:122, s:.8, col:"#d07a55", d:4},
-  {n:"Jupiter", r:168, s:.45, col:"#d8b48a", d:11}
+const planets = [
+  { name: "Mercury", r: 50, period: 4, color: "#c4b7a6" },
+  { name: "Venus", r: 78, period: 7, color: "#e0c07a" },
+  { name: "Earth", r: 110, period: 10, color: "#7eb0d4" },
+  { name: "Mars", r: 142, period: 16, color: "#c46b4a" },
+  { name: "Jupiter", r: 190, period: 28, color: "#d7a15a" }
 ];
-let t = 0;
+const canvas = document.getElementById("sky");
+const ctx = canvas.getContext("2d");
+let t = 0, running = true;
 function frame() {
-  t += 0.01;
-  x.fillStyle = "#070a08"; x.fillRect(0,0,c.width,c.height);
-  x.beginPath(); x.arc(400,210,16,0,7); x.fillStyle = "#f2d56b"; x.fill();
-  bodies.forEach(b => {
-    x.strokeStyle = "#243024"; x.beginPath(); x.arc(400,210,b.r,0,7); x.stroke();
-    const a = t * b.s;
-    x.beginPath(); x.arc(400 + Math.cos(a)*b.r, 210 + Math.sin(a)*b.r*0.55, b.d, 0, 7);
-    x.fillStyle = b.col; x.fill();
+  const w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2;
+  ctx.fillStyle = "#0c100c";
+  ctx.fillRect(0, 0, w, h);
+  ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI * 2); ctx.fillStyle = "#d7a15a"; ctx.fill();
+  planets.forEach(p => {
+    ctx.beginPath(); ctx.arc(cx, cy, p.r, 0, Math.PI * 2); ctx.strokeStyle = "#2c3428"; ctx.stroke();
+    const a = (t / p.period) * Math.PI * 2;
+    const x = cx + Math.cos(a) * p.r, y = cy + Math.sin(a) * p.r * 0.62;
+    ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill();
   });
+  if (running) t += 0.02;
   requestAnimationFrame(frame);
 }
 frame();
+document.getElementById("toggle").onclick = () => { running = !running; document.getElementById("toggle").textContent = running ? "Pause" : "Run"; };
 </script>
-</body></html>
+</body>
+</html>

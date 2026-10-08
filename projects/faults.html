@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shift fault log — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 <body>
-<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Back</a></nav></header>
 <main>
+  <p class="kicker">Portfolio tool · stays in this browser</p>
   <h1>Shift fault log</h1>
-  <p>Stored in this browser only. Sample rows are foundry-style placeholders, not real plant data.</p>
-  <form class="panel" id="f">
-    <label>Asset<input id="asset" required placeholder="Mold line conveyor 2"></label>
-    <label>Symptom<input id="sym" required placeholder="VFD fault F005"></label>
-    <label>Action<textarea id="act" rows="3" placeholder="Checked motor leads, reset after verifying OL"></textarea></label>
-    <button>Add entry</button>
-  </form>
-  <table id="t"><thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th></tr></thead><tbody></tbody></table>
+  <p>A small stand-in for the foundry maintenance notes: area, symptom, and what cleared it.</p>
+  <div class="panel">
+    <div class="row">
+      <div><label>Area</label><input id="area" value="Mold line"></div>
+      <div><label>Symptom</label><input id="symptom" value="Conveyor VFD fault"></div>
+      <div><label>Fix</label><input id="fix" value="Reset drive, checked motor leads"></div>
+      <button id="add" type="button">Add</button>
+      <button id="csv" type="button">Export CSV</button>
+    </div>
+    <table><thead><tr><th>When</th><th>Area</th><th>Symptom</th><th>Fix</th></tr></thead><tbody id="rows"></tbody></table>
+  </div>
 </main>
 <script>
 const key = "nl-faults";
-const seed = [{when:"sample", asset:"Sand mixer", sym:"E-stop chain open", act:"Found pulled cord at station 3"}];
-let rows = JSON.parse(localStorage.getItem(key) || "null") || seed;
-function render() {
-  t.querySelector("tbody").innerHTML = rows.map(r => `<tr><td>${r.when}</td><td>${r.asset}</td><td>${r.sym}</td><td>${r.act}</td></tr>`).join("");
-}
-f.onsubmit = e => {
-  e.preventDefault();
-  rows.unshift({when: new Date().toLocaleString(), asset: asset.value, sym: sym.value, act: act.value});
+let rows = JSON.parse(localStorage.getItem(key) || "[]");
+function paint() {
+  document.getElementById("rows").innerHTML = rows.map(r => "<tr><td>" + r.when + "</td><td>" + r.area + "</td><td>" + r.symptom + "</td><td>" + r.fix + "</td></tr>").join("");
   localStorage.setItem(key, JSON.stringify(rows));
-  f.reset(); render();
+}
+document.getElementById("add").onclick = () => {
+  rows.unshift({ when: new Date().toLocaleString(), area: area.value, symptom: symptom.value, fix: fix.value });
+  paint();
 };
-render();
+document.getElementById("csv").onclick = () => {
+  const csv = ["when,area,symptom,fix"].concat(rows.map(r => [r.when, r.area, r.symptom, r.fix].map(v => '"' + String(v).replaceAll('"', '""') + '"').join(","))).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  a.download = "fault-log.csv";
+  a.click();
+};
+paint();
 </script>
-</body></html>
+</body>
+</html>

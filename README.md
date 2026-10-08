@@ -1,5 +1,6 @@
 # Nicholas Lane portfolio
 
-Static site for GitHub Pages: https://fomorianshifter.github.io
+Static site for LinkedIn. Live target: https://fomorianshifter.github.io/
 
-Work history is from the resume. Featured code is from public GitHub repos. Browser labs are portfolio demos, not plant software.
+Featured GitHub work: Loki, and a working orbit lab based on the SolarSystem repos.
+GhostGPS is intentionally not featured.

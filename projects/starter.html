@@ -1,33 +1,47 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Motor starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starter seal-in — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 <body>
-<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Back</a></nav></header>
 <main>
-  <h1>Three-wire motor starter</h1>
-  <p>Stop is normally closed. Start is momentary. The aux contact seals the coil in after start.</p>
-  <div class="panel">
-    <div class="rung"><span>L1</span><span class="contact on" id="stop">STOP NC</span><span class="contact" id="start">START</span><span class="contact" id="aux">M aux</span><span class="coil" id="coil">M</span><span>L2</span></div>
-    <button type="button" id="press">Press start</button>
-    <button type="button" id="release">Release start</button>
-    <button type="button" id="hitstop">Hit stop</button>
-    <p id="state">Coil de-energized.</p>
+  <p class="kicker">Portfolio tool · three-wire control</p>
+  <h1>Start / stop seal-in</h1>
+  <p>Stop is normally closed. Start is momentary. The auxiliary contact seals the coil in after start, until stop opens or overload trips.</p>
+  <div class="panel ladder">
+    <div>L1</div>
+    <div>
+      <button id="stop" type="button">Stop NC</button>
+      <button id="start" type="button">Start NO</button>
+      <span id="aux" class="contact">M aux</span>
+      <span id="ol" class="contact on">OL NC</span>
+    </div>
+    <div id="coil" class="coil">M</div>
   </div>
+  <button id="trip" type="button">Trip overload</button>
+  <p id="state"></p>
 </main>
 <script>
-let sealed = false, starting = false, stopped = false;
-function draw() {
-  const on = !stopped && (starting || sealed);
-  sealed = on && !starting ? true : on;
-  if (stopped) sealed = false;
-  coil.className = "coil" + (on ? " on" : "");
-  aux.className = "contact" + (on ? " on" : "");
-  start.className = "contact" + (starting ? " on" : "");
-  stop.className = "contact" + (stopped ? "" : " on");
-  state.textContent = on ? "Coil sealed in. Motor contactor is picked up." : "Coil de-energized.";
+let startHeld = false, stopped = false, tripped = false, sealed = false;
+function update() {
+  const coil = !stopped && !tripped && (startHeld || sealed);
+  sealed = coil;
+  document.getElementById("coil").className = "coil" + (coil ? " on" : "");
+  document.getElementById("aux").className = "contact" + (coil ? " on" : "");
+  document.getElementById("ol").className = "contact" + (tripped ? "" : " on");
+  document.getElementById("state").textContent = coil ? "Contactor pulled in." : (tripped ? "Overload open." : "Coil dropped out.");
 }
-press.onclick = () => { stopped = false; starting = true; draw(); };
-release.onclick = () => { starting = false; draw(); };
-hitstop.onclick = () => { stopped = true; starting = false; sealed = false; draw(); };
-draw();
+const start = document.getElementById("start");
+start.onpointerdown = () => { startHeld = true; update(); };
+start.onpointerup = start.onpointerleave = () => { startHeld = false; update(); };
+document.getElementById("stop").onclick = () => { stopped = !stopped; document.getElementById("stop").textContent = stopped ? "Stop open" : "Stop NC"; update(); };
+document.getElementById("trip").onclick = () => { tripped = !tripped; document.getElementById("trip").textContent = tripped ? "Reset overload" : "Trip overload"; update(); };
+update();
 </script>
-</body></html>
+</body>
+</html>

@@ -1,33 +1,48 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Voltage drop — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltage drop — Nicholas Lane</title>
+<link rel="stylesheet" href="../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 <body>
-<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html">Back</a></nav></header>
 <main>
+  <p class="kicker">Portfolio tool · learning estimate</p>
   <h1>Voltage drop</h1>
-  <p>Single-phase copper estimate: Vd = 2 × K × I × D / CM, with K = 12.9. Teaching tool, not a code calculation.</p>
-  <form class="panel" id="f">
-    <label>Load current (A)<input id="amps" type="number" value="20" min="0" step="0.1"></label>
-    <label>One-way length (ft)<input id="feet" type="number" value="100" min="0"></label>
-    <label>Conductor
-      <select id="wire">
-        <option value="10380">14 AWG</option>
-        <option value="6530" selected>12 AWG</option>
-        <option value="4107">10 AWG</option>
-        <option value="2583">8 AWG</option>
-        <option value="1624">6 AWG</option>
-      </select>
-    </label>
-    <label>Source voltage<input id="volts" type="number" value="120"></label>
-    <button type="button" id="go">Calculate</button>
-    <p class="out" id="out"></p>
-  </form>
+  <p>Single-phase copper approximation: Vd = 2 × K × I × D / CM, with K = 12.9. Not a substitute for NEC tables or a stamped calc.</p>
+  <div class="panel">
+    <div class="row">
+      <div><label>Load amps</label><input id="amps" type="number" value="20" min="0"></div>
+      <div><label>One-way feet</label><input id="feet" type="number" value="100" min="0"></div>
+      <div><label>Wire</label>
+        <select id="wire">
+          <option value="6530">12 AWG</option>
+          <option value="10380">10 AWG</option>
+          <option value="16510">8 AWG</option>
+          <option value="26240">6 AWG</option>
+          <option value="41740">4 AWG</option>
+        </select>
+      </div>
+      <div><label>Source volts</label><input id="volts" type="number" value="240"></div>
+    </div>
+    <p id="out"></p>
+  </div>
 </main>
 <script>
-document.getElementById("go").onclick = () => {
-  const i = +amps.value, d = +feet.value, cm = +wire.value, v = +volts.value;
-  const vd = 2 * 12.9 * i * d / cm;
-  const pct = v ? (vd / v) * 100 : 0;
-  out.textContent = vd.toFixed(2) + " V drop (" + pct.toFixed(1) + "%). Branch circuits are often kept near 3%.";
-};
+function calc() {
+  const I = +document.getElementById("amps").value;
+  const D = +document.getElementById("feet").value;
+  const CM = +document.getElementById("wire").value;
+  const V = +document.getElementById("volts").value;
+  const vd = 2 * 12.9 * I * D / CM;
+  const pct = V ? (vd / V) * 100 : 0;
+  document.getElementById("out").textContent = vd.toFixed(2) + " V drop · " + pct.toFixed(2) + "% of source";
+}
+document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", calc));
+calc();
 </script>
-</body></html>
+</body>
+</html>
