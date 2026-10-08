@@ -1,9 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shift fault log — Nicholas Lane</title>
-<link rel="stylesheet" href="../styles.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fault log — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
 <body>
-<header><a class="brand" href="../index.html">Nicholas Lane</a><nav><a href="../index.html#projects">Projects</a></nav></header>
-<main><div class="kicker">Maintenance</div><h1>Shift fault log</h1><p class="lede">Local notes for the kind of electrical call log used on a foundry shift. Stored in this browser only.</p><div class="card"><label>Asset <input id="asset" placeholder="Melt deck crane"></label><label>Note <input id="note" placeholder="Contactor chatter, replaced aux"></label><button class="btn" id="addFault" type="button">Add</button><ul class="clean" id="faults"></ul></div><p><a href="https://github.com/Fomorianshifter">GitHub</a></p></main>
-<script src="../app.js"></script>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+<main>
+  <h1>Shift fault log</h1>
+  <p>Stored in this browser only. Sample rows are foundry-style placeholders, not real plant data.</p>
+  <form class="panel" id="f">
+    <label>Asset<input id="asset" required placeholder="Mold line conveyor 2"></label>
+    <label>Symptom<input id="sym" required placeholder="VFD fault F005"></label>
+    <label>Action<textarea id="act" rows="3" placeholder="Checked motor leads, reset after verifying OL"></textarea></label>
+    <button>Add entry</button>
+  </form>
+  <table id="t"><thead><tr><th>When</th><th>Asset</th><th>Symptom</th><th>Action</th></tr></thead><tbody></tbody></table>
+</main>
+<script>
+const key = "nl-faults";
+const seed = [{when:"sample", asset:"Sand mixer", sym:"E-stop chain open", act:"Found pulled cord at station 3"}];
+let rows = JSON.parse(localStorage.getItem(key) || "null") || seed;
+function render() {
+  t.querySelector("tbody").innerHTML = rows.map(r => `<tr><td>${r.when}</td><td>${r.asset}</td><td>${r.sym}</td><td>${r.act}</td></tr>`).join("");
+}
+f.onsubmit = e => {
+  e.preventDefault();
+  rows.unshift({when: new Date().toLocaleString(), asset: asset.value, sym: sym.value, act: act.value});
+  localStorage.setItem(key, JSON.stringify(rows));
+  f.reset(); render();
+};
+render();
+</script>
 </body></html>

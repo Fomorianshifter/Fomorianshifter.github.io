@@ -1,1 +1,49 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Loki status</title><style>body{margin:0;font-family:sans-serif;background:#16130f;color:#f4efe6}main{padding:14px}button{font:inherit;margin-right:8px;border:0;border-radius:8px;padding:8px 12px;background:#c47a2c;color:#1c1915;cursor:pointer}.bar{height:8px;background:#3c342b;border-radius:99px;margin:6px 0 12px}.bar span{display:block;height:8px;background:#d7a441;border-radius:99px}</style></head><body><main><h1 id="stage" style="font-size:22px;margin:0 0 8px">Egg</h1><div>Hunger <div class="bar"><span id="hunger"></span></div></div><div>Happiness <div class="bar"><span id="happy"></span></div></div><div>Energy <div class="bar"><span id="energy"></span></div></div><p id="mood"></p><button id="feed">Feed</button><button id="play">Interact</button><button id="tick">Pass an hour</button></main><script>const s={gp:0,hunger:40,happy:50,energy:70};function stage(){return s.gp>=500?"Adult":s.gp>=200?"Young":s.gp>=50?"Hatchling":"Egg"}function mood(){if(s.hunger>=70)return "Hungry";if(s.energy<=20)return "Sleepy";if(s.happy<=30)return "Grumpy";if(s.happy>=70)return "Happy";if(s.happy>=50&&s.energy>=60)return "Playful";return "Neutral"}function draw(){document.querySelector("#stage").textContent=stage()+" · "+s.gp+" gp";hunger.style.width=s.hunger+"%";happy.style.width=s.happy+"%";energy.style.width=s.energy+"%";document.querySelector("#mood").textContent="Mood: "+mood()}const clamp=n=>Math.max(0,Math.min(100,n));feed.onclick=()=>{s.hunger=clamp(s.hunger-30);s.happy=clamp(s.happy+10);s.gp+=8;draw()};play.onclick=()=>{s.happy=clamp(s.happy+15);s.energy=clamp(s.energy-12);s.gp+=6;draw()};tick.onclick=()=>{s.hunger=clamp(s.hunger+12);s.energy=clamp(s.energy-10);draw()};draw();</script></body></html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loki life — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#projects">Projects</a></nav></header>
+<main>
+  <h1>Loki life-cycle</h1>
+  <p>Same thresholds as loki_life.c: egg, hatchling at 50 gp, young at 200, adult at 500. Hunger rises each tick.</p>
+  <div class="panel">
+    <p class="out" id="face">egg</p>
+    <p id="stat"></p>
+    <button type="button" id="basic">Feed basic</button>
+    <button type="button" id="tasty">Feed tasty</button>
+    <button type="button" id="tick">Tick</button>
+  </div>
+  <p><a href="https://github.com/Fomorianshifter/Loki">Loki repository</a></p>
+</main>
+<script>
+const s = {hunger:40, happy:50, energy:70, gp:0};
+function stage() { return s.gp>=500?"adult":s.gp>=200?"young":s.gp>=50?"hatchling":"egg"; }
+function mood() {
+  if (s.hunger>=70) return "hungry";
+  if (s.energy<=20) return "sleepy";
+  if (s.happy<=30 || s.hunger>=50) return "grumpy";
+  if (s.happy>=70) return "happy";
+  if (s.happy>=50 && s.energy>=60) return "playful";
+  return "neutral";
+}
+function feed(h,g,p) {
+  const pen = s.hunger<30 ? 0.5 : 1;
+  s.hunger = Math.max(0, s.hunger - h*pen);
+  s.gp += g*pen; s.happy = Math.min(100, s.happy + p*pen);
+  draw();
+}
+function draw() {
+  face.textContent = stage() + " · " + mood();
+  stat.textContent = `hunger ${s.hunger.toFixed(0)} · happiness ${s.happy.toFixed(0)} · energy ${s.energy.toFixed(0)} · growth ${s.gp.toFixed(0)}`;
+}
+basic.onclick = () => feed(20,5,5);
+tasty.onclick = () => feed(40,10,15);
+tick.onclick = () => {
+  if (mood()==="sleepy") s.energy = Math.min(100, s.energy+15);
+  else s.energy = Math.max(0, s.energy-8);
+  s.hunger = Math.min(100, s.hunger+10);
+  s.happy = Math.max(0, s.happy-3);
+  draw();
+};
+draw();
+</script>
+</body></html>

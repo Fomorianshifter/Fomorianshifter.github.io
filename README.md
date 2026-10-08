@@ -1,5 +1,3 @@
-# Nicholas Lane
+Personal portfolio of Nicholas Lane — industrial electrical work and public software projects.
 
-Portfolio for LinkedIn: https://fomorianshifter.github.io
-
-Industrial electrician portfolio with selected GitHub work and three small browser labs.
+Live: https://fomorianshifter.github.io

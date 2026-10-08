@@ -1,1 +1,33 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Starter check</title><style>body{margin:0;font-family:sans-serif;background:#16130f;color:#f4efe6}main{padding:14px}button{font:inherit;margin-right:8px;border:0;border-radius:8px;padding:8px 12px;background:#c47a2c;color:#1c1915;cursor:pointer}.lamp{width:18px;height:18px;border-radius:50%;display:inline-block;background:#3c342b;vertical-align:middle}.on{background:#d7a441;box-shadow:0 0 12px #d7a441}p{line-height:1.45}</style></head><body><main><p>Stop is a normally closed contact. Start is momentary. OL is closed when the overload is healthy.</p><p>Coil <span id="lamp" class="lamp"></span> <strong id="state">off</strong></p><button id="start">Start</button><button id="stop">Stop</button><button id="ol">Trip overload</button><p id="why"></p></main><script>let seal=false,stopClosed=true,olClosed=true;const lamp=document.querySelector("#lamp");function tick(){const coil=stopClosed&&olClosed&&seal;if(!coil)seal=false;lamp.className="lamp"+(coil?" on":"");state.textContent=coil?"on — seal-in holding":"off";why.textContent=!stopClosed?"Stop is open.":!olClosed?"Overload is tripped. Reset it before start.":coil?"M contact is feeding the coil around the start button.":"Press start."}start.onclick=()=>{seal=true;tick()};stop.onclick=()=>{stopClosed=!stopClosed;stop.textContent=stopClosed?"Stop":"Release stop";if(!stopClosed)seal=false;tick()};ol.onclick=()=>{olClosed=!olClosed;ol.textContent=olClosed?"Trip overload":"Reset overload";if(!olClosed)seal=false;tick()};tick();</script></body></html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Motor starter — Nicholas Lane</title><link rel="stylesheet" href="../styles.css"></head>
+<body>
+<header class="top"><a class="mark" href="../index.html">NL</a><nav><a href="../index.html#labs">Labs</a></nav></header>
+<main>
+  <h1>Three-wire motor starter</h1>
+  <p>Stop is normally closed. Start is momentary. The aux contact seals the coil in after start.</p>
+  <div class="panel">
+    <div class="rung"><span>L1</span><span class="contact on" id="stop">STOP NC</span><span class="contact" id="start">START</span><span class="contact" id="aux">M aux</span><span class="coil" id="coil">M</span><span>L2</span></div>
+    <button type="button" id="press">Press start</button>
+    <button type="button" id="release">Release start</button>
+    <button type="button" id="hitstop">Hit stop</button>
+    <p id="state">Coil de-energized.</p>
+  </div>
+</main>
+<script>
+let sealed = false, starting = false, stopped = false;
+function draw() {
+  const on = !stopped && (starting || sealed);
+  sealed = on && !starting ? true : on;
+  if (stopped) sealed = false;
+  coil.className = "coil" + (on ? " on" : "");
+  aux.className = "contact" + (on ? " on" : "");
+  start.className = "contact" + (starting ? " on" : "");
+  stop.className = "contact" + (stopped ? "" : " on");
+  state.textContent = on ? "Coil sealed in. Motor contactor is picked up." : "Coil de-energized.";
+}
+press.onclick = () => { stopped = false; starting = true; draw(); };
+release.onclick = () => { starting = false; draw(); };
+hitstop.onclick = () => { stopped = true; starting = false; sealed = false; draw(); };
+draw();
+</script>
+</body></html>
