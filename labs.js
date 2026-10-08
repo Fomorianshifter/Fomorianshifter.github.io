@@ -1,27 +1,162 @@
-const amps=document.getElementById("amps"),feet=document.getElementById("feet"),wire=document.getElementById("wire"),volts=document.getElementById("volts"),vdOut=document.getElementById("vdOut");
-function calc(){const I=+amps.value||0,D=+feet.value||0,CM=+wire.value,V=+volts.value||120;const vd=2*12.9*I*D/CM;const pct=V?vd/V*100:0;vdOut.textContent="Drop "+vd.toFixed(2)+" V ("+pct.toFixed(1)+"% of "+V+" V). Branch circuits are often kept near 3%; feeders near 5% total.";}
-[amps,feet,wire,volts].forEach(el=>el.addEventListener("input",calc));calc();
-let running=false,ol=false;
-const startBtn=document.getElementById("startBtn"),stopBtn=document.getElementById("stopBtn"),olBtn=document.getElementById("olBtn"),ladder=document.getElementById("ladder");
-function draw(){const seal=running&&!ol;ladder.innerHTML=
-'<div class="rung"><span class="contact '+(ol?"":"on")+'">OL '+(ol?"open":"closed")+'</span><span></span><span></span></div>'+
-'<div class="rung"><span class="contact">Stop NC</span><span class="contact '+(seal?"on":"")+'">M aux '+(seal?"closed":"open")+'</span><span class="coil '+(seal?"on":"")+'">M '+(seal?"energized":"off")+'</span></div>'+
-'<div class="rung"><span class="contact">Start NO</span><span class="muted">parallel with aux</span><span></span></div>';}
-startBtn.onclick=()=>{if(!ol)running=true;draw();};
-stopBtn.onclick=()=>{running=false;draw();};
-olBtn.onclick=()=>{ol=!ol;if(ol)running=false;olBtn.textContent=ol?"Reset overload":"Trip overload";draw();};
-draw();
-const canvas=document.getElementById("orbit"),ctx=canvas.getContext("2d");
-const bodies=[{r:0,a:18,c:"#e2a23a",s:.004},{r:46,a:5,c:"#c9b59a",s:.03},{r:78,a:8,c:"#d7d2c4",s:.018},{r:118,a:7,c:"#8fb56a",s:.012},{r:160,a:6,c:"#c4654a",s:.008}];
-let t=0,play=true;
-function frame(){const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);ctx.fillStyle="#0e100c";ctx.fillRect(0,0,w,h);const cx=w/2,cy=h/2;bodies.forEach((b,i)=>{if(i===0){ctx.beginPath();ctx.fillStyle=b.c;ctx.arc(cx,cy,b.a,0,Math.PI*2);ctx.fill();return;}ctx.beginPath();ctx.strokeStyle="#3a4034";ctx.ellipse(cx,cy,b.r,b.r*.42,0,0,Math.PI*2);ctx.stroke();const ang=t*b.s;const x=cx+Math.cos(ang)*b.r,y=cy+Math.sin(ang)*b.r*.42;ctx.beginPath();ctx.fillStyle=b.c;ctx.arc(x,y,b.a,0,Math.PI*2);ctx.fill();});if(play)t++;requestAnimationFrame(frame);}
-frame();
-document.getElementById("orbitToggle").onclick=function(){play=!play;this.textContent=play?"Pause":"Resume";};
-const KEY="nlane-shift-log";
-const list=document.getElementById("logList");
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return [];}}
-function save(items){localStorage.setItem(KEY,JSON.stringify(items));render();}
-function render(){const items=load();list.innerHTML=items.length?items.map(i=>'<div class="log-item"><strong>'+i.asset+'</strong> · <span class="muted">'+i.time+'</span><div>'+i.note+'</div></div>').join(""):'<p class="note">No entries yet.</p>';}
-document.getElementById("addLog").onclick=()=>{const asset=document.getElementById("asset").value.trim()||"Unlabeled asset";const note=document.getElementById("note").value.trim()||"No note";const items=load();items.unshift({asset,note,time:new Date().toLocaleString()});save(items);document.getElementById("note").value="";};
-document.getElementById("clearLog").onclick=()=>{localStorage.removeItem(KEY);render();};
-render();
+(function () {
+  var held = false;
+  var stop = document.getElementById("stopBtn");
+  var start = document.getElementById("startBtn");
+  var coil = document.getElementById("coil");
+  var aux = document.getElementById("aux");
+  var starterStatus = document.getElementById("starterStatus");
+  function paint() {
+    coil.classList.toggle("on", held);
+    aux.classList.toggle("on", held);
+    starterStatus.textContent = held ? "Contactor sealed in. Motor circuit would be closed." : "Contactor dropped out.";
+  }
+  function pressStart() { held = true; paint(); }
+  function pressStop() { held = false; paint(); }
+  start.addEventListener("click", pressStart);
+  stop.addEventListener("click", pressStop);
+  start.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") pressStart(); });
+  stop.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") pressStop(); });
+  paint();
+
+  var cm = { 14: 4110, 12: 6530, 10: 10380, 8: 16510, 6: 26240, 4: 41740, 2: 66360 };
+  var vdForm = document.getElementById("vdForm");
+  function voltage() {
+    var I = Number(document.getElementById("amps").value) || 0;
+    var D = Number(document.getElementById("feet").value) || 0;
+    var awg = document.getElementById("awg").value;
+    var V = Number(document.getElementById("volts").value) || 120;
+    var drop = (2 * 12.9 * I * D) / cm[awg];
+    var pct = V ? (drop / V) * 100 : 0;
+    document.getElementById("vdOut").textContent =
+      drop.toFixed(2) + " V drop · " + pct.toFixed(1) + "% of " + V + " V · " + awg + " AWG copper";
+  }
+  vdForm.addEventListener("input", voltage);
+  voltage();
+
+  var canvas = document.getElementById("orbit");
+  var ctx = canvas.getContext("2d");
+  var paused = false;
+  var t = 0;
+  var bodies = [
+    { name: "Mercury", r: 38, speed: 0.04, color: "#c4b6a6" },
+    { name: "Venus", r: 62, speed: 0.028, color: "#d7b56d" },
+    { name: "Earth", r: 90, speed: 0.02, color: "#6aa6d6" },
+    { name: "Mars", r: 118, speed: 0.015, color: "#c46b4a" }
+  ];
+  function draw() {
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#0d1013";
+    ctx.fillRect(0, 0, w, h);
+    var cx = w / 2, cy = h / 2;
+    ctx.beginPath();
+    ctx.fillStyle = "#e2a322";
+    ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+    ctx.fill();
+    bodies.forEach(function (b) {
+      ctx.strokeStyle = "#2c343c";
+      ctx.beginPath();
+      ctx.arc(cx, cy, b.r, 0, Math.PI * 2);
+      ctx.stroke();
+      var a = t * b.speed;
+      var x = cx + Math.cos(a) * b.r;
+      var y = cy + Math.sin(a) * b.r * 0.55;
+      ctx.fillStyle = b.color;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    if (!paused) t += 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+  document.getElementById("orbitPause").addEventListener("click", function () {
+    paused = !paused;
+    this.textContent = paused ? "Resume" : "Pause";
+  });
+
+  var state = { hunger: 20, happy: 55, energy: 70, gp: 0, stage: "Egg", eating: 0 };
+  function stageOf(gp) {
+    if (gp >= 500) return "Adult";
+    if (gp >= 200) return "Young";
+    if (gp >= 50) return "Hatchling";
+    return "Egg";
+  }
+  function mood() {
+    if (state.hunger >= 70) return "Hungry";
+    if (state.energy <= 20) return "Sleepy";
+    if (state.happy <= 30 || state.hunger >= 50) return "Grumpy";
+    if (state.happy >= 70) return "Happy";
+    if (state.happy >= 50 && state.energy >= 60) return "Playful";
+    return "Neutral";
+  }
+  function clamp(n) { return Math.max(0, Math.min(100, n)); }
+  function renderLoki() {
+    state.stage = stageOf(state.gp);
+    document.getElementById("dragon").textContent = state.stage.toLowerCase();
+    document.getElementById("lokiStatus").textContent =
+      state.stage + " · " + mood() + " · growth " + state.gp +
+      " · hunger " + state.hunger + " · happy " + state.happy + " · energy " + state.energy;
+  }
+  function feed(kind) {
+    var table = { basic: [20, 5, 5], tasty: [40, 10, 15], special: [60, 20, 25] };
+    var row = table[kind];
+    var pen = state.hunger < 25 ? 0.5 : 1;
+    state.hunger = clamp(state.hunger - row[0] * pen);
+    state.gp += Math.round(row[1] * pen);
+    state.happy = clamp(state.happy + row[2] * pen);
+    state.eating = 2;
+    renderLoki();
+  }
+  document.querySelectorAll("[data-food]").forEach(function (btn) {
+    btn.addEventListener("click", function () { feed(btn.getAttribute("data-food")); });
+  });
+  document.getElementById("playBtn").addEventListener("click", function () {
+    state.happy = clamp(state.happy + 8);
+    state.energy = clamp(state.energy - 6);
+    state.gp += 2;
+    renderLoki();
+  });
+  document.getElementById("tickBtn").addEventListener("click", function () {
+    if (mood() === "Sleepy") state.energy = clamp(state.energy + 15);
+    else state.energy = clamp(state.energy - 8);
+    state.hunger = clamp(state.hunger + 6);
+    state.happy = clamp(state.happy - 2);
+    renderLoki();
+  });
+  renderLoki();
+
+  var KEY = "nl-fault-log";
+  var list = document.getElementById("faultList");
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
+  }
+  function show() {
+    var rows = load();
+    list.innerHTML = "";
+    if (!rows.length) {
+      var empty = document.createElement("li");
+      empty.textContent = "No faults logged in this browser.";
+      list.appendChild(empty);
+      return;
+    }
+    rows.slice().reverse().forEach(function (row) {
+      var li = document.createElement("li");
+      li.textContent = row.time + " · " + row.asset + " — " + row.note;
+      list.appendChild(li);
+    });
+  }
+  document.getElementById("faultForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var rows = load();
+    rows.push({
+      time: new Date().toLocaleString(),
+      asset: document.getElementById("asset").value.trim(),
+      note: document.getElementById("note").value.trim()
+    });
+    localStorage.setItem(KEY, JSON.stringify(rows.slice(-40)));
+    e.target.reset();
+    show();
+  });
+  show();
+})();
