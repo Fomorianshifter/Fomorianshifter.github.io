@@ -1,50 +1,63 @@
 :root {
-  --bg: #121610;
+  --bg: #12140f;
+  --bg-2: #1b1e16;
   --ink: #efe7d6;
-  --muted: #b7ad9a;
-  --line: #2c3428;
-  --amber: #d7a15a;
-  --card: #1a2118;
+  --muted: #b7ad98;
+  --line: #3a382c;
+  --copper: #c9843a;
+  --copper-2: #e8b36a;
+  --ok: #8faf6a;
+  --warn: #d27a4a;
+  --card: #22261c;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: radial-gradient(1000px 500px at 10% -10%, #243024, var(--bg));
+  font-family: "Segoe UI", "Avenir Next", sans-serif;
+  background: radial-gradient(900px 420px at 10% -10%, rgba(201, 132, 58, 0.16), transparent 55%), var(--bg);
   color: var(--ink);
-  font-family: Outfit, sans-serif;
-  line-height: 1.5;
+  line-height: 1.55;
 }
-a { color: var(--amber); }
-.top, main, footer { width: min(980px, calc(100% - 32px)); margin: 0 auto; }
-.top { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
-.mark { font-family: "IBM Plex Mono", monospace; color: var(--ink); text-decoration: none; border: 1px solid var(--line); padding: 6px 8px; }
-nav a { color: var(--muted); text-decoration: none; margin-left: 16px; }
-h1, h2, h3 { font-family: Newsreader, serif; font-weight: 550; letter-spacing: -0.02em; }
+a { color: var(--copper-2); }
+.wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+header {
+  position: sticky; top: 0; z-index: 4;
+  backdrop-filter: blur(10px);
+  background: rgba(18, 20, 15, 0.86);
+  border-bottom: 1px solid var(--line);
+}
+nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; }
+.brand { font-weight: 700; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+.links { display: flex; gap: 16px; flex-wrap: wrap; }
+.links a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+.hero { padding: 64px 0 28px; }
+.kicker { color: var(--copper-2); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.78rem; }
 h1 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; margin: 8px 0 12px; }
-h2 { font-size: 1.8rem; margin-bottom: 8px; }
-.kicker, .tag, .note, footer { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 0.82rem; }
-.lede { max-width: 62ch; font-size: 1.08rem; }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 36px; }
-.btn { background: var(--amber); color: #1a140c; text-decoration: none; padding: 10px 14px; border-radius: 4px; font-weight: 600; }
-.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-section { padding: 12px 0 28px; border-top: 1px solid var(--line); }
-.job { padding: 8px 0 14px; }
-.job header p, .plain { color: var(--muted); }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.card { display: block; background: var(--card); border: 1px solid var(--line); padding: 16px; text-decoration: none; color: inherit; border-radius: 8px; }
-.card:hover { border-color: var(--amber); }
-.tag { display: block; margin-bottom: 8px; }
-.panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 12px 0 24px; }
-label { display: block; margin: 10px 0 4px; color: var(--muted); font-size: 0.9rem; }
-input, select, textarea, button {
-  font: inherit; color: var(--ink); background: #10150f; border: 1px solid var(--line); border-radius: 4px; padding: 8px;
+.lede { font-size: 1.15rem; max-width: 68ch; color: var(--muted); }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 22px 0; }
+.btn, button.btn {
+  display: inline-block; border: 1px solid var(--copper); background: var(--copper); color: #1a1208;
+  text-decoration: none; padding: 10px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font: inherit;
 }
-button { cursor: pointer; background: var(--amber); color: #1a140c; border: 0; font-weight: 600; }
-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 6px 4px; }
-.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; }
-canvas { width: 100%; background: #0c100c; border-radius: 8px; }
-.ladder { display: grid; grid-template-columns: 80px 1fr 80px; gap: 8px; align-items: center; }
-.coil, .contact { border: 1px solid var(--line); padding: 10px; text-align: center; border-radius: 4px; }
-.on { border-color: var(--amber); color: var(--amber); }
-footer { padding: 24px 0 40px; }
+.btn.ghost { background: transparent; color: var(--ink); }
+section { padding: 28px 0 8px; }
+h2 { font-size: 1.6rem; margin-bottom: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 12px 0; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+.tag { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; font-size: 0.78rem; color: var(--copper-2); }
+ul.clean { margin: 8px 0 0; padding-left: 18px; }
+.panel { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+label { display: block; font-size: 0.88rem; color: var(--muted); margin: 10px 0 4px; }
+input, select, textarea { width: 100%; background: #14170f; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: inherit; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.out { font-size: 1.4rem; margin: 12px 0 4px; }
+canvas { width: 100%; height: auto; background: #0d0f0b; border-radius: 12px; border: 1px solid var(--line); }
+.ladder { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; overflow: auto; }
+.on { color: var(--ok); }
+.off { color: #6d675c; }
+footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 22px 0 40px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 8px 6px; font-size: 0.92rem; }
+.warn { color: var(--warn); }

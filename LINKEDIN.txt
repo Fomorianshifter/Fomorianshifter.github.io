@@ -1,12 +1,14 @@
-LinkedIn setup
-================
-Website field: https://fomorianshifter.github.io
-Featured link: https://fomorianshifter.github.io
+Nicholas Lane portfolio
+
+Live site: https://fomorianshifter.github.io/
 GitHub: https://github.com/Fomorianshifter
 
-Headline idea:
-Industrial electrician | PLC troubleshooting | Green Bay, WI | open to relocate
+LinkedIn website field
+https://fomorianshifter.github.io/
 
-About idea:
-Industrial electrician with five-plus years on electrical systems and automation, including PLC install support and troubleshooting at Grede Foundries. I also publish embedded and web work on GitHub (Loki, orbit sketches, controls labs). Willing to relocate. US work authorized.
-Email nlane713@gmail.com · 608 717 7602
+About
+Industrial electrician based in Green Bay, WI, open to relocate. Foundry and commercial electrical work, PLC installation support, and troubleshooting. Building software alongside the trade: Loki, an embedded companion for single-board computers, plus small tools for voltage drop, motor control logic, and shift fault logs. Portfolio: https://fomorianshifter.github.io/
+
+Featured project
+Loki — embedded C/Python project with hardware drivers, a local configuration UI, and a life-cycle loop.
+https://github.com/Fomorianshifter/Loki

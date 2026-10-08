@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#14171a"/>
-  <text x="4" y="22" fill="#e2a322" font-family="monospace" font-size="12">NL</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#1b1e16"/><path d="M8 22 L16 6 L24 22 Z" fill="none" stroke="#c9843a" stroke-width="2"/><circle cx="16" cy="18" r="2" fill="#e8b36a"/></svg>
