@@ -5,18 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wire size helper — Nicholas Lane</title>
   <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" href="../favicon.svg">
 </head>
 <body>
-  <header><a href="../index.html">Nicholas Lane</a><nav><a href="../index.html#labs">Labs</a></nav></header>
-  <main>
-    <p class="kicker">Lab</p>
-    <h1>Wire size helper</h1>
-    <p class="lede">Ballpark copper ampacity for 60°C, 75°C, and 90°C columns, drawn from common THHN/THWN memory values. Real installs use the NEC ampacity table, terminal ratings, bundling, and ambient correction.</p>
-    <form class="panel">
-      <label>Continuous load amps <input id="amps" type="number" value="24" min="1"></label>
-    </form>
-    <p class="out" id="pick"></p>
-    <div id="table"></div>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="../index.html">Nicholas Lane</a>
+        <div class="links">
+          <a href="../index.html#projects">Projects</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Portfolio lab</div>
+      <h1>Wire size helper</h1>
+      <p class="lede">Ballpark copper ampacity for 60 °C, 75 °C, and 90 °C columns from common THHN/THWN values. Real installs use the NEC ampacity table, terminal ratings, bundling, and ambient correction.</p>
+    </section>
+    <section class="panel">
+      <label>Continuous load amps
+        <input id="amps" type="number" value="24" min="1">
+      </label>
+      <p class="out" id="pick"></p>
+      <div id="table"></div>
+      <p class="meta">This is a learning tool only — not a design calculation for a real installation.</p>
+    </section>
   </main>
   <script>
     const rows = [
@@ -31,12 +46,12 @@
     const body = document.getElementById("table");
     function render() {
       const need = Number(document.getElementById("amps").value) * 1.25;
-      body.innerHTML = "<table><tr><th>AWG</th><th>60°C</th><th>75°C</th><th>90°C</th></tr>" +
+      body.innerHTML = "<table><tr><th>AWG</th><th>60 °C</th><th>75 °C</th><th>90 °C</th></tr>" +
         rows.map(r => "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" + r[3] + "</td></tr>").join("") +
         "</table>";
       const fit = rows.find(r => r[2] >= need);
       document.getElementById("pick").textContent = fit
-        ? "125% of load is " + need.toFixed(1) + " A. Smallest listed size at 75°C is " + fit[0] + " AWG."
+        ? "125% of load is " + need.toFixed(1) + " A. Smallest listed size at 75 °C is " + fit[0] + " AWG."
         : "Above the sizes in this helper.";
     }
     document.getElementById("amps").addEventListener("input", render);
