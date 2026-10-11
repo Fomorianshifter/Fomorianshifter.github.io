@@ -3,12 +3,32 @@ Nicholas Lane portfolio
 Live site: https://fomorianshifter.github.io/
 GitHub: https://github.com/Fomorianshifter
 
-LinkedIn website field
+────────────────────────────────────────
+LinkedIn – Website field (paste this)
+────────────────────────────────────────
 https://fomorianshifter.github.io/
 
-About
-Industrial electrician based in Green Bay, WI, open to relocate. Foundry and commercial electrical work, PLC installation support, and troubleshooting. Building software alongside the trade: Loki, an embedded companion for single-board computers, plus small tools for voltage drop, motor control logic, and shift fault logs. Portfolio: https://fomorianshifter.github.io/
+────────────────────────────────────────
+LinkedIn – About section (paste / edit)
+────────────────────────────────────────
+Industrial electrician based in Green Bay, WI, open to relocate. Five-plus years of foundry and commercial electrical work with PLC installation support and troubleshooting.
 
-Featured project
-Loki — embedded C/Python project with hardware drivers, a local configuration UI, and a life-cycle loop.
+Building software alongside the trade:
+• Loki — embedded C/Python companion for single-board computers (TFT, drivers, Flipper Zero UART, life-cycle system)
+• Browser tools for voltage drop, motor control logic, shift fault logs, and wire sizing
+
+Portfolio: https://fomorianshifter.github.io/
+GitHub: https://github.com/Fomorianshifter
+
+────────────────────────────────────────
+Featured project for LinkedIn Featured section
+────────────────────────────────────────
+Loki — embedded systems project
 https://github.com/Fomorianshifter/Loki
+
+────────────────────────────────────────
+Contact
+────────────────────────────────────────
+nlane713@gmail.com
++1 608 717 7602
+Green Bay, WI 54313 · Willing to relocate · US work authorized
